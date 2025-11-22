@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chirui Reader</title>
+  <link rel="stylesheet" href="src/styles.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Chirui Reader (GitHub Pages)</h1>
+    <nav>
+      <button id="theme-toggle">Toggle Theme</button>
+    </nav>
+  </header>
+
+  <main id="app">
+    <aside class="sidebar">
+      <h2>Library</h2>
+      <ul id="manga-list"></ul>
+    </aside>
+
+    <section class="content">
+      <div id="reader">
+        <p>Welcome — Chirui Reader prototype. Click a manga to open the reader (stub).</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="src/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch(err =>
+          console.log('SW registration failed:', err)
+        );
+      });
+    }
+  </script>
+</body>
+</html>
