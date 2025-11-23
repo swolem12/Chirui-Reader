@@ -23,11 +23,26 @@ class ThemeManager {
   }
 }
 
+// Utility: Escape HTML to prevent XSS
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 // Initialize theme
 const themeManager = new ThemeManager();
 const themeToggleBtn = document.getElementById('theme-toggle');
 if (themeToggleBtn) {
   themeToggleBtn.addEventListener('click', () => themeManager.toggle());
+}
+
+// Handle logo error
+const appLogo = document.getElementById('app-logo');
+if (appLogo) {
+  appLogo.addEventListener('error', () => {
+    appLogo.style.display = 'none';
+  });
 }
 
 // Sample manga data (stub for development)
@@ -68,15 +83,31 @@ function openManga(manga) {
     clickedItem.classList.add('active');
   }
 
-  // Display manga info (stub)
-  readerEl.innerHTML = `
-    <div class="text-center">
-      <h2>${manga.title}</h2>
-      <p>Status: ${manga.status}</p>
-      <p class="mt-lg">This is a placeholder for the manga reader. The full reader will be implemented in Milestone 1.3.</p>
-      <p>For now, this demonstrates the basic UI and navigation structure.</p>
-    </div>
-  `;
+  // Clear reader content
+  readerEl.innerHTML = '';
+  
+  // Create elements safely without innerHTML
+  const container = document.createElement('div');
+  container.className = 'text-center';
+  
+  const title = document.createElement('h2');
+  title.textContent = manga.title;
+  
+  const status = document.createElement('p');
+  status.textContent = `Status: ${manga.status}`;
+  
+  const placeholder1 = document.createElement('p');
+  placeholder1.className = 'mt-lg';
+  placeholder1.textContent = 'This is a placeholder for the manga reader. The full reader will be implemented in Milestone 1.3.';
+  
+  const placeholder2 = document.createElement('p');
+  placeholder2.textContent = 'For now, this demonstrates the basic UI and navigation structure.';
+  
+  container.appendChild(title);
+  container.appendChild(status);
+  container.appendChild(placeholder1);
+  container.appendChild(placeholder2);
+  readerEl.appendChild(container);
 }
 
 // Initialize app

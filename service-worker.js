@@ -1,11 +1,17 @@
 // Chirui Reader - Service Worker
 const CACHE_NAME = 'chirui-reader-v1';
-const urlsToCache = [
+
+// Critical resources that must be cached
+const criticalResources = [
   '/',
   '/index.html',
   '/src/app.js',
   '/src/styles.css',
-  '/manifest.json',
+  '/manifest.json'
+];
+
+// Optional resources that can fail gracefully
+const optionalResources = [
   '/icons/chirui-reader-logo.png'
 ];
 
@@ -15,12 +21,20 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Service Worker: Caching files');
-        return cache.addAll(urlsToCache).catch(err => {
-          console.log('Service Worker: Cache failed for some resources', err);
-          // Don't fail if some resources aren't available yet
-          return Promise.resolve();
-        });
+        console.log('Service Worker: Caching critical files');
+        // Cache critical resources first
+        return cache.addAll(criticalResources)
+          .then(() => {
+            // Then try to cache optional resources
+            console.log('Service Worker: Caching optional files');
+            return Promise.allSettled(
+              optionalResources.map(url => 
+                cache.add(url).catch(err => {
+                  console.log(`Service Worker: Failed to cache ${url}`, err);
+                })
+              )
+            );
+          });
       })
   );
   self.skipWaiting();
