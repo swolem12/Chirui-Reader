@@ -1,9 +1,10 @@
 // Chirui Reader - Home View Component
 
 export class HomeView {
-  constructor(container, mangaService, router) {
+  constructor(container, mangaService, historyService, router) {
     this.container = container;
     this.mangaService = mangaService;
+    this.historyService = historyService;
     this.router = router;
   }
 
@@ -14,6 +15,7 @@ export class HomeView {
     const allManga = this.mangaService.getAllManga();
     const popularManga = this.mangaService.filterManga({ sortBy: 'rating' }).slice(0, 6);
     const recentManga = this.mangaService.filterManga({ sortBy: 'updated' }).slice(0, 6);
+    const continueReading = this.getContinueReadingList();
 
     const homeHTML = `
       <div class="home-view">
@@ -27,8 +29,13 @@ export class HomeView {
             <button id="view-favorites-btn" class="hero-btn secondary">
               My Favorites
             </button>
+            <button id="view-history-btn" class="hero-btn secondary">
+              Reading History
+            </button>
           </div>
         </div>
+
+        ${continueReading.length > 0 ? this.renderContinueReadingSection(continueReading) : ''}
 
         <div class="home-section">
           <div class="section-header">
@@ -108,6 +115,52 @@ export class HomeView {
   }
 
   /**
+   * Get continue reading list
+   */
+  getContinueReadingList() {
+    const history = this.historyService.getHistory();
+    return history
+      .slice(0, 6)
+      .map(entry => ({
+        ...entry,
+        manga: this.mangaService.getMangaById(entry.mangaId)
+      }))
+      .filter(entry => entry.manga !== null);
+  }
+
+  /**
+   * Render continue reading section
+   */
+  renderContinueReadingSection(continueReading) {
+    return `
+      <div class="home-section continue-reading-section">
+        <div class="section-header">
+          <h2>Continue Reading</h2>
+          <button id="view-all-history" class="view-all-btn">View All →</button>
+        </div>
+        <div class="manga-carousel">
+          ${continueReading.map(entry => `
+            <div class="carousel-card continue-reading-card" data-manga-id="${this.escapeHtml(entry.mangaId)}" data-chapter="${entry.chapterNumber}">
+              <img 
+                src="${this.escapeHtml(entry.manga.cover)}" 
+                alt="${this.escapeHtml(entry.manga.title)}"
+                class="carousel-cover"
+                loading="lazy"
+              />
+              <div class="carousel-info">
+                <h4 class="carousel-title" title="${this.escapeHtml(entry.manga.title)}">${this.escapeHtml(entry.manga.title)}</h4>
+                <div class="carousel-meta">
+                  <span class="continue-reading-progress">Ch. ${entry.chapterNumber}, Pg. ${entry.pageNumber}</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  /**
    * Render manga carousel
    */
   renderMangaCarousel(mangaList) {
@@ -161,6 +214,11 @@ export class HomeView {
       viewFavoritesBtn.addEventListener('click', () => this.router.navigate('favorites'));
     }
 
+    const viewHistoryBtn = document.getElementById('view-history-btn');
+    if (viewHistoryBtn) {
+      viewHistoryBtn.addEventListener('click', () => this.router.navigate('history'));
+    }
+
     // View all buttons
     const viewAllPopularBtn = document.getElementById('view-all-popular');
     if (viewAllPopularBtn) {
@@ -172,8 +230,23 @@ export class HomeView {
       viewAllRecentBtn.addEventListener('click', () => this.router.navigate('catalog'));
     }
 
+    const viewAllHistoryBtn = document.getElementById('view-all-history');
+    if (viewAllHistoryBtn) {
+      viewAllHistoryBtn.addEventListener('click', () => this.router.navigate('history'));
+    }
+
+    // Continue reading cards
+    const continueReadingCards = document.querySelectorAll('.continue-reading-card');
+    continueReadingCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const mangaId = card.dataset.mangaId;
+        const chapter = card.dataset.chapter;
+        this.router.navigate(`reader/${mangaId}`, { chapter });
+      });
+    });
+
     // Carousel cards
-    const carouselCards = document.querySelectorAll('.carousel-card');
+    const carouselCards = document.querySelectorAll('.carousel-card:not(.continue-reading-card)');
     carouselCards.forEach(card => {
       card.addEventListener('click', () => {
         const mangaId = card.dataset.mangaId;

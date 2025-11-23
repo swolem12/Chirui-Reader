@@ -1,12 +1,15 @@
 // Chirui Reader - Reader View Component
 
 export class ReaderView {
-  constructor(container, mangaService, router) {
+  constructor(container, mangaService, historyService, router) {
     this.container = container;
     this.mangaService = mangaService;
+    this.historyService = historyService;
     this.router = router;
     this.currentPage = 1;
     this.totalPages = 20; // Sample pages
+    this.currentMangaId = null;
+    this.currentChapterNumber = null;
   }
 
   /**
@@ -33,6 +36,11 @@ export class ReaderView {
 
     this.totalPages = currentChapter.pages;
     this.currentPage = 1;
+    this.currentMangaId = mangaId;
+    this.currentChapterNumber = chapterNumber;
+
+    // Track reading history
+    this.historyService.addHistoryEntry(mangaId, chapterNumber, this.currentPage);
 
     const readerHTML = `
       <div class="reader-view">
@@ -279,6 +287,11 @@ export class ReaderView {
 
     if (nextBtn) {
       nextBtn.disabled = this.currentPage === this.totalPages;
+    }
+
+    // Update reading history
+    if (this.currentMangaId && this.currentChapterNumber) {
+      this.historyService.addHistoryEntry(this.currentMangaId, this.currentChapterNumber, this.currentPage);
     }
   }
 

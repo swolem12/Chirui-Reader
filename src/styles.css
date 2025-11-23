@@ -1172,3 +1172,220 @@ button:disabled {
     width: 100%;
   }
 }
+
+/* History View Styles */
+.history-view {
+  padding: var(--spacing-lg);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.history-header h2 {
+  font-size: var(--font-size-xxl);
+  margin: 0;
+  color: var(--md-on-background);
+}
+
+.history-subtitle {
+  color: var(--md-on-surface);
+  margin: var(--spacing-sm) 0 0 0;
+  font-size: var(--font-size-base);
+}
+
+.danger-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--md-error);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  transition: all var(--transition-normal);
+}
+
+.danger-btn:hover {
+  background-color: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.history-item {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--md-surface);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+}
+
+.history-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.history-item-cover {
+  width: 100px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.history-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.history-item-title {
+  font-size: var(--font-size-lg);
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--md-on-background);
+}
+
+.history-item-meta {
+  display: flex;
+  gap: var(--spacing-md);
+  color: var(--md-on-surface);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.history-progress {
+  font-weight: 500;
+  color: var(--md-primary);
+}
+
+.history-item-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.continue-reading-btn,
+.remove-history-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-normal);
+}
+
+.continue-reading-btn {
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+}
+
+.continue-reading-btn:hover {
+  background-color: var(--md-primary-dark);
+}
+
+.remove-history-btn {
+  background-color: var(--md-surface-variant);
+  color: var(--md-on-surface);
+}
+
+.remove-history-btn:hover {
+  background-color: var(--md-outline);
+}
+
+/* Continue Reading Section */
+.continue-reading-section {
+  background: linear-gradient(135deg, var(--md-primary-light) 0%, var(--md-primary) 100%);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.continue-reading-section .section-header h2 {
+  color: white;
+}
+
+.continue-reading-section .view-all-btn {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.continue-reading-section .view-all-btn:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.continue-reading-card {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.continue-reading-card:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.continue-reading-progress {
+  font-size: var(--font-size-sm);
+  color: var(--md-primary);
+  background-color: white;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .history-item {
+    flex-direction: column;
+  }
+
+  .history-item-cover {
+    width: 100%;
+    height: 200px;
+  }
+
+  .history-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Navigation Button Styles */
+.nav-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  color: var(--md-on-primary);
+}
+
+.nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .nav-btn {
+    font-size: 18px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}

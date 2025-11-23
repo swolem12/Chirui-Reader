@@ -1,11 +1,13 @@
 // Chirui Reader - Main Application
 import { Router } from './router.js';
 import { MangaService } from './manga-service.js';
+import { HistoryService } from './history-service.js';
 import { HomeView } from './home-view.js';
 import { CatalogView } from './catalog-view.js';
 import { MangaDetailView } from './manga-detail-view.js';
 import { ReaderView } from './reader-view.js';
 import { FavoritesView } from './favorites-view.js';
+import { HistoryView } from './history-view.js';
 
 console.log('Chirui Reader initializing...');
 
@@ -36,6 +38,7 @@ class ChiruiReaderApp {
   constructor() {
     this.router = new Router();
     this.mangaService = new MangaService();
+    this.historyService = new HistoryService();
     this.themeManager = new ThemeManager();
     this.currentView = null;
     
@@ -53,7 +56,7 @@ class ChiruiReaderApp {
     // Home route
     this.router.register('home', () => {
       this.renderView(() => {
-        const view = new HomeView(this.contentContainer, this.mangaService, this.router);
+        const view = new HomeView(this.contentContainer, this.mangaService, this.historyService, this.router);
         view.render();
         return view;
       });
@@ -83,7 +86,7 @@ class ChiruiReaderApp {
     // Reader route
     this.router.register('reader/:id', (params) => {
       this.renderView(() => {
-        const view = new ReaderView(this.contentContainer, this.mangaService, this.router);
+        const view = new ReaderView(this.contentContainer, this.mangaService, this.historyService, this.router);
         view.render(params.id, params);
         return view;
       });
@@ -94,6 +97,16 @@ class ChiruiReaderApp {
     this.router.register('favorites', () => {
       this.renderView(() => {
         const view = new FavoritesView(this.contentContainer, this.mangaService, this.router);
+        view.render();
+        return view;
+      });
+      this.showSidebar(false);
+    });
+
+    // History route
+    this.router.register('history', () => {
+      this.renderView(() => {
+        const view = new HistoryView(this.contentContainer, this.mangaService, this.historyService, this.router);
         view.render();
         return view;
       });
@@ -141,6 +154,27 @@ class ChiruiReaderApp {
     const themeToggleBtn = document.getElementById('theme-toggle');
     if (themeToggleBtn) {
       themeToggleBtn.addEventListener('click', () => this.themeManager.toggle());
+    }
+
+    // Navigation buttons
+    const navHomeBtn = document.getElementById('nav-home');
+    if (navHomeBtn) {
+      navHomeBtn.addEventListener('click', () => this.router.navigate('home'));
+    }
+
+    const navCatalogBtn = document.getElementById('nav-catalog');
+    if (navCatalogBtn) {
+      navCatalogBtn.addEventListener('click', () => this.router.navigate('catalog'));
+    }
+
+    const navFavoritesBtn = document.getElementById('nav-favorites');
+    if (navFavoritesBtn) {
+      navFavoritesBtn.addEventListener('click', () => this.router.navigate('favorites'));
+    }
+
+    const navHistoryBtn = document.getElementById('nav-history');
+    if (navHistoryBtn) {
+      navHistoryBtn.addEventListener('click', () => this.router.navigate('history'));
     }
 
     // Handle logo error

@@ -3,16 +3,23 @@ const CACHE_NAME = 'chirui-reader-v1';
 
 // Critical resources that must be cached
 const criticalResources = [
-  '/',
-  '/index.html',
-  '/src/app.js',
-  '/src/styles.css',
-  '/manifest.json'
+  './',
+  './index.html',
+  './src/app.js',
+  './src/styles.css',
+  './src/router.js',
+  './src/home-view.js',
+  './src/catalog-view.js',
+  './src/manga-detail-view.js',
+  './src/reader-view.js',
+  './src/favorites-view.js',
+  './src/manga-service.js',
+  './manifest.json'
 ];
 
 // Optional resources that can fail gracefully
 const optionalResources = [
-  '/icons/chirui-reader-logo.png'
+  './icons/chirui-reader-logo.png'
 ];
 
 // Install event - cache resources
@@ -75,7 +82,7 @@ self.addEventListener('fetch', (event) => {
       .catch(() => {
         // Offline fallback
         if (event.request.destination === 'document') {
-          return caches.match('/index.html');
+          return caches.match('./index.html');
         }
       })
   );

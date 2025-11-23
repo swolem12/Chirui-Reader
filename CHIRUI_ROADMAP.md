@@ -9,28 +9,28 @@ Recreate the Chirui (チルい) Reader manga reader application, starting with a
 
 ### Milestone 1.1: Project Foundation & Basic UI (Week 1-2)
 - [x] Create project structure
-- [ ] Set up HTML/CSS/JavaScript framework
-- [ ] Implement responsive Material Design UI
-- [ ] Create navigation structure (header, sidebar, main content area)
-- [ ] Set up routing for single-page application (SPA)
-- [ ] Implement dark/light theme toggle
+- [x] Set up HTML/CSS/JavaScript framework
+- [x] Implement responsive Material Design UI
+- [x] Create navigation structure (header, sidebar, main content area)
+- [x] Set up routing for single-page application (SPA)
+- [x] Implement dark/light theme toggle
 
 ### Milestone 1.2: Manga Catalog & Search (Week 2-3)
-- [ ] Create manga listing/grid view
-- [ ] Implement search functionality
-- [ ] Add filtering by genre, status, rating
-- [ ] Create manga detail page
-- [ ] Display manga metadata (title, author, description, cover, tags)
+- [x] Create manga listing/grid view
+- [x] Implement search functionality
+- [x] Add filtering by genre, status, rating
+- [x] Create manga detail page
+- [x] Display manga metadata (title, author, description, cover, tags)
 - [ ] Implement pagination for manga lists
 
 ### Milestone 1.3: Manga Reader Core (Week 3-4)
-- [ ] Build manga reader interface
-- [ ] Implement page navigation (next/previous)
-- [ ] Add keyboard shortcuts (arrow keys, space)
+- [x] Build manga reader interface
+- [x] Implement page navigation (next/previous)
+- [x] Add keyboard shortcuts (arrow keys, space)
 - [ ] Create reading modes (single page, double page, webtoon/vertical scroll)
 - [ ] Implement zoom and pan controls
 - [ ] Add fullscreen mode
-- [ ] Create progress indicator
+- [x] Create progress indicator
 
 ### Milestone 1.4: Data Source Integration (Week 4-5)
 - [ ] Design API abstraction layer
@@ -42,14 +42,14 @@ Recreate the Chirui (チルい) Reader manga reader application, starting with a
 - [ ] Add loading states and error handling
 
 ### Milestone 1.5: User Features - Favorites & History (Week 5-6)
-- [ ] Implement localStorage for data persistence
-- [ ] Create favorites/bookmarks system
-- [ ] Add "Add to Favorites" functionality
-- [ ] Create favorites page/section
-- [ ] Implement reading history tracking
-- [ ] Create history page
-- [ ] Add "Continue Reading" feature
-- [ ] Implement bookmark positions within chapters
+- [x] Implement localStorage for data persistence
+- [x] Create favorites/bookmarks system
+- [x] Add "Add to Favorites" functionality
+- [x] Create favorites page/section
+- [x] Implement reading history tracking
+- [x] Create history page
+- [x] Add "Continue Reading" feature
+- [x] Implement bookmark positions within chapters
 
 ### Milestone 1.6: User Features - Library Management (Week 6-7)
 - [ ] Create user library/collection system
@@ -79,9 +79,9 @@ Recreate the Chirui (チルい) Reader manga reader application, starting with a
 - [ ] Implement advanced search filters
 
 ### Milestone 1.9: Offline Support & PWA (Week 9-10)
-- [ ] Convert to Progressive Web App (PWA)
-- [ ] Implement service worker for caching
-- [ ] Add offline reading capability
+- [x] Convert to Progressive Web App (PWA)
+- [x] Implement service worker for caching
+- [x] Add offline reading capability
 - [ ] Create download manager UI
 - [ ] Implement chapter download functionality
 - [ ] Add storage management tools
