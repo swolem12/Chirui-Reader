@@ -3,15 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chirui Reader</title>
+  <title>Chirui Reader - Manga Reader</title>
+  <meta name="description" content="Chirui Reader - A modern web-based manga reader">
   <link rel="stylesheet" href="src/styles.css">
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/chirui-reader-logo.png">
 </head>
 <body>
   <header class="app-header">
-    <h1>Chirui Reader (GitHub Pages)</h1>
+    <h1>
+      <img src="icons/chirui-reader-logo.png" alt="Chirui Reader" class="app-logo" id="app-logo">
+      Chirui Reader
+    </h1>
     <nav>
-      <button id="theme-toggle">Toggle Theme</button>
+      <button id="theme-toggle">🌙 Toggle Theme</button>
     </nav>
   </header>
 
@@ -23,7 +28,11 @@
 
     <section class="content">
       <div id="reader">
-        <p>Welcome — Chirui Reader prototype. Click a manga to open the reader (stub).</p>
+        <div class="text-center">
+          <h2>Welcome to Chirui Reader</h2>
+          <p class="mt-lg">A modern manga reader for the web.</p>
+          <p>Click a manga from the library to start reading.</p>
+        </div>
       </div>
     </section>
   </main>
