@@ -2,7 +2,32 @@
 
 ## Understanding Kotatsu's Distribution Method
 
-**Kotatsu is a native Android app**, not a web application. They distributed it differently from how this web-based Chirui Reader project works.
+**Important Clarification:** Kotatsu does NOT convert their Android app to PWA. They have TWO separate projects:
+
+### Kotatsu Has Two Separate Projects:
+
+1. **Kotatsu Android App** ([github.com/KotatsuApp/Kotatsu](https://github.com/KotatsuApp/Kotatsu))
+   - Native Android app written in Kotlin
+   - Distributed as `.apk` files via GitHub Releases
+   - Users download and install manually
+   - **This is NOT a PWA**
+
+2. **Kotatsu Website** ([github.com/KotatsuApp/website](https://github.com/KotatsuApp/website))
+   - Separate documentation/marketing website
+   - Built with VitePress (Vue-based static site generator)
+   - Deployed to GitHub Pages
+   - **This is NOT the app** - just documentation
+
+### The "Tool" You're Asking About
+
+The workflow that triggers on releases (`trigger-site-deploy.yml`) does NOT convert the app to PWA. It simply:
+
+1. Detects when a new Android app release is published
+2. Triggers the website repository to rebuild
+3. Updates the documentation website with the new version info
+4. Deploys the updated documentation to GitHub Pages
+
+**There is NO conversion from Android app to PWA.** They're completely separate projects.
 
 ## How Kotatsu Distributed Their Android App
 
@@ -32,6 +57,24 @@ Kotatsu made their Android app downloadable through URLs by:
 ```
 
 **This is NOT PWA** - it's traditional Android app distribution.
+
+## Kotatsu's Documentation Website (Separate Project)
+
+```
+┌─────────────────────────────────────────────┐
+│      Kotatsu Website (Documentation)        │
+│                                             │
+│  VitePress/Vue → Build → Static Files      │
+│                                             │
+│  Deployed to GitHub Pages                   │
+│                      ↓                      │
+│  Users visit website to read docs           │
+│                      ↓                      │
+│  Download links point to GitHub Releases    │
+└─────────────────────────────────────────────┘
+```
+
+**The website is NOT the app.** It's just documentation with download links.
 
 ## How Chirui Reader (This Project) Will Distribute
 
@@ -204,6 +247,67 @@ self.addEventListener('fetch', (event) => {
    - **Phase 3**: Use GitHub Releases for Android APK (like Kotatsu)
 
 **You probably meant PWA, not "pwm"** - PWA stands for Progressive Web App.
+
+## How to Implement Automated Deployment (Like Kotatsu's Website)
+
+If you want to set up automated deployment like Kotatsu's website repository does, here's how:
+
+### GitHub Actions Workflow for Chirui Reader
+
+Create `.github/workflows/deploy.yml`:
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: . # Deploy the root directory (since it's already static files)
+```
+
+**For a simple static site like Chirui Reader's current state:**
+- No build step needed (you're not using VitePress/Vue like Kotatsu's website)
+- Just deploy the HTML/CSS/JS files directly
+- GitHub Pages will serve them automatically
+
+**If you add a build tool later (like Vite):**
+```yaml
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist # The build output folder
+```
+
+**This workflow does NOT convert anything to PWA** - it just automates deployment of your static files to GitHub Pages.
 
 ## Next Steps for This Project
 
