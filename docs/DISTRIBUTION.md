@@ -265,25 +265,42 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: gh-pages
-          folder: . # Deploy the root directory (since it's already static files)
+          # Only upload specific files/directories
+          path: |
+            index.html
+            src/
+            icons/
+            manifest.json
+            service-worker.js
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 ```
 
 **For a simple static site like Chirui Reader's current state:**
 - No build step needed (you're not using VitePress/Vue like Kotatsu's website)
-- Just deploy the HTML/CSS/JS files directly
+- Just deploy the necessary files (HTML/CSS/JS, not entire repository)
 - GitHub Pages will serve them automatically
 
 **If you add a build tool later (like Vite):**
@@ -300,11 +317,14 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: gh-pages
-          folder: dist # The build output folder
+          path: dist # The build output folder
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 ```
 
 **This workflow does NOT convert anything to PWA** - it just automates deployment of your static files to GitHub Pages.
