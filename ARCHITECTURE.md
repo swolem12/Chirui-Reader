@@ -78,7 +78,7 @@ The Android app will be a **standalone application**, not a library or SDK.
 
 ### "How does the converter work to turn what we build here into an SDK?"
 
-**Answer**: There is no converter, and nothing is turned into an SDK. This is a misunderstanding of the project:
+**Answer**: This question stems from a misunderstanding about the project's purpose. To clarify:
 
 1. **What we build**: A manga reader web application
 2. **What it becomes**: A deployed web application on GitHub Pages
@@ -128,8 +128,8 @@ No SDK conversion tools or library packaging is involved.
 
 ## Frequently Asked Questions
 
-### Q: Why did I think this was an SDK?
-A: You may have confused this project with:
+### Q: Why might someone think this was an SDK?
+A: This confusion may arise from:
 - An SDK project from another repository
 - A framework or library project
 - Android SDK development (Phase 3 uses Android SDK, but doesn't create one)

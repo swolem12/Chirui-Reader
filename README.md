@@ -20,7 +20,7 @@ Chirui Reader is a **Progressive Web App (PWA)** for reading manga and manhwa. I
 
 ## Documentation
 
-- 📖 **[ARCHITECTURE.md](ARCHITECTURE.md)** - Detailed architecture explanation (Read this if you're confused about SDK/converter questions)
+- 📖 **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive project architecture and technology overview
 - 🗺️ **[CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md)** - Project roadmap and milestones
 
 ## Technology Stack
