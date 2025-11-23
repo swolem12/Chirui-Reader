@@ -23,13 +23,6 @@ class ThemeManager {
   }
 }
 
-// Utility: Escape HTML to prevent XSS
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
 // Initialize theme
 const themeManager = new ThemeManager();
 const themeToggleBtn = document.getElementById('theme-toggle');
@@ -86,7 +79,7 @@ function openManga(manga) {
   // Clear reader content
   readerEl.innerHTML = '';
   
-  // Create elements safely without innerHTML
+  // Create elements safely using textContent (XSS-safe)
   const container = document.createElement('div');
   container.className = 'text-center';
   

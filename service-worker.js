@@ -28,11 +28,7 @@ self.addEventListener('install', (event) => {
             // Then try to cache optional resources
             console.log('Service Worker: Caching optional files');
             return Promise.allSettled(
-              optionalResources.map(url => 
-                cache.add(url).catch(err => {
-                  console.log(`Service Worker: Failed to cache ${url}`, err);
-                })
-              )
+              optionalResources.map(url => cache.add(url))
             );
           });
       })
