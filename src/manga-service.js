@@ -145,7 +145,8 @@ export class MangaService {
    * @returns {Array} Filtered manga array
    */
   filterManga(filters = {}) {
-    let results = this.getAllManga();
+    // Use provided results or get all manga
+    let results = filters.results || this.getAllManga();
 
     // Filter by status
     if (filters.status && filters.status !== 'all') {

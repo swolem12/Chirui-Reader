@@ -102,21 +102,12 @@ export class CatalogView {
    * Render manga grid
    */
   renderMangaGrid() {
+    // First search, then filter the search results
     let manga = this.mangaService.searchManga(this.searchQuery);
     manga = this.mangaService.filterManga({
       ...this.currentFilters,
       results: manga
     });
-
-    // Apply search query to filtered results
-    if (this.searchQuery) {
-      const lowerQuery = this.searchQuery.toLowerCase();
-      manga = manga.filter(m =>
-        m.title.toLowerCase().includes(lowerQuery) ||
-        m.author.toLowerCase().includes(lowerQuery) ||
-        m.description.toLowerCase().includes(lowerQuery)
-      );
-    }
 
     if (manga.length === 0) {
       return `
