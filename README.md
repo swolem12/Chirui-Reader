@@ -23,6 +23,7 @@ Chirui Reader is a **Progressive Web App (PWA)** for reading manga and manhwa. I
 - 📖 **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive project architecture and technology overview
 - 📦 **[docs/DISTRIBUTION.md](docs/DISTRIBUTION.md)** - How to distribute web apps (PWA) vs native Android apps
 - 🚀 **[docs/PWA_QUICK_START.md](docs/PWA_QUICK_START.md)** - Quick guide to implement PWA features
+- 🔍 **[docs/KOTATSU_CLARIFICATION.md](docs/KOTATSU_CLARIFICATION.md)** - Clarifies Kotatsu's architecture (no PWA conversion)
 - 📋 **[docs/FAQ.md](docs/FAQ.md)** - Frequently asked questions
 - 🗺️ **[CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md)** - Project roadmap and milestones
 
