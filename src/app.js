@@ -203,4 +203,13 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded, initializing Chirui Reader...');
   const app = new ChiruiReaderApp();
   console.log('Chirui Reader loaded successfully!');
+  
+  // Hide loading screen
+  setTimeout(() => {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      loadingScreen.classList.add('hidden');
+      setTimeout(() => loadingScreen.remove(), 500);
+    }
+  }, 500);
 });

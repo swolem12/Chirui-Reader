@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://swolem12.github.io/Chirui-Reader/sitemap.xml
