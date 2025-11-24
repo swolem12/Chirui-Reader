@@ -2,6 +2,7 @@
 // Manages all manga sources and provides a unified interface
 
 import { MangaDexSource } from './mangadex-source.js';
+import { ManhwazSource } from './manhwaz-source.js';
 
 export class SourceManager {
   constructor() {
@@ -18,6 +19,11 @@ export class SourceManager {
     const mangadex = new MangaDexSource();
     this.registerSource(mangadex);
     this.enableSource('mangadex');
+
+    // Register Manhwaz
+    const manhwaz = new ManhwazSource();
+    this.registerSource(manhwaz);
+    this.enableSource('manhwaz');
 
     // Load enabled sources from localStorage
     this.loadEnabledSources();
