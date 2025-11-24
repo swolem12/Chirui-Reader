@@ -1,6 +1,8 @@
 // Chirui Reader - Base Source Interface
 // This defines the contract that all manga sources must implement
 
+import { corsProxy } from '../utils/cors-proxy.js';
+
 export class MangaSource {
   constructor() {
     this.id = '';
@@ -9,6 +11,7 @@ export class MangaSource {
     this.baseUrl = '';
     this.supportsLatest = false;
     this.isNsfw = false;
+    this.useCorsProxy = false; // Subclasses set this to true for scraper sources
   }
 
   /**
@@ -114,6 +117,13 @@ export class MangaSource {
     };
 
     try {
+      // Use CORS proxy for scraper sources
+      if (this.useCorsProxy) {
+        console.log(`[${this.name}] Using CORS proxy for: ${url}`);
+        return await corsProxy.fetch(url, mergedOptions);
+      }
+      
+      // Direct fetch for API sources
       const response = await fetch(url, mergedOptions);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);

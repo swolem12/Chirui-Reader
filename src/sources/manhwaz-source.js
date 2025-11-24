@@ -12,6 +12,7 @@ export class ManhwazSource extends MangaSource {
     this.baseUrl = 'https://manhwaz.com';
     this.supportsLatest = true;
     this.isNsfw = false;
+    this.useCorsProxy = true; // Enable CORS proxy for this scraper source
   }
 
   /**

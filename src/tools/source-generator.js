@@ -302,6 +302,7 @@ export class ${className} extends MangaSource {
     this.baseUrl = '${analysis.baseUrl}';
     this.supportsLatest = false; // Set to true if latest updates are supported
     this.isNsfw = false;
+    this.useCorsProxy = true; // Enable CORS proxy for scraper sources
   }
 
   /**

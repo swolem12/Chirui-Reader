@@ -9,6 +9,7 @@ import { ReaderView } from './reader-view.js';
 import { FavoritesView } from './favorites-view.js';
 import { HistoryView } from './history-view.js';
 import { SourceGeneratorView } from './source-generator-view.js';
+import { SettingsView } from './settings-view.js';
 
 console.log('Chirui Reader initializing...');
 
@@ -125,6 +126,18 @@ class ChiruiReaderApp {
       });
       this.showSidebar(false);
     });
+
+    // Settings route
+    this.router.register('settings', async () => {
+      await this.renderViewAsync(async () => {
+        const view = new SettingsView();
+        const html = view.render();
+        this.contentContainer.innerHTML = html;
+        await view.afterRender();
+        return view;
+      });
+      this.showSidebar(false);
+    });
   }
 
   /**
@@ -206,6 +219,11 @@ class ChiruiReaderApp {
     const navSourceGeneratorBtn = document.getElementById('nav-source-generator');
     if (navSourceGeneratorBtn) {
       navSourceGeneratorBtn.addEventListener('click', () => this.router.navigate('source-generator'));
+    }
+
+    const navSettingsBtn = document.getElementById('nav-settings');
+    if (navSettingsBtn) {
+      navSettingsBtn.addEventListener('click', () => this.router.navigate('settings'));
     }
 
     // Handle logo error
