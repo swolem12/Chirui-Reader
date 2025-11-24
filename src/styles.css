@@ -1390,3 +1390,45 @@ button:disabled {
     padding: var(--spacing-xs) var(--spacing-sm);
   }
 }
+
+/* Source Integration Styles */
+.source-tag {
+  display: inline-block;
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: var(--spacing-xs);
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--md-on-surface);
+  font-size: var(--font-size-lg);
+}
+
+.error-message {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--md-error);
+}
+
+.error-message p {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Loading Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-indicator::after {
+  content: '⏳';
+  display: inline-block;
+  margin-left: var(--spacing-sm);
+  animation: spin 2s linear infinite;
+}

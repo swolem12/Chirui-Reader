@@ -63,11 +63,11 @@ class ChiruiReaderApp {
       this.showSidebar(false);
     });
 
-    // Catalog route
-    this.router.register('catalog', () => {
-      this.renderView(() => {
+    // Catalog route (async)
+    this.router.register('catalog', async () => {
+      await this.renderViewAsync(async () => {
         const view = new CatalogView(this.contentContainer, this.mangaService, this.router);
-        view.render();
+        await view.render();
         return view;
       });
       this.showSidebar(false);
@@ -77,7 +77,7 @@ class ChiruiReaderApp {
     this.router.register('manga/:id', (params) => {
       this.renderView(() => {
         const view = new MangaDetailView(this.contentContainer, this.mangaService, this.router);
-        view.render(params.id);
+        view.render(params.id, params);
         return view;
       });
       this.showSidebar(false);
@@ -125,6 +125,19 @@ class ChiruiReaderApp {
     
     // Create and render new view
     this.currentView = viewFactory();
+  }
+
+  /**
+   * Render a new view (async version)
+   */
+  async renderViewAsync(viewFactory) {
+    // Cleanup previous view
+    if (this.currentView && typeof this.currentView.cleanup === 'function') {
+      this.currentView.cleanup();
+    }
+    
+    // Create and render new view
+    this.currentView = await viewFactory();
   }
 
   /**

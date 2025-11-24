@@ -1,9 +1,15 @@
 // Chirui Reader - Manga Data Service
-// This provides sample data and will later be replaced with API calls
+// Integrates with Source Manager for real manga data
+
+import { SourceManager } from './sources/source-manager.js';
 
 export class MangaService {
   constructor() {
-    // Sample manga data with more details
+    this.sourceManager = new SourceManager();
+    this.useRealSources = true; // Toggle to switch between mock and real data
+    this.cache = new Map(); // Cache for manga data
+    
+    // Sample manga data (fallback)
     this.mangaData = [
       {
         id: '1',
@@ -105,32 +111,120 @@ export class MangaService {
   }
 
   /**
-   * Get all manga
-   * @returns {Array} All manga
+   * Get all manga from enabled sources or fallback to mock data
+   * @param {number} page - Page number
+   * @param {string} sourceId - Optional specific source ID
+   * @returns {Promise<Array>} All manga
    */
-  getAllManga() {
-    return [...this.mangaData];
+  async getAllManga(page = 1, sourceId = null) {
+    if (!this.useRealSources) {
+      return [...this.mangaData];
+    }
+
+    try {
+      const results = await this.sourceManager.getPopularManga(page, sourceId);
+      const allManga = [];
+      
+      // Combine results from all sources
+      for (const sourceResult of results.sources) {
+        if (!sourceResult.error && sourceResult.manga) {
+          // Add source info to each manga
+          sourceResult.manga.forEach(manga => {
+            manga.sourceId = sourceResult.sourceId;
+            manga.source = sourceResult.sourceName;
+          });
+          allManga.push(...sourceResult.manga);
+        }
+      }
+      
+      return allManga.length > 0 ? allManga : this.mangaData;
+    } catch (error) {
+      console.error('Failed to fetch manga from sources:', error);
+      return [...this.mangaData];
+    }
   }
 
   /**
-   * Get manga by ID
+   * Get manga by ID from source or cache
    * @param {string} id - Manga ID
-   * @returns {Object|null} Manga object or null if not found
+   * @param {string} sourceId - Source ID
+   * @returns {Promise<Object|null>} Manga object or null if not found
    */
-  getMangaById(id) {
-    return this.mangaData.find(manga => manga.id === id) || null;
+  async getMangaById(id, sourceId = null) {
+    // Check cache first
+    const cacheKey = `${sourceId || 'mock'}-${id}`;
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    }
+
+    if (!this.useRealSources || !sourceId) {
+      return this.mangaData.find(manga => manga.id === id) || null;
+    }
+
+    try {
+      const source = this.sourceManager.getSource(sourceId);
+      if (!source) {
+        return this.mangaData.find(manga => manga.id === id) || null;
+      }
+
+      const manga = await source.getMangaDetails(id);
+      // Cache the result
+      this.cache.set(cacheKey, manga);
+      return manga;
+    } catch (error) {
+      console.error('Failed to fetch manga details:', error);
+      return this.mangaData.find(manga => manga.id === id) || null;
+    }
   }
 
   /**
-   * Search manga by title
+   * Search manga across sources or in mock data
    * @param {string} query - Search query
-   * @returns {Array} Filtered manga array
+   * @param {number} page - Page number
+   * @param {string} sourceId - Optional specific source ID
+   * @returns {Promise<Array>} Filtered manga array
    */
-  searchManga(query) {
+  async searchManga(query, page = 1, sourceId = null) {
     if (!query || query.trim() === '') {
-      return this.getAllManga();
+      return await this.getAllManga(page, sourceId);
     }
     
+    if (!this.useRealSources) {
+      const lowerQuery = query.toLowerCase();
+      return this.mangaData.filter(manga =>
+        manga.title.toLowerCase().includes(lowerQuery) ||
+        manga.author.toLowerCase().includes(lowerQuery) ||
+        manga.description.toLowerCase().includes(lowerQuery)
+      );
+    }
+
+    try {
+      const results = await this.sourceManager.searchManga(query, page, sourceId);
+      const allManga = [];
+      
+      // Combine results from all sources
+      for (const sourceResult of results.sources) {
+        if (!sourceResult.error && sourceResult.manga) {
+          // Add source info to each manga
+          sourceResult.manga.forEach(manga => {
+            manga.sourceId = sourceResult.sourceId;
+            manga.source = sourceResult.sourceName;
+          });
+          allManga.push(...sourceResult.manga);
+        }
+      }
+      
+      return allManga.length > 0 ? allManga : this.searchMangaMock(query);
+    } catch (error) {
+      console.error('Failed to search manga:', error);
+      return this.searchMangaMock(query);
+    }
+  }
+
+  /**
+   * Search in mock data (fallback)
+   */
+  searchMangaMock(query) {
     const lowerQuery = query.toLowerCase();
     return this.mangaData.filter(manga =>
       manga.title.toLowerCase().includes(lowerQuery) ||
@@ -142,20 +236,26 @@ export class MangaService {
   /**
    * Filter manga by criteria
    * @param {Object} filters - Filter criteria
-   * @returns {Array} Filtered manga array
+   * @returns {Promise<Array>} Filtered manga array
    */
-  filterManga(filters = {}) {
+  async filterManga(filters = {}) {
     // Use provided results or get all manga
-    let results = filters.results || this.getAllManga();
+    let results = filters.results || await this.getAllManga(filters.page || 1, filters.sourceId);
 
     // Filter by status
     if (filters.status && filters.status !== 'all') {
-      results = results.filter(manga => manga.status === filters.status);
+      results = results.filter(manga => 
+        manga.status && manga.status.toLowerCase() === filters.status.toLowerCase()
+      );
     }
 
     // Filter by genre
     if (filters.genre && filters.genre !== 'all') {
-      results = results.filter(manga => manga.genres.includes(filters.genre));
+      results = results.filter(manga => 
+        manga.genres && manga.genres.some(g => 
+          g.toLowerCase() === filters.genre.toLowerCase()
+        )
+      );
     }
 
     // Filter by minimum rating
@@ -170,13 +270,17 @@ export class MangaService {
           results.sort((a, b) => a.title.localeCompare(b.title));
           break;
         case 'rating':
-          results.sort((a, b) => b.rating - a.rating);
+          results.sort((a, b) => (b.rating || 0) - (a.rating || 0));
           break;
         case 'updated':
-          results.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+          results.sort((a, b) => {
+            const dateA = new Date(a.lastUpdated || 0);
+            const dateB = new Date(b.lastUpdated || 0);
+            return dateB - dateA;
+          });
           break;
         case 'chapters':
-          results.sort((a, b) => b.chapters - a.chapters);
+          results.sort((a, b) => (b.chapters || 0) - (a.chapters || 0));
           break;
       }
     }
@@ -197,13 +301,35 @@ export class MangaService {
   }
 
   /**
-   * Get manga chapters (stub for now)
+   * Get manga chapters from source or mock data
    * @param {string} mangaId - Manga ID
-   * @returns {Array} Array of chapters
+   * @param {string} sourceId - Source ID
+   * @returns {Promise<Array>} Array of chapters
    */
-  getChapters(mangaId) {
-    // This will be implemented when integrating with real APIs
-    const manga = this.getMangaById(mangaId);
+  async getChapters(mangaId, sourceId = null) {
+    if (!this.useRealSources || !sourceId) {
+      return this.getChaptersMock(mangaId);
+    }
+
+    try {
+      const source = this.sourceManager.getSource(sourceId);
+      if (!source) {
+        return this.getChaptersMock(mangaId);
+      }
+
+      const chapters = await source.getChapterList(mangaId);
+      return chapters;
+    } catch (error) {
+      console.error('Failed to fetch chapters:', error);
+      return this.getChaptersMock(mangaId);
+    }
+  }
+
+  /**
+   * Get chapters from mock data
+   */
+  getChaptersMock(mangaId) {
+    const manga = this.mangaData.find(m => m.id === mangaId);
     if (!manga) return [];
     
     // Generate sample chapters
@@ -218,5 +344,84 @@ export class MangaService {
       });
     }
     return chapters;
+  }
+
+  /**
+   * Get chapter pages from source
+   * @param {string} chapterId - Chapter ID
+   * @param {string} sourceId - Source ID
+   * @returns {Promise<Array>} Array of page URLs
+   */
+  async getChapterPages(chapterId, sourceId) {
+    if (!this.useRealSources || !sourceId) {
+      return this.getChapterPagesMock(chapterId);
+    }
+
+    try {
+      const source = this.sourceManager.getSource(sourceId);
+      if (!source) {
+        return this.getChapterPagesMock(chapterId);
+      }
+
+      const pages = await source.getPageList(chapterId);
+      return pages;
+    } catch (error) {
+      console.error('Failed to fetch chapter pages:', error);
+      return this.getChapterPagesMock(chapterId);
+    }
+  }
+
+  /**
+   * Get pages from mock data
+   */
+  getChapterPagesMock(chapterId) {
+    const pages = [];
+    for (let i = 1; i <= 20; i++) {
+      pages.push({
+        index: i - 1,
+        url: `https://via.placeholder.com/800x1200/1976d2/ffffff?text=Page+${i}`,
+        filename: `page-${i}.jpg`
+      });
+    }
+    return pages;
+  }
+
+  /**
+   * Get all available sources
+   * @returns {Array} Array of sources
+   */
+  getAllSources() {
+    return this.sourceManager.getAllSources().map(source => source.getSourceInfo());
+  }
+
+  /**
+   * Get enabled sources
+   * @returns {Array} Array of enabled sources
+   */
+  getEnabledSources() {
+    return this.sourceManager.getEnabledSources().map(source => source.getSourceInfo());
+  }
+
+  /**
+   * Toggle source enabled state
+   * @param {string} sourceId - Source ID
+   * @param {boolean} enabled - Enable or disable
+   */
+  toggleSource(sourceId, enabled) {
+    if (enabled) {
+      this.sourceManager.enableSource(sourceId);
+    } else {
+      this.sourceManager.disableSource(sourceId);
+    }
+  }
+
+  /**
+   * Toggle between real sources and mock data
+   * @param {boolean} useReal - Use real sources or mock data
+   */
+  toggleRealSources(useReal) {
+    this.useRealSources = useReal;
+    // Clear cache when switching
+    this.cache.clear();
   }
 }
