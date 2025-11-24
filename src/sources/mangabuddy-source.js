@@ -177,10 +177,16 @@ export class MangaBuddySource extends MangaSource {
 
       const pages = [];
       
-      // Try multiple selectors for chapter images
-      const imageElements = doc.querySelectorAll(
-        '.page-img img, .chapter-img img, .reader-img img, #chapter-reader img, .reading-content img'
-      );
+      // Common selectors for chapter images
+      const imageSelectors = [
+        '.page-img img',
+        '.chapter-img img',
+        '.reader-img img',
+        '#chapter-reader img',
+        '.reading-content img'
+      ];
+      
+      const imageElements = doc.querySelectorAll(imageSelectors.join(', '));
 
       imageElements.forEach((img, index) => {
         const imageUrl = img.getAttribute('data-src') || 
@@ -211,17 +217,24 @@ export class MangaBuddySource extends MangaSource {
             const match = content.match(pattern);
             if (match) {
               try {
-                const imageArray = JSON.parse(match[1]);
-                imageArray.forEach((url, index) => {
-                  if (url && typeof url === 'string') {
-                    pages.push({
-                      index: index,
-                      url: url.startsWith('http') ? url : `${this.baseUrl}${url}`,
-                      filename: `page-${index}.jpg`
+                // Safely parse JSON by validating it's an array format
+                const jsonStr = match[1];
+                if (jsonStr.startsWith('[')) {
+                  // Only parse if it looks like a JSON array
+                  const imageArray = JSON.parse(jsonStr);
+                  if (Array.isArray(imageArray)) {
+                    imageArray.forEach((url, index) => {
+                      if (url && typeof url === 'string' && (url.startsWith('http') || url.startsWith('/'))) {
+                        pages.push({
+                          index: index,
+                          url: url.startsWith('http') ? url : `${this.baseUrl}${url}`,
+                          filename: `page-${index}.jpg`
+                        });
+                      }
                     });
                   }
-                });
-                if (pages.length > 0) break;
+                  if (pages.length > 0) break;
+                }
               } catch (e) {
                 console.warn(`[${this.name}] Failed to parse image array from script:`, e);
               }
@@ -244,10 +257,17 @@ export class MangaBuddySource extends MangaSource {
   parseMangaList(doc) {
     const mangaList = [];
     
-    // Try multiple selectors for manga cards
-    const cardElements = doc.querySelectorAll(
-      '.manga-card, .manga-item, .series-card, .book-item, .item, .grid-item'
-    );
+    // Common selectors for manga cards
+    const cardSelectors = [
+      '.manga-card',
+      '.manga-item',
+      '.series-card',
+      '.book-item',
+      '.item',
+      '.grid-item'
+    ];
+    
+    const cardElements = doc.querySelectorAll(cardSelectors.join(', '));
 
     cardElements.forEach(card => {
       const link = card.querySelector('a[href*="manga"], a[href*="series"], a.title');
