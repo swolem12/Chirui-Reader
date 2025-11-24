@@ -147,8 +147,8 @@ export class SettingsView {
             </div>
             <div class="source-details">
               <span class="source-badge">${sourceInfo.lang.toUpperCase()}</span>
-              <span class="source-badge source-type-${sourceInfo.baseUrl.includes('api') ? 'api' : 'scraper'}">
-                ${sourceInfo.baseUrl.includes('api') ? 'API' : 'Scraper'}
+              <span class="source-badge source-type-${source.useCorsProxy ? 'scraper' : 'api'}">
+                ${source.useCorsProxy ? 'Scraper' : 'API'}
               </span>
               ${sourceInfo.supportsLatest ? '<span class="source-badge">Latest Updates</span>' : ''}
               ${sourceInfo.isNsfw ? '<span class="source-badge badge-nsfw">NSFW</span>' : ''}

@@ -11,6 +11,7 @@ export class ComicKSource extends MangaSource {
     this.name = 'ComicK';
     this.lang = 'en';
     this.baseUrl = 'https://api.comick.fun';
+    this.cdnUrl = 'https://meo.comick.pictures'; // ComicK CDN for images
     this.supportsLatest = true;
     this.isNsfw = false;
     this.useCorsProxy = false; // ComicK has an API, no proxy needed
@@ -88,7 +89,7 @@ export class ComicKSource extends MangaSource {
         description: comic.desc || '',
         genres: comic.genres?.map(g => g.name) || [],
         status: this.mapStatus(comic.status),
-        cover: comic.md_covers?.[0]?.b2key ? `https://meo.comick.pictures/${comic.md_covers[0].b2key}` : '',
+        cover: comic.md_covers?.[0]?.b2key ? `${this.cdnUrl}/${comic.md_covers[0].b2key}` : '',
         rating: comic.bayesian_rating || 0,
         chapters: comic.chapter_count || 0,
         lastUpdated: comic.last_chapter ? new Date(comic.last_chapter * 1000).toISOString() : new Date().toISOString(),
@@ -147,11 +148,14 @@ export class ComicKSource extends MangaSource {
         return [];
       }
 
-      const pages = data.chapter.md_images.map((img, index) => ({
-        index: index,
-        url: `https://meo.comick.pictures/${img.b2key}`,
-        filename: `page-${index}.${img.b2key.split('.').pop()}`
-      }));
+      const pages = data.chapter.md_images.map((img, index) => {
+        const extension = img.b2key?.split('.').pop() || 'jpg';
+        return {
+          index: index,
+          url: `${this.cdnUrl}/${img.b2key}`,
+          filename: `page-${index}.${extension}`
+        };
+      });
 
       return pages;
     } catch (error) {
@@ -175,7 +179,7 @@ export class ComicKSource extends MangaSource {
         id: comic.slug,
         title: comic.title || 'Unknown',
         author: comic.authors?.map(a => a.name).join(', ') || 'Unknown',
-        cover: comic.md_covers?.[0]?.b2key ? `https://meo.comick.pictures/${comic.md_covers[0].b2key}` : '',
+        cover: comic.md_covers?.[0]?.b2key ? `${this.cdnUrl}/${comic.md_covers[0].b2key}` : '',
         status: this.mapStatus(comic.status),
         genres: comic.genres?.map(g => g.name) || [],
         description: (comic.desc || '').substring(0, 200),
