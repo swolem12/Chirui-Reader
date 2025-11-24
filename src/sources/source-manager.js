@@ -3,6 +3,7 @@
 
 import { MangaDexSource } from './mangadex-source.js';
 import { ManhwazSource } from './manhwaz-source.js';
+import { MangaBuddySource } from './mangabuddy-source.js';
 
 export class SourceManager {
   constructor() {
@@ -15,17 +16,23 @@ export class SourceManager {
    * Initialize all available sources
    */
   initializeSources() {
-    // Register MangaDex
+    // Register MangaDex (Priority 1 - Confirmed Working)
     const mangadex = new MangaDexSource();
     this.registerSource(mangadex);
     this.enableSource('mangadex');
 
-    // Register Manhwaz
+    // Register MangaBuddy (Priority 1 - New Reliable Source)
+    const mangabuddy = new MangaBuddySource();
+    this.registerSource(mangabuddy);
+    this.enableSource('mangabuddy');
+
+    // Register Manhwaz (Priority 2 - Known Issues, disabled by default)
     const manhwaz = new ManhwazSource();
     this.registerSource(manhwaz);
-    this.enableSource('manhwaz');
+    // Don't enable by default until fixed
+    // this.enableSource('manhwaz');
 
-    // Load enabled sources from localStorage
+    // Load enabled sources from localStorage (will override defaults)
     this.loadEnabledSources();
   }
 

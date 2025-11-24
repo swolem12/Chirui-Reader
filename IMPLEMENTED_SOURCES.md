@@ -26,13 +26,14 @@ This document lists all manga/manhwa sources currently implemented in Chirui Rea
   - Rate limiting handled automatically (retry after 5s on 429)
   - High-quality images via at-home server network
   - Content rating filters (safe + suggestive only)
+  - Primary manga source, highly reliable
 
-### 2. Manhwaz
-- **ID**: `manhwaz`
-- **Name**: Manhwaz
+### 2. MangaBuddy
+- **ID**: `mangabuddy`
+- **Name**: MangaBuddy
 - **Type**: Web scraper
-- **URL**: https://manhwaz.com
-- **Status**: ✅ Implemented (Scraper-based)
+- **URL**: https://mangabuddy.com
+- **Status**: ✅ Newly Implemented (Replacement for Manhwaz)
 - **Features**:
   - ✅ Search manga/manhwa
   - ✅ Popular manga
@@ -40,13 +41,40 @@ This document lists all manga/manhwa sources currently implemented in Chirui Rea
   - ✅ Manga details
   - ✅ Chapter listings
   - ✅ Page images
-  - ⚠️ Requires site access (may be blocked by CORS/Cloudflare)
+  - ✅ High-quality images
+  - ⚠️ Requires CORS proxy
+- **Implementation**: HTML scraping with robust selector patterns
+- **Notes**:
+  - Added as reliable alternative to Manhwaz
+  - Known for fast updates and quality
+  - Uses multiple fallback selectors for robustness
+  - CORS proxy enabled by default
+  - Designed to work with typical manga/manhwa site structures
+
+### 3. Manhwaz
+- **ID**: `manhwaz`
+- **Name**: Manhwaz
+- **Type**: Web scraper
+- **URL**: https://manhwaz.com
+- **Status**: ⚠️ Disabled by Default (Known Issues)
+- **Issues**:
+  - ⚠️ CORS proxy failures
+  - ⚠️ Possible Cloudflare blocking
+  - ⚠️ Site may be blocking automated access
+  - ⚠️ Not enabled by default
+- **Features**:
+  - ⏸️ Search manga/manhwa (when working)
+  - ⏸️ Popular manga
+  - ⏸️ Latest updates
+  - ⏸️ Manga details
+  - ⏸️ Chapter listings
+  - ⏸️ Page images
 - **Implementation**: HTML scraping with common selector patterns
 - **Notes**:
-  - Uses multiple fallback selectors for robustness
-  - Designed to work with typical manhwa site structures
-  - May need adjustments based on site changes
-  - CORS proxy may be required for browser-based usage
+  - Disabled by default due to reliability issues
+  - Users can manually enable if site becomes accessible
+  - May be fixed in future updates
+  - Consider using MangaBuddy instead
 
 ## How to Enable/Disable Sources
 
@@ -75,23 +103,24 @@ const enabledSources = sourceManager.getEnabledSources();
 
 ## Source Comparison
 
-| Feature | MangaDex | Manhwaz |
-|---------|----------|---------|
-| **Type** | API | Scraper |
-| **Reliability** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| **Speed** | Fast | Medium |
-| **Content** | Manga | Manhwa/Webtoon |
-| **Image Quality** | High | Medium-High |
-| **Rate Limiting** | Auto-handled | None |
-| **CORS Issues** | None | Possible |
-| **Maintenance** | Low | Medium |
+| Feature | MangaDex | MangaBuddy | Manhwaz |
+|---------|----------|------------|---------|
+| **Type** | API | Scraper | Scraper |
+| **Reliability** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
+| **Speed** | Fast | Fast | Medium |
+| **Content** | Manga | Manga/Manhwa | Manhwa/Webtoon |
+| **Image Quality** | High | High | Medium-High |
+| **Rate Limiting** | Auto-handled | None | None |
+| **CORS Issues** | None | Possible | Yes |
+| **Maintenance** | Low | Medium | High |
+| **Default Status** | ✅ Enabled | ✅ Enabled | ⚠️ Disabled |
 
 ## Usage Examples
 
 ### Search Across All Sources
 
 ```javascript
-// Search all enabled sources
+// Search all enabled sources (MangaDex + MangaBuddy by default)
 const results = await sourceManager.searchManga('solo leveling', 1);
 
 // Results structure:
@@ -106,11 +135,12 @@ const results = await sourceManager.searchManga('solo leveling', 1);
 //       error: null
 //     },
 //     {
-//       sourceId: 'manhwaz',
-//       sourceName: 'Manhwaz',
+//       sourceId: 'mangabuddy',
+//       sourceName: 'MangaBuddy',
 //       manga: [...],
 //       error: null
 //     }
+//     // Manhwaz not included (disabled by default)
 //   ]
 // }
 ```
@@ -121,8 +151,12 @@ const results = await sourceManager.searchManga('solo leveling', 1);
 // Get popular manga from MangaDex only
 const results = await sourceManager.getPopularManga(1, 'mangadex');
 
-// Search in Manhwaz only
-const results = await sourceManager.searchManga('tower of god', 1, 'manhwaz');
+// Search in MangaBuddy only
+const results = await sourceManager.searchManga('tower of god', 1, 'mangabuddy');
+
+// Enable and use Manhwaz (if needed)
+sourceManager.enableSource('manhwaz');
+const results = await sourceManager.searchManga('solo leveling', 1, 'manhwaz');
 ```
 
 ### Load Chapter Pages
@@ -178,24 +212,51 @@ See [src/tools/README.md](src/tools/README.md) for tool documentation.
 **Problem**: No results
 - **Solution**: Check if manga title is in English, try alternative titles
 
-### Manhwaz Issues
+### MangaBuddy Issues
 
 **Problem**: CORS errors
 - **Solution**: 
-  - Use a CORS proxy
+  - CORS proxy is enabled by default
+  - If still failing, try different proxy in settings
+  - Check browser console for specific errors
+
+**Problem**: Selectors not working
+- **Solution**: 
+  - Site may have changed structure
+  - Update selectors in `mangabuddy-source.js`
+  - Check browser console for errors
+
+**Problem**: Images not loading
+- **Solution**:
+  - Verify CORS proxy is working
+  - Check Referer header is set correctly
+  - Verify image URLs in network tab
+
+### Manhwaz Issues (DEPRECATED - Use MangaBuddy Instead)
+
+**Problem**: Source not appearing in searches
+- **Solution**: 
+  - Manhwaz is disabled by default
+  - Enable manually if needed: `sourceManager.enableSource('manhwaz')`
+  - Note: May still fail due to blocking
+
+**Problem**: CORS errors
+- **Solution**: 
+  - Try using MangaBuddy instead (more reliable)
+  - Or enable manually and test with different proxies
   - Deploy with proper backend
   - Or disable browser CORS (development only)
 
 **Problem**: Selectors not working
 - **Solution**: 
-  - Site may have changed structure
-  - Update selectors in `manhwaz-source.js`
-  - Check browser console for errors
+  - Site may have changed structure or be blocking access
+  - Consider using MangaBuddy as replacement
+  - Update selectors in `manhwaz-source.js` if needed
 
 **Problem**: Images not loading
 - **Solution**:
+  - Use MangaBuddy instead for manhwa content
   - Check Referer header is set correctly
-  - Verify image URLs in network tab
   - May need CORS proxy for images
 
 ## Performance Tips
@@ -204,20 +265,32 @@ See [src/tools/README.md](src/tools/README.md) for tool documentation.
 2. **Use specific source ID** when possible - Avoid searching all sources
 3. **Cache results** - MangaService already implements caching
 4. **Lazy load source framework** - Only load when needed (already implemented)
+5. **MangaBuddy + MangaDex combo** - Best reliability for manga and manhwa content
 
 ## Future Sources
 
-Potential sources to add:
+Potential sources to add (Priority Order):
 
-- [ ] Asura Scans
-- [ ] Flame Comics  
-- [ ] Reaper Scans
-- [ ] MangaSee123
-- [ ] MangaLife
-- [ ] ComicK
-- [ ] MangaPark
-- [ ] MangaKakalot
-- [ ] MangaBuddy
+### High Priority (Next 2-4 weeks)
+- [ ] ComicK (modern, fast API)
+- [ ] MangaSee123 (manga-focused, reliable)
+- [ ] MangaLife (alternative to MangaSee)
+- [ ] ManhwaTop (manhwa-focused alternative)
+
+### Medium Priority (Next 1-2 months)
+- [ ] Asura Scans (popular scanlation group)
+- [ ] Flame Comics (manhwa)
+- [ ] Reaper Scans (high-quality scans)
+- [ ] Webtoons (official platform)
+- [ ] MangaPark (community favorite)
+- [ ] MangaKakalot (large catalog)
+
+### Lower Priority (Future)
+- [ ] Batoto (requires account)
+- [ ] Toonily (manhwa/webtoon)
+- [ ] MangaFire
+- [ ] MangaNato
+- [ ] ReadMangaBat
 
 Each can be added using the manual method or generator tool!
 
@@ -258,10 +331,18 @@ When implementing new sources, follow these guidelines:
 - Check each source's terms of service
 
 MangaDex provides an official API and allows non-commercial use.
-For scraped sources, verify legal compliance in your jurisdiction.
+MangaBuddy and other scraped sources - verify legal compliance in your jurisdiction.
 
 ---
 
 **Last Updated**: 2025-11-24  
-**Total Sources**: 2 (MangaDex, Manhwaz)  
-**Planned**: 10+ additional sources
+**Total Sources**: 3 (MangaDex ✅, MangaBuddy ✅, Manhwaz ⚠️)  
+**Working Sources**: 2 (MangaDex, MangaBuddy)  
+**Planned**: 15-20 additional sources for Phase 1, 100+ for Android  
+
+**Status Summary**:
+- ✅ MangaDex: Primary source, fully functional
+- ✅ MangaBuddy: New reliable source for manga/manhwa
+- ⚠️ Manhwaz: Disabled by default due to reliability issues
+
+**Recommendation**: Use MangaDex + MangaBuddy for best coverage and reliability.
