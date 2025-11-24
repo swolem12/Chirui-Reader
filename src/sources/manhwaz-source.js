@@ -194,7 +194,7 @@ export class ManhwazSource extends MangaSource {
 
       return pages;
     } catch (error) {
-      console.error(`[Manhwaz] Error loading chapter ${chapterId}:`, error);
+      console.error(`[${this.name}] Error loading chapter ${chapterId}:`, error);
       return [];
     }
   }
@@ -236,6 +236,10 @@ export class ManhwazSource extends MangaSource {
       // Extract status
       const status = card.querySelector('.status')?.textContent?.trim() || 'Ongoing';
 
+      // Extract chapter count
+      const chapterMatch = latestChapter ? latestChapter.match(/\d+/) : null;
+      const chapterCount = chapterMatch ? parseInt(chapterMatch[0]) : 0;
+
       mangaList.push({
         id: id,
         title: title,
@@ -245,7 +249,7 @@ export class ManhwazSource extends MangaSource {
         genres: genres,
         description: description.substring(0, 200),
         rating: rating,
-        chapters: latestChapter ? parseInt(latestChapter.match(/\d+/)?.[0] || '0') : 0,
+        chapters: chapterCount,
         lastUpdated: new Date().toISOString(),
         source: this.name,
         sourceId: this.id,
