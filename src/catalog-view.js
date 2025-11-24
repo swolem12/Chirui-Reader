@@ -340,12 +340,6 @@ export class CatalogView {
       `;
     }
   }
-          this.searchQuery = '';
-          this.resetFilters();
-        });
-      }
-    }
-  }
 
   /**
    * Reset all filters
