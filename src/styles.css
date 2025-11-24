@@ -13,6 +13,7 @@
   --md-on-background: #212121;
   --md-on-surface: #424242;
   --md-error: #d32f2f;
+  --md-error-dark: #b71c1c;
   --md-outline: #bdbdbd;
   
   /* Spacing */
@@ -1213,7 +1214,7 @@ button:disabled {
 }
 
 .danger-btn:hover {
-  background-color: #b71c1c;
+  background-color: var(--md-error-dark);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
