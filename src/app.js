@@ -8,6 +8,7 @@ import { MangaDetailView } from './manga-detail-view.js';
 import { ReaderView } from './reader-view.js';
 import { FavoritesView } from './favorites-view.js';
 import { HistoryView } from './history-view.js';
+import { SourceGeneratorView } from './source-generator-view.js';
 
 console.log('Chirui Reader initializing...');
 
@@ -112,6 +113,18 @@ class ChiruiReaderApp {
       });
       this.showSidebar(false);
     });
+
+    // Source Generator route
+    this.router.register('source-generator', async () => {
+      await this.renderViewAsync(async () => {
+        const view = new SourceGeneratorView();
+        const html = await view.render();
+        this.contentContainer.innerHTML = html;
+        await view.afterRender();
+        return view;
+      });
+      this.showSidebar(false);
+    });
   }
 
   /**
@@ -188,6 +201,11 @@ class ChiruiReaderApp {
     const navHistoryBtn = document.getElementById('nav-history');
     if (navHistoryBtn) {
       navHistoryBtn.addEventListener('click', () => this.router.navigate('history'));
+    }
+
+    const navSourceGeneratorBtn = document.getElementById('nav-source-generator');
+    if (navSourceGeneratorBtn) {
+      navSourceGeneratorBtn.addEventListener('click', () => this.router.navigate('source-generator'));
     }
 
     // Handle logo error
