@@ -76,8 +76,31 @@ When served over HTTPS (or localhost), browsers will show an "Install App" promp
 
 ## Deployment to GitHub Pages
 
+### Automatic Deployment
+
+This repository includes a GitHub Actions workflow that automatically deploys the app to GitHub Pages on every push to the `main` branch.
+
+**Setup Steps:**
+
+1. **Enable GitHub Pages** in repository settings:
+   - Go to Settings > Pages
+   - Under "Build and deployment", select "Source: GitHub Actions"
+
+2. **Push to main branch**:
+   ```bash
+   git push origin main
+   ```
+
+3. **Access your app**:
+   - Visit: `https://swolem12.github.io/Chirui-Reader/`
+   - The app will be live and installable as a PWA!
+
+### Manual Deployment
+
+If you prefer manual deployment:
+
 1. **Enable GitHub Pages** in repository settings
-2. **Select source**: `main` branch, `/` (root) directory
+2. **Select source**: `main` branch, `/` (root) directory  
 3. **Visit**: `https://swolem12.github.io/Chirui-Reader/`
 
 The app will be live and installable as a PWA!

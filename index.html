@@ -4,19 +4,97 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Chirui Reader - Manga Reader</title>
-  <meta name="description" content="Chirui Reader - A modern web-based manga reader">
+  <meta name="description" content="Chirui Reader - A modern web-based manga reader. Browse, read, and track your favorite manga with offline support.">
+  <meta name="keywords" content="manga reader, manga, manhwa, web app, PWA, offline reading">
+  <meta name="author" content="Chirui Reader">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://swolem12.github.io/Chirui-Reader/">
+  <meta property="og:title" content="Chirui Reader - Modern Manga Reader">
+  <meta property="og:description" content="Browse, read, and track your favorite manga with offline support">
+  <meta property="og:image" content="https://swolem12.github.io/Chirui-Reader/icons/chirui-reader-logo.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://swolem12.github.io/Chirui-Reader/">
+  <meta property="twitter:title" content="Chirui Reader - Modern Manga Reader">
+  <meta property="twitter:description" content="Browse, read, and track your favorite manga with offline support">
+  <meta property="twitter:image" content="https://swolem12.github.io/Chirui-Reader/icons/chirui-reader-logo.png">
+  
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#1976d2">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#1976d2">
+  
   <link rel="stylesheet" href="src/styles.css">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icons/chirui-reader-logo.png">
+  <link rel="apple-touch-icon" href="icons/chirui-reader-logo.png">
+  <style>
+    /* Loading screen styles */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loader {
+      text-align: center;
+      color: white;
+    }
+    
+    .loader-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: bounce 1s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .loader-text {
+      font-size: 1.5rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader">
+      <div class="loader-icon">📚</div>
+      <div class="loader-text">Loading Chirui Reader...</div>
+    </div>
+  </div>
+  
   <header class="app-header">
     <h1>
       <img src="icons/chirui-reader-logo.png" alt="Chirui Reader" class="app-logo" id="app-logo">
       Chirui Reader
     </h1>
     <nav>
-      <button id="theme-toggle">🌙 Toggle Theme</button>
+      <button id="nav-home" class="nav-btn" title="Home">🏠</button>
+      <button id="nav-catalog" class="nav-btn" title="Catalog">📚</button>
+      <button id="nav-favorites" class="nav-btn" title="Favorites">♥</button>
+      <button id="nav-history" class="nav-btn" title="History">📖</button>
+      <button id="nav-source-generator" class="nav-btn" title="Source Generator">🔧</button>
+      <button id="nav-settings" class="nav-btn" title="Settings">⚙️</button>
+      <button id="theme-toggle" class="nav-btn">🌙</button>
     </nav>
   </header>
 
@@ -34,7 +112,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').catch(err =>
+        navigator.serviceWorker.register('./service-worker.js').catch(err =>
           console.log('SW registration failed:', err)
         );
       });

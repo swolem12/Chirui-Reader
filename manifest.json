@@ -2,17 +2,26 @@
   "name": "Chirui Reader",
   "short_name": "Chirui",
   "description": "A modern web-based manga reader",
-  "start_url": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1976d2",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icons/chirui-reader-logo.png",
+      "src": "./icons/chirui-reader-logo.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "categories": ["entertainment", "books"],
+  "screenshots": [
+    {
+      "src": "./icons/chirui-reader-logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
     }
   ]
 }

@@ -9,15 +9,17 @@ export class CatalogView {
       status: 'all',
       genre: 'all',
       sortBy: 'title',
-      minRating: 0
+      minRating: 0,
+      sourceId: null // null means all sources
     };
     this.searchQuery = '';
+    this.isLoading = false;
   }
 
   /**
    * Render the catalog view
    */
-  render() {
+  async render() {
     const catalogHTML = `
       <div class="catalog-view">
         <div class="catalog-header">
@@ -37,6 +39,14 @@ export class CatalogView {
           </div>
 
           <div class="filter-container">
+            <div class="filter-group">
+              <label for="source-filter">Source:</label>
+              <select id="source-filter" class="filter-select">
+                <option value="">All Sources</option>
+                ${await this.renderSourceOptions()}
+              </select>
+            </div>
+
             <div class="filter-group">
               <label for="status-filter">Status:</label>
               <select id="status-filter" class="filter-select">
@@ -79,13 +89,24 @@ export class CatalogView {
         </div>
 
         <div id="manga-grid" class="manga-grid">
-          ${this.renderMangaGrid()}
+          <div class="loading-indicator">Loading manga...</div>
         </div>
       </div>
     `;
 
     this.container.innerHTML = catalogHTML;
     this.attachEventListeners();
+    await this.updateMangaGrid(); // Load initial data
+  }
+
+  /**
+   * Render source options
+   */
+  async renderSourceOptions() {
+    const sources = await this.mangaService.getEnabledSources();
+    return sources.map(source => 
+      `<option value="${this.escapeHtml(source.id)}" ${this.currentFilters.sourceId === source.id ? 'selected' : ''}>${this.escapeHtml(source.name)}</option>`
+    ).join('');
   }
 
   /**
@@ -99,49 +120,70 @@ export class CatalogView {
   }
 
   /**
-   * Render manga grid
+   * Render manga grid (async)
    */
-  renderMangaGrid() {
-    // First search, then filter the search results
-    let manga = this.mangaService.searchManga(this.searchQuery);
-    manga = this.mangaService.filterManga({
-      ...this.currentFilters,
-      results: manga
-    });
+  async renderMangaGrid() {
+    if (this.isLoading) {
+      return `<div class="loading-indicator">Loading manga...</div>`;
+    }
 
-    if (manga.length === 0) {
+    try {
+      // First search, then filter the search results
+      let manga = await this.mangaService.searchManga(
+        this.searchQuery,
+        1,
+        this.currentFilters.sourceId || null
+      );
+      manga = await this.mangaService.filterManga({
+        ...this.currentFilters,
+        results: manga
+      });
+
+      if (manga.length === 0) {
+        return `
+          <div class="no-results">
+            <p>No manga found matching your criteria.</p>
+            <button id="clear-search-btn" class="secondary-btn">Clear Search</button>
+          </div>
+        `;
+      }
+
+      return manga.map(m => this.renderMangaCard(m)).join('');
+    } catch (error) {
+      console.error('Failed to load manga:', error);
       return `
-        <div class="no-results">
-          <p>No manga found matching your criteria.</p>
-          <button id="clear-search-btn" class="secondary-btn">Clear Search</button>
+        <div class="error-message">
+          <p>Failed to load manga. Please try again.</p>
+          <button id="retry-btn" class="secondary-btn">Retry</button>
         </div>
       `;
     }
-
-    return manga.map(m => this.renderMangaCard(m)).join('');
   }
 
   /**
    * Render a single manga card
    */
   renderMangaCard(manga) {
+    const sourceTag = manga.source ? `<span class="source-tag">${this.escapeHtml(manga.source)}</span>` : '';
     return `
-      <div class="manga-card" data-manga-id="${this.escapeHtml(manga.id)}">
+      <div class="manga-card" data-manga-id="${this.escapeHtml(manga.id)}" data-source-id="${this.escapeHtml(manga.sourceId || '')}">
         <img 
           src="${this.escapeHtml(manga.cover)}" 
           alt="${this.escapeHtml(manga.title)}" 
           class="manga-card-cover"
           loading="lazy"
+          onerror="this.src='https://via.placeholder.com/200x280/1976d2/ffffff?text=No+Image'"
         />
         <div class="manga-card-info">
           <h3 class="manga-card-title" title="${this.escapeHtml(manga.title)}">${this.escapeHtml(manga.title)}</h3>
           <div class="manga-card-meta">
             <div class="manga-card-author">${this.escapeHtml(manga.author)}</div>
             <div class="manga-card-stats">
-              <span class="manga-rating">⭐ ${manga.rating.toFixed(1)}</span>
-              <span class="manga-chapters">${manga.chapters} ch.</span>
+              <span class="manga-rating">⭐ ${(manga.rating || 0).toFixed(1)}</span>
+              <span class="manga-chapters">${manga.chapters || 0} ch.</span>
             </div>
-            <div class="manga-status-badge ${manga.status.toLowerCase()}">${this.escapeHtml(manga.status)}</div>
+            <div class="manga-status-badge ${(manga.status || 'unknown').toLowerCase()}">${this.escapeHtml(manga.status || 'Unknown')}</div>
+            ${sourceTag}
           </div>
         </div>
       </div>
@@ -163,6 +205,15 @@ export class CatalogView {
           this.searchQuery = e.target.value;
           this.updateMangaGrid();
         }, 300);
+      });
+    }
+
+    // Source filter
+    const sourceFilter = document.getElementById('source-filter');
+    if (sourceFilter) {
+      sourceFilter.addEventListener('change', (e) => {
+        this.currentFilters.sourceId = e.target.value || null;
+        this.updateMangaGrid();
       });
     }
 
@@ -217,37 +268,78 @@ export class CatalogView {
       });
     }
 
+    // Retry button
+    const retryBtn = document.getElementById('retry-btn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        this.updateMangaGrid();
+      });
+    }
+
     // Manga card clicks
+    this.attachMangaCardListeners();
+  }
+
+  /**
+   * Attach listeners to manga cards
+   */
+  attachMangaCardListeners() {
     const mangaCards = document.querySelectorAll('.manga-card');
     mangaCards.forEach(card => {
       card.addEventListener('click', () => {
         const mangaId = card.dataset.mangaId;
-        this.router.navigate(`manga/${mangaId}`);
+        const sourceId = card.dataset.sourceId;
+        // Navigate with source info
+        this.router.navigate(`manga/${mangaId}${sourceId ? `?source=${sourceId}` : ''}`);
       });
     });
   }
 
   /**
-   * Update manga grid without full re-render
+   * Update manga grid without full re-render (async)
    */
-  updateMangaGrid() {
+  async updateMangaGrid() {
     const gridContainer = document.getElementById('manga-grid');
-    if (gridContainer) {
-      gridContainer.innerHTML = this.renderMangaGrid();
+    if (!gridContainer) return;
+
+    this.isLoading = true;
+    gridContainer.innerHTML = '<div class="loading-indicator">Loading manga...</div>';
+
+    try {
+      const mangaHTML = await this.renderMangaGrid();
+      this.isLoading = false;
+      gridContainer.innerHTML = mangaHTML;
       
       // Re-attach manga card click listeners
-      const mangaCards = document.querySelectorAll('.manga-card');
-      mangaCards.forEach(card => {
-        card.addEventListener('click', () => {
-          const mangaId = card.dataset.mangaId;
-          this.router.navigate(`manga/${mangaId}`);
-        });
-      });
+      this.attachMangaCardListeners();
 
       // Re-attach clear search button if it exists
       const clearSearchBtn = document.getElementById('clear-search-btn');
       if (clearSearchBtn) {
         clearSearchBtn.addEventListener('click', () => {
+          this.searchQuery = '';
+          this.resetFilters();
+        });
+      }
+
+      // Re-attach retry button if it exists
+      const retryBtn = document.getElementById('retry-btn');
+      if (retryBtn) {
+        retryBtn.addEventListener('click', () => {
+          this.updateMangaGrid();
+        });
+      }
+    } catch (error) {
+      console.error('Failed to update manga grid:', error);
+      this.isLoading = false;
+      gridContainer.innerHTML = `
+        <div class="error-message">
+          <p>Failed to load manga. Please try again.</p>
+          <button id="retry-btn" class="secondary-btn">Retry</button>
+        </div>
+      `;
+    }
+  }
           this.searchQuery = '';
           this.resetFilters();
         });
