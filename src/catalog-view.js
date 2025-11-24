@@ -103,7 +103,7 @@ export class CatalogView {
    * Render source options
    */
   async renderSourceOptions() {
-    const sources = this.mangaService.getEnabledSources();
+    const sources = await this.mangaService.getEnabledSources();
     return sources.map(source => 
       `<option value="${this.escapeHtml(source.id)}" ${this.currentFilters.sourceId === source.id ? 'selected' : ''}>${this.escapeHtml(source.name)}</option>`
     ).join('');

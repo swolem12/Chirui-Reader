@@ -1,12 +1,10 @@
 // Chirui Reader - Manga Data Service
-// Integrates with Source Manager for real manga data
-
-import { SourceManager } from './sources/source-manager.js';
+// Integrates with Source Manager for real manga data (lazy-loaded)
 
 export class MangaService {
   constructor() {
-    this.sourceManager = new SourceManager();
-    this.useRealSources = true; // Toggle to switch between mock and real data
+    this.sourceManager = null; // Will be lazy-loaded
+    this.useRealSources = false; // Start with mock data, toggle to enable real sources
     this.cache = new Map(); // Cache for manga data
     
     // Sample manga data (fallback)
@@ -111,6 +109,17 @@ export class MangaService {
   }
 
   /**
+   * Get or initialize source manager
+   */
+  async getSourceManager() {
+    if (!this.sourceManager) {
+      const { SourceManager } = await import('./sources/source-manager.js');
+      this.sourceManager = new SourceManager();
+    }
+    return this.sourceManager;
+  }
+
+  /**
    * Get all manga from enabled sources or fallback to mock data
    * @param {number} page - Page number
    * @param {string} sourceId - Optional specific source ID
@@ -122,7 +131,8 @@ export class MangaService {
     }
 
     try {
-      const results = await this.sourceManager.getPopularManga(page, sourceId);
+      const manager = await this.getSourceManager();
+      const results = await manager.getPopularManga(page, sourceId);
       const allManga = [];
       
       // Combine results from all sources
@@ -162,7 +172,8 @@ export class MangaService {
     }
 
     try {
-      const source = this.sourceManager.getSource(sourceId);
+      const manager = await this.getSourceManager();
+      const source = manager.getSource(sourceId);
       if (!source) {
         return this.mangaData.find(manga => manga.id === id) || null;
       }
@@ -199,7 +210,8 @@ export class MangaService {
     }
 
     try {
-      const results = await this.sourceManager.searchManga(query, page, sourceId);
+      const manager = await this.getSourceManager();
+      const results = await manager.searchManga(query, page, sourceId);
       const allManga = [];
       
       // Combine results from all sources
@@ -312,7 +324,8 @@ export class MangaService {
     }
 
     try {
-      const source = this.sourceManager.getSource(sourceId);
+      const manager = await this.getSourceManager();
+      const source = manager.getSource(sourceId);
       if (!source) {
         return this.getChaptersMock(mangaId);
       }
@@ -358,7 +371,8 @@ export class MangaService {
     }
 
     try {
-      const source = this.sourceManager.getSource(sourceId);
+      const manager = await this.getSourceManager();
+      const source = manager.getSource(sourceId);
       if (!source) {
         return this.getChapterPagesMock(chapterId);
       }
@@ -388,18 +402,32 @@ export class MangaService {
 
   /**
    * Get all available sources
-   * @returns {Array} Array of sources
+   * @returns {Promise<Array>} Array of sources
    */
-  getAllSources() {
-    return this.sourceManager.getAllSources().map(source => source.getSourceInfo());
+  async getAllSources() {
+    if (!this.useRealSources) return [];
+    try {
+      const manager = await this.getSourceManager();
+      return manager.getAllSources().map(source => source.getSourceInfo());
+    } catch (error) {
+      console.error('Failed to get sources:', error);
+      return [];
+    }
   }
 
   /**
    * Get enabled sources
-   * @returns {Array} Array of enabled sources
+   * @returns {Promise<Array>} Array of enabled sources
    */
-  getEnabledSources() {
-    return this.sourceManager.getEnabledSources().map(source => source.getSourceInfo());
+  async getEnabledSources() {
+    if (!this.useRealSources) return [];
+    try {
+      const manager = await this.getSourceManager();
+      return manager.getEnabledSources().map(source => source.getSourceInfo());
+    } catch (error) {
+      console.error('Failed to get enabled sources:', error);
+      return [];
+    }
   }
 
   /**
@@ -407,11 +435,17 @@ export class MangaService {
    * @param {string} sourceId - Source ID
    * @param {boolean} enabled - Enable or disable
    */
-  toggleSource(sourceId, enabled) {
-    if (enabled) {
-      this.sourceManager.enableSource(sourceId);
-    } else {
-      this.sourceManager.disableSource(sourceId);
+  async toggleSource(sourceId, enabled) {
+    if (!this.useRealSources) return;
+    try {
+      const manager = await this.getSourceManager();
+      if (enabled) {
+        manager.enableSource(sourceId);
+      } else {
+        manager.disableSource(sourceId);
+      }
+    } catch (error) {
+      console.error('Failed to toggle source:', error);
     }
   }
 
