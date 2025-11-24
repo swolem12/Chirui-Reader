@@ -33,7 +33,7 @@ This document lists all manga/manhwa sources currently implemented in Chirui Rea
 - **Name**: MangaBuddy
 - **Type**: Web scraper
 - **URL**: https://mangabuddy.com
-- **Status**: ✅ Newly Implemented (Replacement for Manhwaz)
+- **Status**: ✅ Fully Functional
 - **Features**:
   - ✅ Search manga/manhwa
   - ✅ Popular manga
@@ -51,7 +51,31 @@ This document lists all manga/manhwa sources currently implemented in Chirui Rea
   - CORS proxy enabled by default
   - Designed to work with typical manga/manhwa site structures
 
-### 3. Manhwaz
+### 3. ComicK
+- **ID**: `comick`
+- **Name**: ComicK
+- **Type**: API-based
+- **URL**: https://comick.io / https://api.comick.fun
+- **Status**: ✅ Newly Added (Modern API)
+- **Features**:
+  - ✅ Search manga/comics
+  - ✅ Popular manga (by views)
+  - ✅ Latest updates (by upload date)
+  - ✅ Manga details with metadata
+  - ✅ Chapter listings
+  - ✅ High-quality page images
+  - ✅ Multiple scanlation groups
+  - ✅ Author/Artist information
+  - ✅ Rating system
+- **Implementation**: Uses ComicK API v1.0
+- **Notes**:
+  - Modern, fast API with no authentication required
+  - No CORS proxy needed (API-based)
+  - Supports both manga and comics
+  - Clean CDN for images (meo.comick.pictures)
+  - Good metadata quality
+
+### 4. Manhwaz
 - **ID**: `manhwaz`
 - **Name**: Manhwaz
 - **Type**: Web scraper
@@ -74,7 +98,7 @@ This document lists all manga/manhwa sources currently implemented in Chirui Rea
   - Disabled by default due to reliability issues
   - Users can manually enable if site becomes accessible
   - May be fixed in future updates
-  - Consider using MangaBuddy instead
+  - Consider using MangaBuddy or ComicK instead
 
 ## How to Enable/Disable Sources
 
@@ -103,17 +127,17 @@ const enabledSources = sourceManager.getEnabledSources();
 
 ## Source Comparison
 
-| Feature | MangaDex | MangaBuddy | Manhwaz |
-|---------|----------|------------|---------|
-| **Type** | API | Scraper | Scraper |
-| **Reliability** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
-| **Speed** | Fast | Fast | Medium |
-| **Content** | Manga | Manga/Manhwa | Manhwa/Webtoon |
-| **Image Quality** | High | High | Medium-High |
-| **Rate Limiting** | Auto-handled | None | None |
-| **CORS Issues** | None | Possible | Yes |
-| **Maintenance** | Low | Medium | High |
-| **Default Status** | ✅ Enabled | ✅ Enabled | ⚠️ Disabled |
+| Feature | MangaDex | MangaBuddy | ComicK | Manhwaz |
+|---------|----------|------------|--------|---------|
+| **Type** | API | Scraper | API | Scraper |
+| **Reliability** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐ |
+| **Speed** | Fast | Fast | Very Fast | Medium |
+| **Content** | Manga | Manga/Manhwa | Manga/Comics | Manhwa/Webtoon |
+| **Image Quality** | High | High | High | Medium-High |
+| **Rate Limiting** | Auto-handled | None | None | None |
+| **CORS Issues** | None | Possible | None | Yes |
+| **Maintenance** | Low | Medium | Low | High |
+| **Default Status** | ✅ Enabled | ✅ Enabled | ✅ Enabled | ⚠️ Disabled |
 
 ## Usage Examples
 
@@ -336,13 +360,14 @@ MangaBuddy and other scraped sources - verify legal compliance in your jurisdict
 ---
 
 **Last Updated**: 2025-11-24  
-**Total Sources**: 3 (MangaDex ✅, MangaBuddy ✅, Manhwaz ⚠️)  
-**Working Sources**: 2 (MangaDex, MangaBuddy)  
-**Planned**: 15-20 additional sources for Phase 1, 100+ for Android  
+**Total Sources**: 4 (MangaDex ✅, MangaBuddy ✅, ComicK ✅, Manhwaz ⚠️)  
+**Working Sources**: 3 (MangaDex, MangaBuddy, ComicK)  
+**Planned**: 10-15 additional sources for Phase 1, 100+ for Android  
 
 **Status Summary**:
-- ✅ MangaDex: Primary source, fully functional
-- ✅ MangaBuddy: New reliable source for manga/manhwa
+- ✅ MangaDex: Primary API source, fully functional
+- ✅ MangaBuddy: Reliable scraper for manga/manhwa
+- ✅ ComicK: Modern API source, fast and clean
 - ⚠️ Manhwaz: Disabled by default due to reliability issues
 
-**Recommendation**: Use MangaDex + MangaBuddy for best coverage and reliability.
+**Recommendation**: Use MangaDex + MangaBuddy + ComicK for best coverage and reliability.

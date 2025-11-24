@@ -4,6 +4,7 @@
 import { MangaDexSource } from './mangadex-source.js';
 import { ManhwazSource } from './manhwaz-source.js';
 import { MangaBuddySource } from './mangabuddy-source.js';
+import { ComicKSource } from './comick-source.js';
 
 export class SourceManager {
   constructor() {
@@ -16,15 +17,20 @@ export class SourceManager {
    * Initialize all available sources
    */
   initializeSources() {
-    // Register MangaDex (Priority 1 - Confirmed Working)
+    // Register MangaDex (Priority 1 - API-based, Confirmed Working)
     const mangadex = new MangaDexSource();
     this.registerSource(mangadex);
     this.enableSource('mangadex');
 
-    // Register MangaBuddy (Priority 1 - New Reliable Source)
+    // Register MangaBuddy (Priority 1 - New Reliable Scraper)
     const mangabuddy = new MangaBuddySource();
     this.registerSource(mangabuddy);
     this.enableSource('mangabuddy');
+
+    // Register ComicK (Priority 1 - Modern API)
+    const comick = new ComicKSource();
+    this.registerSource(comick);
+    this.enableSource('comick');
 
     // Register Manhwaz (Priority 2 - Known Issues, disabled by default)
     const manhwaz = new ManhwazSource();
