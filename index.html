@@ -31,14 +31,14 @@
   <link rel="icon" type="image/png" href="icons/chirui-reader-logo.png">
   <link rel="apple-touch-icon" href="icons/chirui-reader-logo.png">
   <style>
-    /* Loading screen styles */
+    /* Loading screen styles - Kotatsu style */
     #loading-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #6750A4 0%, #7F67BE 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -59,17 +59,19 @@
     .loader-icon {
       font-size: 4rem;
       margin-bottom: 1rem;
-      animation: bounce 1s infinite;
+      animation: pulse 1.5s ease-in-out infinite;
     }
     
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
     }
     
     .loader-text {
-      font-size: 1.5rem;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 1.25rem;
+      font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
@@ -85,28 +87,42 @@
   <header class="app-header">
     <h1>
       <img src="icons/chirui-reader-logo.png" alt="Chirui Reader" class="app-logo" id="app-logo">
-      Chirui Reader
+      Chirui
     </h1>
     <nav>
-      <button id="nav-home" class="nav-btn" title="Home">🏠</button>
-      <button id="nav-catalog" class="nav-btn" title="Catalog">📚</button>
-      <button id="nav-favorites" class="nav-btn" title="Favorites">♥</button>
-      <button id="nav-history" class="nav-btn" title="History">📖</button>
-      <button id="nav-source-generator" class="nav-btn" title="Source Generator">🔧</button>
-      <button id="nav-settings" class="nav-btn" title="Settings">⚙️</button>
-      <button id="theme-toggle" class="nav-btn">🌙</button>
+      <button id="theme-toggle" class="nav-btn" title="Toggle Theme">🌙</button>
     </nav>
   </header>
 
   <main id="app">
-    <aside class="sidebar" style="display: none;">
-      <!-- Sidebar hidden by default, can be shown by specific views if needed -->
-    </aside>
-
     <section class="content">
       <!-- Dynamic content will be loaded here by the router -->
     </section>
   </main>
+
+  <!-- Bottom Navigation Bar - Kotatsu Style -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="bottom-nav-item active" id="nav-home" data-route="home">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Home</span>
+    </button>
+    <button class="bottom-nav-item" id="nav-catalog" data-route="catalog">
+      <span class="nav-icon">🔍</span>
+      <span class="nav-label">Explore</span>
+    </button>
+    <button class="bottom-nav-item" id="nav-favorites" data-route="favorites">
+      <span class="nav-icon">❤️</span>
+      <span class="nav-label">Favorites</span>
+    </button>
+    <button class="bottom-nav-item" id="nav-history" data-route="history">
+      <span class="nav-icon">📖</span>
+      <span class="nav-label">History</span>
+    </button>
+    <button class="bottom-nav-item" id="nav-settings" data-route="settings">
+      <span class="nav-icon">⚙️</span>
+      <span class="nav-label">Settings</span>
+    </button>
+  </nav>
 
   <script type="module" src="src/app.js"></script>
   <script>

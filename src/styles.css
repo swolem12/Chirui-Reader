@@ -1,20 +1,29 @@
-/* Chirui Reader - Material Design Styles */
+/* Chirui Reader - Kotatsu-Style Material You Design */
 
 :root {
-  /* Material Design 3 Color Palette - Light Theme */
-  --md-primary: #1976d2;
-  --md-primary-dark: #1565c0;
-  --md-primary-light: #42a5f5;
-  --md-secondary: #26a69a;
-  --md-background: #ffffff;
-  --md-surface: #f5f5f5;
-  --md-surface-variant: #e0e0e0;
-  --md-on-primary: #ffffff;
-  --md-on-background: #212121;
-  --md-on-surface: #424242;
-  --md-error: #d32f2f;
-  --md-error-dark: #b71c1c;
-  --md-outline: #bdbdbd;
+  /* Material You Color Palette - Light Theme (Kotatsu style) */
+  --md-primary: #6750A4;
+  --md-primary-dark: #4F378B;
+  --md-primary-light: #7F67BE;
+  --md-primary-container: #EADDFF;
+  --md-on-primary-container: #21005D;
+  --md-secondary: #625B71;
+  --md-secondary-container: #E8DEF8;
+  --md-tertiary: #7D5260;
+  --md-tertiary-container: #FFD8E4;
+  --md-background: #FFFBFE;
+  --md-surface: #FFFBFE;
+  --md-surface-variant: #E7E0EC;
+  --md-surface-container: #F3EDF7;
+  --md-surface-container-high: #ECE6F0;
+  --md-on-primary: #FFFFFF;
+  --md-on-background: #1C1B1F;
+  --md-on-surface: #1C1B1F;
+  --md-on-surface-variant: #49454F;
+  --md-error: #B3261E;
+  --md-error-container: #F9DEDC;
+  --md-outline: #79747E;
+  --md-outline-variant: #CAC4D0;
   
   /* Spacing */
   --spacing-xs: 4px;
@@ -23,42 +32,63 @@
   --spacing-lg: 24px;
   --spacing-xl: 32px;
   
-  /* Typography */
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-size-base: 16px;
+  /* Typography - Google Sans / Roboto */
+  --font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs: 12px;
   --font-size-sm: 14px;
+  --font-size-base: 16px;
   --font-size-lg: 18px;
-  --font-size-xl: 24px;
-  --font-size-xxl: 32px;
+  --font-size-xl: 22px;
+  --font-size-xxl: 28px;
+  --font-size-display: 36px;
   
-  /* Shadows */
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
-  --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+  /* Shadows - Material You style */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 2px 6px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.12);
   
-  /* Border radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
+  /* Border radius - Material You rounded corners */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
   
   /* Transitions */
-  --transition-fast: 150ms ease-in-out;
-  --transition-normal: 250ms ease-in-out;
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Navigation bar height */
+  --nav-height: 80px;
+  --top-bar-height: 64px;
 }
 
-/* Dark Theme */
+/* Dark Theme - Kotatsu style */
 body.dark-theme {
-  --md-primary: #42a5f5;
-  --md-primary-dark: #1976d2;
-  --md-primary-light: #64b5f6;
-  --md-secondary: #4db6ac;
-  --md-background: #121212;
-  --md-surface: #1e1e1e;
-  --md-surface-variant: #2d2d2d;
-  --md-on-primary: #000000;
-  --md-on-background: #e0e0e0;
-  --md-on-surface: #b0b0b0;
-  --md-outline: #424242;
+  --md-primary: #D0BCFF;
+  --md-primary-dark: #B69DF8;
+  --md-primary-light: #E8DEFF;
+  --md-primary-container: #4F378B;
+  --md-on-primary-container: #EADDFF;
+  --md-secondary: #CCC2DC;
+  --md-secondary-container: #4A4458;
+  --md-tertiary: #EFB8C8;
+  --md-tertiary-container: #633B48;
+  --md-background: #1C1B1F;
+  --md-surface: #1C1B1F;
+  --md-surface-variant: #49454F;
+  --md-surface-container: #211F26;
+  --md-surface-container-high: #2B2930;
+  --md-on-primary: #381E72;
+  --md-on-background: #E6E1E5;
+  --md-on-surface: #E6E1E5;
+  --md-on-surface-variant: #CAC4D0;
+  --md-error: #F2B8B5;
+  --md-error-container: #8C1D18;
+  --md-outline: #938F99;
+  --md-outline-variant: #49454F;
 }
 
 /* Base Styles */
@@ -68,47 +98,144 @@ body.dark-theme {
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-family);
   font-size: var(--font-size-base);
-  line-height: 1.6;
+  line-height: 1.5;
   background-color: var(--md-background);
   color: var(--md-on-background);
   transition: background-color var(--transition-normal), color var(--transition-normal);
+  padding-bottom: var(--nav-height);
+  min-height: 100vh;
 }
 
-/* Header */
+/* Top App Bar - Kotatsu Style */
 .app-header {
-  background-color: var(--md-primary);
-  color: var(--md-on-primary);
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
   padding: var(--spacing-md) var(--spacing-lg);
-  box-shadow: var(--shadow-md);
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
+  height: var(--top-bar-height);
+  border-bottom: 1px solid var(--md-outline-variant);
 }
 
 .app-header h1 {
   font-size: var(--font-size-xl);
-  font-weight: 500;
+  font-weight: 400;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
+  color: var(--md-on-surface);
 }
 
 .app-logo {
-  height: 40px;
+  height: 32px;
   width: auto;
+  border-radius: var(--radius-sm);
 }
 
+/* Hide old header nav - we'll use bottom nav */
 .app-header nav {
   display: flex;
-  gap: var(--spacing-md);
+  gap: var(--spacing-xs);
   align-items: center;
+}
+
+.app-header .nav-btn {
+  display: none; /* Hide header nav buttons on mobile */
+}
+
+/* Show only theme toggle in header */
+.app-header #theme-toggle {
+  display: flex;
+  background: transparent;
+  color: var(--md-on-surface);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-full);
+}
+
+.app-header #theme-toggle:hover {
+  background: var(--md-surface-variant);
+}
+
+/* Bottom Navigation Bar - Kotatsu Style */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background-color: var(--md-surface-container);
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  z-index: 1000;
+  padding: var(--spacing-xs) 0;
+  border-top: 1px solid var(--md-outline-variant);
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-xs);
+  text-decoration: none;
+  color: var(--md-on-surface-variant);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  font-family: var(--font-family);
+  min-width: 64px;
+}
+
+.bottom-nav-item .nav-icon {
+  font-size: 24px;
+  height: 32px;
+  width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.bottom-nav-item .nav-label {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+}
+
+.bottom-nav-item:hover .nav-icon {
+  background-color: var(--md-surface-variant);
+}
+
+.bottom-nav-item.active {
+  color: var(--md-on-surface);
+}
+
+.bottom-nav-item.active .nav-icon {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+
+.bottom-nav-item.active .nav-label {
+  font-weight: 600;
 }
 
 /* Buttons */
@@ -2535,4 +2662,345 @@ input:focus + .toggle-slider {
     align-items: flex-start;
     gap: var(--spacing-xs);
   }
+}
+
+/* ===== Kotatsu Style Home View ===== */
+
+.home-view.kotatsu-style {
+  padding: var(--spacing-md);
+  padding-bottom: calc(var(--nav-height) + var(--spacing-lg));
+}
+
+/* Section Styling */
+.manga-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding: 0 var(--spacing-xs);
+}
+
+.section-title {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--md-on-surface);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0;
+}
+
+.section-icon {
+  font-size: var(--font-size-xl);
+}
+
+.view-more-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--md-surface-container);
+  color: var(--md-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.view-more-btn:hover {
+  background: var(--md-primary-container);
+}
+
+.view-more-btn .arrow {
+  font-size: var(--font-size-base);
+}
+
+/* Kotatsu-style Manga Grid */
+.manga-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.manga-grid.compact {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+/* Kotatsu-style Manga Card */
+.manga-card.kotatsu-card {
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  background: var(--md-surface);
+}
+
+.manga-card.kotatsu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.manga-card.kotatsu-card:active {
+  transform: scale(0.98);
+}
+
+.manga-card.kotatsu-card .card-cover {
+  position: relative;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  background: var(--md-surface-variant);
+}
+
+.manga-card.kotatsu-card .card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.manga-card.kotatsu-card:hover .card-cover img {
+  transform: scale(1.05);
+}
+
+.manga-card.kotatsu-card .card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+}
+
+.manga-card.kotatsu-card .card-chapters {
+  font-size: var(--font-size-xs);
+  color: white;
+  font-weight: 500;
+}
+
+.manga-card.kotatsu-card .card-info {
+  padding: var(--spacing-sm);
+}
+
+.manga-card.kotatsu-card .card-title {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--md-on-surface);
+  margin: 0 0 var(--spacing-xs) 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+}
+
+.manga-card.kotatsu-card .card-author {
+  font-size: var(--font-size-xs);
+  color: var(--md-on-surface-variant);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Continue Reading Grid */
+.continue-reading-grid {
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  padding: var(--spacing-xs);
+  margin: 0 calc(-1 * var(--spacing-md));
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.continue-reading-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.continue-reading-card {
+  flex: 0 0 auto;
+  width: 280px;
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: var(--md-surface-container);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  scroll-snap-align: start;
+}
+
+.continue-reading-card:hover {
+  background: var(--md-surface-container-high);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.continue-reading-card .cr-cover {
+  width: 60px;
+  height: 80px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.continue-reading-card .cr-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.continue-reading-card .cr-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.continue-reading-card .cr-title {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--md-on-surface);
+  margin: 0 0 var(--spacing-xs) 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.continue-reading-card .cr-progress {
+  font-size: var(--font-size-xs);
+  color: var(--md-primary);
+  margin: 0;
+}
+
+/* Quick Stats */
+.quick-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--md-surface-container);
+  border-radius: var(--radius-full);
+}
+
+.stat-chip .stat-icon {
+  font-size: var(--font-size-base);
+}
+
+.stat-chip .stat-value {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--md-primary);
+}
+
+.stat-chip .stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--md-on-surface-variant);
+}
+
+/* Empty state */
+.empty-message {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--md-on-surface-variant);
+  font-size: var(--font-size-base);
+}
+
+/* Desktop adjustments */
+@media (min-width: 768px) {
+  .manga-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  
+  .manga-grid.compact {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+  
+  .continue-reading-card {
+    width: 320px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-view.kotatsu-style {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+  }
+  
+  .manga-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  
+  .manga-grid.compact {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Loading Placeholder */
+.loading-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  gap: var(--spacing-md);
+  color: var(--md-on-surface-variant);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--md-surface-variant);
+  border-top-color: var(--md-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  gap: var(--spacing-md);
+  color: var(--md-on-surface-variant);
+}
+
+.retry-btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+}
+
+.retry-btn:hover {
+  background: var(--md-primary-dark);
 }

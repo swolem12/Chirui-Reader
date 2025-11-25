@@ -55,11 +55,11 @@ class ChiruiReaderApp {
    * Initialize routes
    */
   initializeRoutes() {
-    // Home route
-    this.router.register('home', () => {
-      this.renderView(() => {
+    // Home route (async)
+    this.router.register('home', async () => {
+      await this.renderViewAsync(async () => {
         const view = new HomeView(this.contentContainer, this.mangaService, this.historyService, this.router);
-        view.render();
+        await view.render();
         return view;
       });
       this.showSidebar(false);
@@ -192,39 +192,17 @@ class ChiruiReaderApp {
     // Theme toggle button
     const themeToggleBtn = document.getElementById('theme-toggle');
     if (themeToggleBtn) {
-      themeToggleBtn.addEventListener('click', () => this.themeManager.toggle());
+      themeToggleBtn.addEventListener('click', () => {
+        this.themeManager.toggle();
+        // Update icon
+        themeToggleBtn.textContent = this.themeManager.darkMode ? '☀️' : '🌙';
+      });
+      // Set initial icon
+      themeToggleBtn.textContent = this.themeManager.darkMode ? '☀️' : '🌙';
     }
 
-    // Navigation buttons
-    const navHomeBtn = document.getElementById('nav-home');
-    if (navHomeBtn) {
-      navHomeBtn.addEventListener('click', () => this.router.navigate('home'));
-    }
-
-    const navCatalogBtn = document.getElementById('nav-catalog');
-    if (navCatalogBtn) {
-      navCatalogBtn.addEventListener('click', () => this.router.navigate('catalog'));
-    }
-
-    const navFavoritesBtn = document.getElementById('nav-favorites');
-    if (navFavoritesBtn) {
-      navFavoritesBtn.addEventListener('click', () => this.router.navigate('favorites'));
-    }
-
-    const navHistoryBtn = document.getElementById('nav-history');
-    if (navHistoryBtn) {
-      navHistoryBtn.addEventListener('click', () => this.router.navigate('history'));
-    }
-
-    const navSourceGeneratorBtn = document.getElementById('nav-source-generator');
-    if (navSourceGeneratorBtn) {
-      navSourceGeneratorBtn.addEventListener('click', () => this.router.navigate('source-generator'));
-    }
-
-    const navSettingsBtn = document.getElementById('nav-settings');
-    if (navSettingsBtn) {
-      navSettingsBtn.addEventListener('click', () => this.router.navigate('settings'));
-    }
+    // Bottom Navigation - Kotatsu style
+    this.initializeBottomNav();
 
     // Handle logo error
     const appLogo = document.getElementById('app-logo');
@@ -244,6 +222,53 @@ class ChiruiReaderApp {
       headerTitle.style.cursor = 'pointer';
       headerTitle.addEventListener('click', () => this.router.navigate('home'));
     }
+  }
+
+  /**
+   * Initialize bottom navigation bar
+   */
+  initializeBottomNav() {
+    const bottomNav = document.getElementById('bottom-nav');
+    if (!bottomNav) return;
+
+    const navItems = bottomNav.querySelectorAll('.bottom-nav-item');
+    
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const route = item.dataset.route;
+        if (route) {
+          // Update active state
+          navItems.forEach(nav => nav.classList.remove('active'));
+          item.classList.add('active');
+          
+          // Navigate to route
+          this.router.navigate(route);
+        }
+      });
+    });
+
+    // Update active state based on current route
+    window.addEventListener('hashchange', () => this.updateBottomNavActive());
+    this.updateBottomNavActive();
+  }
+
+  /**
+   * Update bottom nav active state based on current route
+   */
+  updateBottomNavActive() {
+    const hash = window.location.hash.slice(1).split('?')[0] || 'home';
+    const bottomNav = document.getElementById('bottom-nav');
+    if (!bottomNav) return;
+
+    const navItems = bottomNav.querySelectorAll('.bottom-nav-item');
+    navItems.forEach(item => {
+      const route = item.dataset.route;
+      if (route === hash || (hash.startsWith('manga/') && route === 'catalog')) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
   }
 }
 

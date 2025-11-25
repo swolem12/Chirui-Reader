@@ -1,5 +1,5 @@
 // Chirui Reader - Service Worker
-const CACHE_NAME = 'chirui-reader-v1';
+const CACHE_NAME = 'chirui-reader-v2';
 
 // Critical resources that must be cached
 const criticalResources = [
