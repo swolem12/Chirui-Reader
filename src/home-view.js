@@ -233,13 +233,6 @@ export class HomeView {
   }
 
   /**
-   * Get total chapters across all manga
-   */
-  getTotalChapters() {
-    return this.mangaService.getAllManga().reduce((sum, manga) => sum + manga.chapters, 0);
-  }
-
-  /**
    * Get favorites count
    */
   getFavoritesCount() {
