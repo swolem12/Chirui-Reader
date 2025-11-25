@@ -1,0 +1,50 @@
+{
+  "chapters": [
+    {
+      "chapterId": "bf-1",
+      "mangaId": "mangadex-blue-flag",
+      "mangaTitle": "Blue Flag",
+      "chapterTitle": "Spring Sunlight",
+      "pages": [
+        { "index": 1, "imageUrl": "https://picsum.photos/seed/bf1-1/900/1300" },
+        { "index": 2, "imageUrl": "https://picsum.photos/seed/bf1-2/900/1300" },
+        { "index": 3, "imageUrl": "https://picsum.photos/seed/bf1-3/900/1300" },
+        { "index": 4, "imageUrl": "https://picsum.photos/seed/bf1-4/900/1300" }
+      ]
+    },
+    {
+      "chapterId": "sl-178",
+      "mangaId": "mangasee-solo-leveling",
+      "mangaTitle": "Solo Leveling",
+      "chapterTitle": "Journey's End",
+      "pages": [
+        { "index": 1, "imageUrl": "https://picsum.photos/seed/sl178-1/1080/1600" },
+        { "index": 2, "imageUrl": "https://picsum.photos/seed/sl178-2/1080/1600" },
+        { "index": 3, "imageUrl": "https://picsum.photos/seed/sl178-3/1080/1600" },
+        { "index": 4, "imageUrl": "https://picsum.photos/seed/sl178-4/1080/1600" }
+      ]
+    },
+    {
+      "chapterId": "fr-1",
+      "mangaId": "comicwalker-frieren",
+      "mangaTitle": "Frieren: Beyond Journey's End",
+      "chapterTitle": "Departure",
+      "pages": [
+        { "index": 1, "imageUrl": "https://picsum.photos/seed/fr1-1/980/1500" },
+        { "index": 2, "imageUrl": "https://picsum.photos/seed/fr1-2/980/1500" },
+        { "index": 3, "imageUrl": "https://picsum.photos/seed/fr1-3/980/1500" }
+      ]
+    },
+    {
+      "chapterId": "sm-1",
+      "mangaId": "nhentai-scarlet-memories",
+      "mangaTitle": "Scarlet Memories",
+      "chapterTitle": "Scarlet",
+      "pages": [
+        { "index": 1, "imageUrl": "https://picsum.photos/seed/sm1-1/900/1300" },
+        { "index": 2, "imageUrl": "https://picsum.photos/seed/sm1-2/900/1300" },
+        { "index": 3, "imageUrl": "https://picsum.photos/seed/sm1-3/900/1300" }
+      ]
+    }
+  ]
+}

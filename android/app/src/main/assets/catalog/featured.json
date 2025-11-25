@@ -1,0 +1,117 @@
+[
+  {
+    "id": "mangadex-blue-flag",
+    "title": "Blue Flag",
+    "sourceId": "mangadex",
+    "sourceName": "MangaDex",
+    "language": "en",
+    "coverUrl": null,
+    "nsfw": false,
+    "status": "completed",
+    "tags": ["drama", "romance", "school"],
+    "description": "A grounded ensemble drama used to validate tagging and multi-language metadata."
+  },
+  {
+    "id": "mangasee-solo-leveling",
+    "title": "Solo Leveling",
+    "sourceId": "mangasee",
+    "sourceName": "MangaSee",
+    "language": "en",
+    "coverUrl": null,
+    "nsfw": false,
+    "status": "completed",
+    "tags": ["action", "fantasy", "dungeon"]
+  },
+  {
+    "id": "comicwalker-frieren",
+    "title": "Frieren: Beyond Journey's End",
+    "sourceId": "comicwalker",
+    "sourceName": "ComicWalker",
+    "language": "ja",
+    "coverUrl": null,
+    "nsfw": false,
+    "status": "ongoing",
+    "tags": ["fantasy", "adventure"],
+    "description": "Japanese catalog entry to exercise right-to-left layout and source badges."
+  },
+  {
+    "id": "nhentai-scarlet-memories",
+    "title": "Scarlet Memories",
+    "sourceId": "nhentai",
+    "sourceName": "nhentai",
+    "language": "en",
+    "coverUrl": null,
+    "nsfw": true,
+    "status": "completed",
+    "tags": ["doujinshi", "nsfw"],
+    "description": "Explicit sample from Kotatsu's doujin lane; surfaces NSFW labeling."
+  },
+  {
+    "id": "manganato-kaiju-no-8",
+    "title": "Kaiju No. 8",
+    "sourceId": "manganato",
+    "sourceName": "Manganato",
+    "language": "en",
+    "coverUrl": null,
+    "nsfw": false,
+    "status": "ongoing",
+    "tags": ["action", "monsters", "shonen"]
+  },
+  {
+    "id": "mangadex-es-chainsaw-man",
+    "title": "Chainsaw Man",
+    "sourceId": "mangadex-es",
+    "sourceName": "MangaDex Español",
+    "language": "es",
+    "coverUrl": null,
+    "nsfw": true,
+    "status": "ongoing",
+    "tags": ["action", "horror"],
+    "description": "Spanish lane entry validating locale chips and NSFW overlap."
+  },
+  {
+    "id": "mangadex-oishinbo",
+    "title": "Oishinbo",
+    "sourceId": "mangadex",
+    "sourceName": "MangaDex",
+    "language": "en",
+    "coverUrl": null,
+    "nsfw": false,
+    "status": "completed",
+    "tags": ["cooking", "slice of life"],
+    "description": "Classic catalog sample to exercise pagination and tags."
+  },
+  {
+    "id": "mangadex-yotsuba",
+    "title": "Yotsuba&!",
+    "sourceId": "mangadex",
+    "sourceName": "MangaDex",
+    "language": "en",
+    "coverUrl": null,
+    "nsfw": false,
+    "status": "ongoing",
+    "tags": ["comedy", "slice of life"]
+  },
+  {
+    "id": "mangadex-blue-period",
+    "title": "Blue Period",
+    "sourceId": "mangadex",
+    "sourceName": "MangaDex",
+    "language": "multi",
+    "coverUrl": null,
+    "nsfw": false,
+    "status": "ongoing",
+    "tags": ["art", "drama"]
+  },
+  {
+    "id": "manganato-spy-x-family",
+    "title": "Spy x Family",
+    "sourceId": "manganato",
+    "sourceName": "Manganato",
+    "language": "en",
+    "coverUrl": null,
+    "nsfw": false,
+    "status": "ongoing",
+    "tags": ["comedy", "spy", "family"]
+  }
+]

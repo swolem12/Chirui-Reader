@@ -1,0 +1,12 @@
+<resources>
+    <color name="color_flame">#FF7849</color>
+    <color name="color_flame_strong">#FF6A30</color>
+    <color name="color_ink">#0F172A</color>
+    <color name="color_ink_muted">#1E293B</color>
+    <color name="color_paper">#F8FAFC</color>
+    <color name="color_paper_muted">#E2E8F0</color>
+    <color name="color_jade">#35C8A5</color>
+    <color name="color_sky">#60A5FA</color>
+    <color name="color_warning">#FFB74D</color>
+    <color name="color_danger">#EF5350</color>
+</resources>

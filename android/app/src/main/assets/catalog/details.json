@@ -1,0 +1,99 @@
+[
+  {
+    "id": "mangadex-blue-flag",
+    "title": "Blue Flag",
+    "sourceId": "mangadex",
+    "sourceName": "MangaDex",
+    "language": "en",
+    "nsfw": false,
+    "status": "completed",
+    "tags": ["drama", "romance", "school"],
+    "description": "Three friends navigate love and identity in a grounded coming-of-age story.",
+    "author": "KAITO",
+    "artist": "KAITO",
+    "sourceUrl": "https://mangadex.org/title/blue-flag",
+    "favorite": true,
+    "chapters": [
+      { "id": "bf-1", "title": "Spring Sunlight", "number": 1.0, "downloaded": true, "readProgress": 1.0 },
+      { "id": "bf-2", "title": "Shadows", "number": 2.0, "downloaded": false, "readProgress": 0.25 },
+      { "id": "bf-3", "title": "Footsteps", "number": 3.0 }
+    ]
+  },
+  {
+    "id": "mangasee-solo-leveling",
+    "title": "Solo Leveling",
+    "sourceId": "mangasee",
+    "sourceName": "MangaSee",
+    "language": "en",
+    "nsfw": false,
+    "status": "completed",
+    "tags": ["action", "fantasy", "dungeon"],
+    "description": "Sung Jinwoo climbs from the weakest hunter to an unrivaled shadow monarch.",
+    "author": "Chugong",
+    "artist": "DUBU",
+    "sourceUrl": "https://mangasee123.com/manga/Solo-Leveling",
+    "favorite": false,
+    "chapters": [
+      { "id": "sl-178", "title": "Journey's End", "number": 178.0, "downloaded": true, "readProgress": 1.0 },
+      { "id": "sl-177", "title": "Shadow Monarch", "number": 177.0, "downloaded": true, "readProgress": 1.0 },
+      { "id": "sl-1", "title": "Weak Hunter", "number": 1.0, "downloaded": false, "readProgress": 0.0 }
+    ]
+  },
+  {
+    "id": "comicwalker-frieren",
+    "title": "Frieren: Beyond Journey's End",
+    "sourceId": "comicwalker",
+    "sourceName": "ComicWalker",
+    "language": "ja",
+    "nsfw": false,
+    "status": "ongoing",
+    "tags": ["fantasy", "adventure"],
+    "description": "An elf mage retraces her party's path to understand the meaning of their decade together.",
+    "author": "Kanehito Yamada",
+    "artist": "Tsukasa Abe",
+    "sourceUrl": "https://comic-walker.com/frieren",
+    "favorite": false,
+    "chapters": [
+      { "id": "fr-110", "title": "Starry Village", "number": 110.0, "downloaded": false, "readProgress": 0.0 },
+      { "id": "fr-12", "title": "Mage Exam", "number": 12.0, "downloaded": false, "readProgress": 0.0 },
+      { "id": "fr-1", "title": "Departure", "number": 1.0, "downloaded": false, "readProgress": 1.0 }
+    ]
+  },
+  {
+    "id": "nhentai-scarlet-memories",
+    "title": "Scarlet Memories",
+    "sourceId": "nhentai",
+    "sourceName": "NHentai",
+    "language": "en",
+    "nsfw": true,
+    "status": "completed",
+    "tags": ["doujinshi", "vampire"],
+    "description": "Mature, redacted sample entry for NSFW badge validation and filtering.",
+    "author": "Sample Circle",
+    "artist": "Sample Artist",
+    "sourceUrl": "https://nhentai.net/g/000000",
+    "favorite": false,
+    "chapters": [
+      { "id": "sm-1", "title": "Scarlet", "number": 1.0, "downloaded": false, "readProgress": 0.5 }
+    ]
+  },
+  {
+    "id": "manganato-vinland-saga",
+    "title": "Vinland Saga",
+    "sourceId": "manganato",
+    "sourceName": "Manganato",
+    "language": "en",
+    "nsfw": false,
+    "status": "ongoing",
+    "tags": ["historical", "drama", "seinen"],
+    "description": "A vengeful warrior seeks a new purpose in a brutal Viking-era epic.",
+    "author": "Makoto Yukimura",
+    "artist": "Makoto Yukimura",
+    "sourceUrl": "https://manganato.com/vinland-saga",
+    "favorite": false,
+    "chapters": [
+      { "id": "vs-200", "title": "Path Home", "number": 200.0, "downloaded": false, "readProgress": 0.0 },
+      { "id": "vs-1", "title": "The End of the Prologue", "number": 1.0, "downloaded": true, "readProgress": 1.0 }
+    ]
+  }
+]

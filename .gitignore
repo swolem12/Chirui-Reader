@@ -33,3 +33,11 @@ temp/
 
 # OS generated
 Thumbs.db
+
+# Android/Gradle
+android/.gradle/
+android/local.properties
+android/**/*.iml
+android/.idea/
+android/app/build/
+android/build/
