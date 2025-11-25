@@ -14,6 +14,8 @@ export class CatalogView {
     };
     this.searchQuery = '';
     this.isLoading = false;
+    this.currentPage = 1;
+    this.pageSize = 12;
   }
 
   /**
@@ -29,10 +31,10 @@ export class CatalogView {
 
         <div class="search-filter-container">
           <div class="search-container">
-            <input 
-              type="text" 
-              id="search-input" 
-              class="search-input" 
+            <input
+              type="text"
+              id="search-input"
+              class="search-input"
               placeholder="Search manga by title, author, or description..."
               value="${this.escapeHtml(this.searchQuery)}"
             />
@@ -91,6 +93,8 @@ export class CatalogView {
         <div id="manga-grid" class="manga-grid">
           <div class="loading-indicator">Loading manga...</div>
         </div>
+
+        <div id="pagination-controls" class="catalog-pagination" aria-label="Manga pagination"></div>
       </div>
     `;
 
@@ -104,7 +108,7 @@ export class CatalogView {
    */
   async renderSourceOptions() {
     const sources = await this.mangaService.getEnabledSources();
-    return sources.map(source => 
+    return sources.map(source =>
       `<option value="${this.escapeHtml(source.id)}" ${this.currentFilters.sourceId === source.id ? 'selected' : ''}>${this.escapeHtml(source.name)}</option>`
     ).join('');
   }
@@ -114,7 +118,7 @@ export class CatalogView {
    */
   renderGenreOptions() {
     const genres = this.mangaService.getAllGenres();
-    return genres.map(genre => 
+    return genres.map(genre =>
       `<option value="${this.escapeHtml(genre)}" ${this.currentFilters.genre === genre ? 'selected' : ''}>${this.escapeHtml(genre)}</option>`
     ).join('');
   }
@@ -123,10 +127,6 @@ export class CatalogView {
    * Render manga grid (async)
    */
   async renderMangaGrid() {
-    if (this.isLoading) {
-      return `<div class="loading-indicator">Loading manga...</div>`;
-    }
-
     try {
       // First search, then filter the search results
       let manga = await this.mangaService.searchManga(
@@ -139,24 +139,43 @@ export class CatalogView {
         results: manga
       });
 
-      if (manga.length === 0) {
-        return `
-          <div class="no-results">
-            <p>No manga found matching your criteria.</p>
-            <button id="clear-search-btn" class="secondary-btn">Clear Search</button>
-          </div>
-        `;
+      const totalItems = manga.length;
+
+      if (totalItems === 0) {
+        return {
+          gridHtml: `
+            <div class="no-results">
+              <p>No manga found matching your criteria.</p>
+              <button id="clear-search-btn" class="secondary-btn">Clear Search</button>
+            </div>
+          `,
+          totalPages: 0,
+          totalItems: 0
+        };
       }
 
-      return manga.map(m => this.renderMangaCard(m)).join('');
+      const totalPages = Math.max(1, Math.ceil(totalItems / this.pageSize));
+      this.currentPage = Math.min(this.currentPage, totalPages);
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const pagedResults = manga.slice(startIndex, startIndex + this.pageSize);
+
+      return {
+        gridHtml: pagedResults.map(m => this.renderMangaCard(m)).join(''),
+        totalPages,
+        totalItems
+      };
     } catch (error) {
       console.error('Failed to load manga:', error);
-      return `
-        <div class="error-message">
-          <p>Failed to load manga. Please try again.</p>
-          <button id="retry-btn" class="secondary-btn">Retry</button>
-        </div>
-      `;
+      return {
+        gridHtml: `
+          <div class="error-message">
+            <p>Failed to load manga. Please try again.</p>
+            <button id="retry-btn" class="secondary-btn">Retry</button>
+          </div>
+        `,
+        totalPages: 0,
+        totalItems: 0
+      };
     }
   }
 
@@ -167,9 +186,9 @@ export class CatalogView {
     const sourceTag = manga.source ? `<span class="source-tag">${this.escapeHtml(manga.source)}</span>` : '';
     return `
       <div class="manga-card" data-manga-id="${this.escapeHtml(manga.id)}" data-source-id="${this.escapeHtml(manga.sourceId || '')}">
-        <img 
-          src="${this.escapeHtml(manga.cover)}" 
-          alt="${this.escapeHtml(manga.title)}" 
+        <img
+          src="${this.escapeHtml(manga.cover)}"
+          alt="${this.escapeHtml(manga.title)}"
           class="manga-card-cover"
           loading="lazy"
           onerror="this.src='https://via.placeholder.com/200x280/1976d2/ffffff?text=No+Image'"
@@ -203,6 +222,7 @@ export class CatalogView {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
           this.searchQuery = e.target.value;
+          this.currentPage = 1;
           this.updateMangaGrid();
         }, 300);
       });
@@ -213,6 +233,7 @@ export class CatalogView {
     if (sourceFilter) {
       sourceFilter.addEventListener('change', (e) => {
         this.currentFilters.sourceId = e.target.value || null;
+        this.currentPage = 1;
         this.updateMangaGrid();
       });
     }
@@ -226,6 +247,7 @@ export class CatalogView {
     if (statusFilter) {
       statusFilter.addEventListener('change', (e) => {
         this.currentFilters.status = e.target.value;
+        this.currentPage = 1;
         this.updateMangaGrid();
       });
     }
@@ -233,6 +255,7 @@ export class CatalogView {
     if (genreFilter) {
       genreFilter.addEventListener('change', (e) => {
         this.currentFilters.genre = e.target.value;
+        this.currentPage = 1;
         this.updateMangaGrid();
       });
     }
@@ -240,6 +263,7 @@ export class CatalogView {
     if (sortFilter) {
       sortFilter.addEventListener('change', (e) => {
         this.currentFilters.sortBy = e.target.value;
+        this.currentPage = 1;
         this.updateMangaGrid();
       });
     }
@@ -247,6 +271,7 @@ export class CatalogView {
     if (ratingFilter) {
       ratingFilter.addEventListener('change', (e) => {
         this.currentFilters.minRating = e.target.value;
+        this.currentPage = 1;
         this.updateMangaGrid();
       });
     }
@@ -264,6 +289,7 @@ export class CatalogView {
     if (clearSearchBtn) {
       clearSearchBtn.addEventListener('click', () => {
         this.searchQuery = '';
+        this.currentPage = 1;
         this.resetFilters();
       });
     }
@@ -275,6 +301,9 @@ export class CatalogView {
         this.updateMangaGrid();
       });
     }
+
+    // Pagination controls
+    this.attachPaginationListeners();
 
     // Manga card clicks
     this.attachMangaCardListeners();
@@ -306,10 +335,10 @@ export class CatalogView {
     gridContainer.innerHTML = '<div class="loading-indicator">Loading manga...</div>';
 
     try {
-      const mangaHTML = await this.renderMangaGrid();
+      const { gridHtml, totalPages, totalItems } = await this.renderMangaGrid();
       this.isLoading = false;
-      gridContainer.innerHTML = mangaHTML;
-      
+      gridContainer.innerHTML = gridHtml;
+
       // Re-attach manga card click listeners
       this.attachMangaCardListeners();
 
@@ -318,6 +347,7 @@ export class CatalogView {
       if (clearSearchBtn) {
         clearSearchBtn.addEventListener('click', () => {
           this.searchQuery = '';
+          this.currentPage = 1;
           this.resetFilters();
         });
       }
@@ -328,6 +358,13 @@ export class CatalogView {
         retryBtn.addEventListener('click', () => {
           this.updateMangaGrid();
         });
+      }
+
+      // Render and attach pagination controls
+      const paginationContainer = document.getElementById('pagination-controls');
+      if (paginationContainer) {
+        paginationContainer.innerHTML = this.renderPaginationControls(totalPages, totalItems);
+        this.attachPaginationListeners(totalPages);
       }
     } catch (error) {
       console.error('Failed to update manga grid:', error);
@@ -352,7 +389,103 @@ export class CatalogView {
       minRating: 0
     };
     this.searchQuery = '';
+    this.currentPage = 1;
     this.render();
+  }
+
+  /**
+   * Render pagination controls
+   */
+  renderPaginationControls(totalPages = 0, totalItems = 0) {
+    if (!totalPages || totalItems === 0) {
+      return '';
+    }
+
+    const start = (this.currentPage - 1) * this.pageSize + 1;
+    const end = Math.min(totalItems, this.currentPage * this.pageSize);
+
+    return `
+      <div class="pagination-content">
+        <div class="pagination-info">
+          Showing <strong>${start}-${end}</strong> of <strong>${totalItems}</strong>
+        </div>
+        <div class="pagination-buttons" role="list" aria-label="Pagination">
+          <button class="pagination-btn" data-page="prev" ${this.currentPage === 1 ? 'disabled' : ''} aria-label="Previous page">◀</button>
+          ${this.renderPageButtons(totalPages)}
+          <button class="pagination-btn" data-page="next" ${this.currentPage === totalPages ? 'disabled' : ''} aria-label="Next page">▶</button>
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Render page number buttons with limited range
+   */
+  renderPageButtons(totalPages) {
+    const buttons = [];
+    const maxButtons = 5;
+    let startPage = Math.max(1, this.currentPage - 2);
+    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+    if (endPage - startPage < maxButtons - 1) {
+      startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    if (startPage > 1) {
+      buttons.push(`<button class="pagination-btn" data-page="1">1</button>`);
+      if (startPage > 2) {
+        buttons.push('<span class="pagination-ellipsis" aria-hidden="true">…</span>');
+      }
+    }
+
+    for (let page = startPage; page <= endPage; page++) {
+      const isActive = page === this.currentPage;
+      buttons.push(`
+        <button
+          class="pagination-btn ${isActive ? 'active' : ''}"
+          data-page="${page}"
+          aria-current="${isActive ? 'page' : 'false'}"
+        >${page}</button>
+      `);
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        buttons.push('<span class="pagination-ellipsis" aria-hidden="true">…</span>');
+      }
+      buttons.push(`<button class="pagination-btn" data-page="${totalPages}">${totalPages}</button>`);
+    }
+
+    return buttons.join('');
+  }
+
+  /**
+   * Attach pagination event listeners
+   */
+  attachPaginationListeners(totalPages = 0) {
+    const paginationContainer = document.getElementById('pagination-controls');
+    if (!paginationContainer) return;
+
+    const buttons = paginationContainer.querySelectorAll('button[data-page]');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const page = btn.dataset.page;
+        let targetPage = this.currentPage;
+
+        if (page === 'prev') {
+          targetPage = this.currentPage - 1;
+        } else if (page === 'next') {
+          targetPage = this.currentPage + 1;
+        } else {
+          targetPage = parseInt(page, 10);
+        }
+
+        const maxPage = totalPages || targetPage;
+        this.currentPage = Math.max(1, Math.min(maxPage, targetPage));
+
+        this.updateMangaGrid();
+      });
+    });
   }
 
   /**

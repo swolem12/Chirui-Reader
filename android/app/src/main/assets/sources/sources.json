@@ -1,0 +1,50 @@
+[
+  {
+    "id": "mangadex",
+    "name": "MangaDex",
+    "language": "multi",
+    "description": "Global multi-language catalog drawn from Kotatsu parsers.",
+    "nsfw": false,
+    "iconPath": null
+  },
+  {
+    "id": "mangasee",
+    "name": "MangaSee",
+    "language": "en",
+    "description": "English catalog with fast updates from Kotatsu's parser set.",
+    "nsfw": false,
+    "iconPath": null
+  },
+  {
+    "id": "nhentai",
+    "name": "nhentai",
+    "language": "en",
+    "description": "Doujin source used in Kotatsu for reader feature parity.",
+    "nsfw": true,
+    "iconPath": null
+  },
+  {
+    "id": "comicwalker",
+    "name": "ComicWalker",
+    "language": "ja",
+    "description": "Japanese catalog for native-right-to-left reading tests.",
+    "nsfw": false,
+    "iconPath": null
+  },
+  {
+    "id": "manganato",
+    "name": "Manganato",
+    "language": "en",
+    "description": "Kotatsu parser staple for shonen/shoujo libraries.",
+    "nsfw": false,
+    "iconPath": null
+  },
+  {
+    "id": "mangadex-es",
+    "name": "MangaDex Español",
+    "language": "es",
+    "description": "Spanish lane to validate multi-locale UI flows.",
+    "nsfw": false,
+    "iconPath": null
+  }
+]

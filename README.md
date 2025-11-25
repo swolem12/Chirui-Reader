@@ -2,7 +2,7 @@
 
 [![Deploy to GitHub Pages](https://github.com/swolem12/Chirui-Reader/actions/workflows/deploy.yml/badge.svg)](https://github.com/swolem12/Chirui-Reader/actions/workflows/deploy.yml)
 
-A web-based manga/manhwa reader application deployable to GitHub Pages.
+Chirui Reader is transitioning from a web-based prototype to a native Kotlin Android application inspired by the Kotatsu reader. _Status last updated: 2025-11-25 18:24 UTC._
 
 ## 🌐 Live Demo
 
@@ -10,7 +10,7 @@ A web-based manga/manhwa reader application deployable to GitHub Pages.
 
 ## What is This?
 
-Chirui Reader is a **Progressive Web App (PWA)** for reading manga and manhwa. It's an **end-user application**, not an SDK or library.
+Chirui Reader started as a **Progressive Web App (PWA)** for reading manga and manhwa. We are now prioritizing the **Android-native** implementation to mirror Kotatsu more closely. It's an **end-user application**, not an SDK or library.
 
 - ✅ Web application for reading manga
 - ✅ Deployed via GitHub Pages
@@ -19,54 +19,42 @@ Chirui Reader is a **Progressive Web App (PWA)** for reading manga and manhwa. I
 - ❌ NOT an SDK or library for developers
 - ❌ NOT a converter or build tool
 
-## Features
+## Tracks
 
-### Core Features
-- 📚 **Manga Catalog** - Browse and search through manga collection
-- 🔍 **Advanced Filtering** - Filter by genre, status, rating
-- 📖 **Manga Reader** - Smooth reading experience with keyboard shortcuts
-- ⌨️ **Keyboard Navigation** - Arrow keys, space bar for page navigation
-- ♥️ **Favorites System** - Save your favorite manga for quick access
-- 📚 **Reading History** - Automatic tracking of reading progress
-- 🔄 **Continue Reading** - Pick up where you left off
+### Native Android (primary focus)
+- Jetpack Compose scaffold in `android/` with Material 3 theme.
+- Kotlin/Gradle setup ready for Kotatsu feature parity work.
+- Catalog experience with a Discover grid (search, filters, pagination) backed by bundled Kotatsu fixtures and a Sources tab with enable/disable toggles.
+- Manga detail view with favorites/actions wired into a basic reader that supports swiping through bundled Kotatsu-inspired pages.
+- Downloads queue skeleton with fixture-backed statuses and controls for pause/resume/cancel/retry.
 
-### PWA Features
-- 💾 **Offline Support** - Read manga even without internet
-- 📱 **Installable** - Add to home screen on mobile/desktop
-- 🌙 **Dark Mode** - Easy on the eyes theme toggle
-- 📱 **Responsive Design** - Works on phones, tablets, and desktops
+### Web prototype (maintenance only)
+- HTML/JS/CSS PWA remains for reference and quick demos.
 
 ## Quick Start
 
-### For Users
-
-1. Visit **[https://swolem12.github.io/Chirui-Reader/](https://swolem12.github.io/Chirui-Reader/)**
-2. Browse the catalog or search for manga
-3. Click on a manga to view details
-4. Start reading!
-5. (Optional) Install as PWA for offline access
-
-### For Developers
-
+### Android app (primary)
 1. Clone this repository
    ```bash
    git clone https://github.com/swolem12/Chirui-Reader.git
-   cd Chirui-Reader
+   cd Chirui-Reader/android
    ```
+2. Open the `android/` folder in Android Studio Hedgehog or later.
+3. Let the IDE download the Android Gradle Plugin and Android 34 SDK.
+4. Run the `app` configuration on a connected device/emulator.
 
-2. Open `index.html` in your browser, or start a local server:
+### Web PWA (legacy prototype)
+1. Clone this repository and install dependencies
    ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve .
-   
-   # Using PHP
-   php -S localhost:8000
+   git clone https://github.com/swolem12/Chirui-Reader.git
+   cd Chirui-Reader
+   npm install
    ```
-
-3. Visit `http://localhost:8000`
+2. Run the development server
+   ```bash
+   npm run dev
+   ```
+3. Open the served URL from the CLI output.
 
 ## Documentation
 
@@ -74,9 +62,12 @@ Chirui Reader is a **Progressive Web App (PWA)** for reading manga and manhwa. I
 - 📦 **[docs/DISTRIBUTION.md](docs/DISTRIBUTION.md)** - How to distribute web apps (PWA) vs native Android apps
 - 🚀 **[docs/PWA_QUICK_START.md](docs/PWA_QUICK_START.md)** - Quick guide to implement PWA features
 - 🔍 **[docs/KOTATSU_CLARIFICATION.md](docs/KOTATSU_CLARIFICATION.md)** - Clarifies Kotatsu's architecture (no PWA conversion)
+- 🖼️ **[docs/KOTATSU_ASSET_MANIFEST.md](docs/KOTATSU_ASSET_MANIFEST.md)** - Inventory of Kotatsu fork assets to ingest into the Android app
+- ✅ **[docs/NEXT_STEPS_TODO.md](docs/NEXT_STEPS_TODO.md)** - Approval-focused TODO list for the Android-native Kotatsu build
 - 📋 **[docs/FAQ.md](docs/FAQ.md)** - Frequently asked questions
 - 🗺️ **[CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md)** - Project roadmap and milestones
 - 💻 **[DEVELOPMENT.md](DEVELOPMENT.md)** - Development guide and deployment instructions
+- 📱 **[android/README.md](android/README.md)** - Native Android project overview and next steps
 
 ## Technology Stack
 
@@ -90,14 +81,15 @@ Chirui Reader is a **Progressive Web App (PWA)** for reading manga and manhwa. I
 
 ## Project Status
 
-**Current Phase**: Phase 1 - Web-Based Manga Reader
+**Current Phase**: Transitioning into Phase 3 - Android Native Application (scaffolding started)
 
-### Completed Milestones
-- ✅ Milestone 1.1: Project Foundation & Basic UI (100%)
-- ✅ Milestone 1.2: Manga Catalog & Search (83%)
-- ✅ Milestone 1.3: Manga Reader Core (57%)
-- ✅ Milestone 1.5: User Features - Favorites & History (100%)
-- ✅ Milestone 1.9: Offline Support & PWA (43%)
+### Recent progress
+- ✅ Android Jetpack Compose skeleton added under `android/`.
+- ✅ Kotlin/Gradle configuration prepared for Kotatsu parity work.
+- ✅ Catalog Discover tab with paginated grid, filters, and offline fixtures plus a Sources tab with language filters and toggles backed by an asset parser registry.
+- ✅ Manga detail screen with bundled Kotatsu-inspired chapter fixtures and in-app favorite toggles.
+- ✅ Download queue screen seeded with Kotatsu-inspired fixture states and controls for pause/resume/cancel/retry (network/worker plumbing pending).
+- ⚠️ Web PWA remains available but is in maintenance-only mode.
 
 See [CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md) for complete roadmap.
 

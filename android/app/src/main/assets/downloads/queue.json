@@ -1,0 +1,53 @@
+{
+  "downloads": [
+    {
+      "id": "dl-001",
+      "title": "Blue Fire Vol. 1",
+      "source": "MangaDex",
+      "coverUrl": null,
+      "status": "DOWNLOADING",
+      "progress": 0.42,
+      "etaMinutes": 5,
+      "sizeLabel": "128 MB",
+      "chapters": [
+        { "id": "c1", "name": "Ch. 1 - Spark", "progress": 1.0 },
+        { "id": "c2", "name": "Ch. 2 - Ember", "progress": 0.38 }
+      ]
+    },
+    {
+      "id": "dl-002",
+      "title": "Skybound Chapter Pack",
+      "source": "Mangasee",
+      "coverUrl": null,
+      "status": "PAUSED",
+      "progress": 0.15,
+      "etaMinutes": 18,
+      "sizeLabel": "64 MB",
+      "chapters": [
+        { "id": "c10", "name": "Ch. 10 - Drift", "progress": 0.15 }
+      ]
+    },
+    {
+      "id": "dl-003",
+      "title": "Kotatsu Showcase Bundle",
+      "source": "Kotatsu-dl",
+      "coverUrl": null,
+      "status": "FAILED",
+      "progress": 0.6,
+      "etaMinutes": null,
+      "sizeLabel": "42 MB",
+      "chapters": []
+    },
+    {
+      "id": "dl-004",
+      "title": "Archive Import",
+      "source": "CBZ/Local",
+      "coverUrl": null,
+      "status": "COMPLETED",
+      "progress": 1.0,
+      "etaMinutes": null,
+      "sizeLabel": "215 MB",
+      "chapters": []
+    }
+  ]
+}
