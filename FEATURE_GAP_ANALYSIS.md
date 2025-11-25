@@ -7,6 +7,9 @@ This document provides a comprehensive comparison between the current state of C
 2. **What's not working or missing** to achieve 1:1 feature parity with Kotatsu
 3. **Priority recommendations** for next development phases
 
+**Last Updated**: November 2024  
+**Current Status**: ~15% Kotatsu feature parity, 1-2 working sources (MangaDex confirmed, Manhwaz needs fix)
+
 ---
 
 ## Current State: What's Working ✅
@@ -40,7 +43,7 @@ This document provides a comprehensive comparison between the current state of C
   - Genres display
   - Rating, status, chapter count
   - Last updated date
-- ✅ Chapter list (first 10 chapters shown)
+- ✅ Chapter list display
 - ✅ Add to Favorites button
 - ✅ Start Reading button
 
@@ -74,6 +77,20 @@ This document provides a comprehensive comparison between the current state of C
 - ✅ Installable as PWA
 - ✅ Basic offline support
 
+### Data Sources (NEW)
+- ✅ Source abstraction layer implemented
+- ✅ MangaDex source (fully functional)
+  - ✅ Search manga
+  - ✅ Popular manga
+  - ✅ Latest updates
+  - ✅ Manga details with metadata
+  - ✅ Chapter listings
+  - ✅ High-quality page images
+- ⚠️ Manhwaz source (implemented but not working)
+  - ⚠️ CORS proxy issues
+  - ⚠️ Possible site blocking/Cloudflare protection
+  - ⚠️ Needs fix or replacement
+
 ### Deployment
 - ✅ GitHub Actions workflow for automatic deployment
 - ✅ GitHub Pages configuration
@@ -85,17 +102,22 @@ This document provides a comprehensive comparison between the current state of C
 
 ## Critical Gaps: What's NOT Working ❌
 
-### 1. **Real Manga Data Source Integration** 🔴 CRITICAL
-**Current State:** Using mock/placeholder data only
+### 1. **Limited Manga Source Coverage** 🔴 CRITICAL
+**Current State:** Only 1-2 sources (MangaDex working, Manhwaz broken)
 **What's Missing:**
-- ❌ No real manga API integration (MangaDex, etc.)
-- ❌ No manga source parsers
-- ❌ No actual manga images/pages
-- ❌ No real chapter data
-- ❌ Only 8 sample manga with placeholder covers
-- ❌ All images use via.placeholder.com (blocked by many browsers)
+- ❌ Manhwaz source not functional (CORS/blocking issues)
+- ❌ Only 1 confirmed working source (MangaDex)
+- ❌ Need 20-30 sources for Phase 1 target
+- ❌ Need 100+ sources to match Kotatsu
+- ❌ No source selection UI
+- ❌ No source priority/fallback system
+- ❌ Missing popular sources:
+  - ManhwaTop, MangaBuddy, ComicK
+  - MangaSee123, MangaLife
+  - MangaPark, MangaKakalot
+  - Webtoons, Batoto, and many more
 
-**Impact:** App cannot actually read any real manga - it's a UI shell only
+**Impact:** Limited manga availability, single point of failure
 
 ---
 
@@ -388,101 +410,154 @@ This document provides a comprehensive comparison between the current state of C
 ### 1. **Reader Settings Button (⚙️)**
 - **Location:** Reader view, top right
 - **Status:** ❌ Shows alert "will be implemented in future milestone"
-- **Expected:** Should open reader settings panel
+- **Expected:** Should open reader settings panel with brightness, reading mode, etc.
 
-### 2. **PWA Install Prompt**
+### 2. **Manhwaz Source** 
+- **Status:** ❌ Implemented but not functional
+- **Issue:** CORS proxy failures, possible Cloudflare blocking
+- **Expected:** Should provide access to manhwa content
+
+### 3. **Source Selection UI**
 - **Status:** ❌ Not implemented
+- **Expected:** Should allow users to enable/disable sources and see their status
+
+### 4. **PWA Install Prompt**
+- **Status:** ❌ Not fully implemented
 - **Expected:** Should show install prompt for browsers that support it
 
-### 3. **Service Worker Registration**
-- **Status:** ⚠️ Partially working (caches files but no advanced features)
+### 5. **Service Worker Advanced Features**
+- **Status:** ⚠️ Partially working (basic caching only)
 - **Missing:** Update notifications, background sync, advanced caching strategies
 
-### 4. **All Navigation on Mock Data**
-- **Status:** ⚠️ Works but with fake data
-- **Issue:** Cannot actually read real manga
+---
+
+## Priority Recommendations for Next Phase (Updated)
+
+### 🔴 CRITICAL (Weeks 1-4)
+1. **Fix Manhwaz or Add Replacement Sources** - IMMEDIATE
+   - Diagnose Manhwaz CORS/blocking issues
+   - OR implement ManhwaTop/MangaBuddy as replacements
+   - Target: 3-5 working sources minimum
+   
+2. **Implement Webtoon Reading Mode** - HIGH DEMAND
+   - Vertical scrolling reader
+   - Auto-scroll functionality
+   - Essential for manhwa/webtoon content
+
+3. **Add Source Selection UI** - QUALITY OF LIFE
+   - Let users enable/disable sources
+   - Show source health status
+   - Source-specific settings
+
+### 🟠 HIGH PRIORITY (Weeks 5-8)
+4. **Multiple Reading Modes** - Double-page, RTL
+5. **Zoom and Pan Controls** - Essential reader feature
+6. **Library Categories** - User-defined organization
+7. **Basic Tracking Integration** - Start with MAL or AniList
+8. **Reader Settings Panel** - Make button functional
+
+### 🟡 MEDIUM PRIORITY (Weeks 9-16)
+9. **Chapter Downloads & Offline Reading** - True PWA experience
+10. **Update Notifications** - New chapter alerts
+11. **Advanced Search Filters** - More discovery options
+12. **Reading Statistics** - Engagement features
+13. **Settings Page** - Comprehensive app configuration
+14. **More Sources** - Expand to 15-20 sources
+
+### 🟢 LOWER PRIORITY (Weeks 17-24)
+15. **Material You Design Overhaul** - Match Kotatsu's look
+16. **Incognito Mode** - Privacy features
+17. **Advanced Tracking** - Multiple services, full sync
+18. **Social Features** - Sharing, comments
+19. **Accessibility Improvements** - WCAG compliance
+20. **Performance Optimization** - Advanced caching, lazy loading
 
 ---
 
-## Priority Recommendations for Next Phase
+## Estimated Development Time for Kotatsu Feature Parity
 
-### 🔴 CRITICAL (Must Have for MVP)
-1. **Integrate MangaDex API** - Get real manga data
-2. **Implement image loading** - Display actual manga pages
-3. **Fix placeholder images** - Use actual cover images from sources
+Based on the comprehensive gaps identified:
 
-### 🟠 HIGH PRIORITY (Core Features)
-4. **Multiple reading modes** - Webtoon, double-page
-5. **Zoom and pan controls** - Essential reader feature
-6. **Chapter downloads** - True offline reading
-7. **Update notifications** - Know when new chapters arrive
-8. **Multiple manga sources** - At least 3-5 sources
+### Phase 1: Foundation & Critical Fixes (Weeks 1-8)
+- **Manhwaz fix + 3-5 new sources**: 2 weeks
+- **Webtoon mode + reader improvements**: 2 weeks
+- **Source selection UI + settings**: 1 week
+- **Library categories**: 2 weeks
+- **Basic tracking integration**: 1 week
 
-### 🟡 MEDIUM PRIORITY (Enhanced Experience)
-9. **Library categories** - Better organization
-10. **Tracking integration** - MAL/AniList sync
-11. **Advanced search filters** - More discovery options
-12. **Reading statistics** - Engagement features
-13. **Settings page** - User customization
+### Phase 2: Core Feature Expansion (Weeks 9-20)
+- **Advanced reader features** (zoom, pan, modes): 2 weeks
+- **Download manager + offline**: 3 weeks
+- **Updates & notifications**: 2 weeks
+- **Advanced search + discovery**: 2 weeks
+- **Statistics page**: 1 week
+- **Additional sources** (10-20 total): 2 weeks
 
-### 🟢 LOW PRIORITY (Nice to Have)
-14. **Social features** - Sharing, comments
-15. **Accessibility improvements** - WCAG compliance
-16. **Advanced animations** - Polish
+### Phase 3: Feature Completion (Weeks 21-32)
+- **Material You redesign**: 3 weeks
+- **Full tracking integration** (all services): 3 weeks
+- **Advanced library features**: 2 weeks
+- **Settings overhaul**: 1 week
+- **Polish & optimization**: 2 weeks
+- **Expand to 30+ sources**: 1 week
 
----
+### Phase 4: Android Native (Months 9-18)
+- **Android project setup**: 4 weeks
+- **Port web features**: 8 weeks
+- **Android-specific features**: 4 weeks
+- **100+ sources integration**: 8 weeks
+- **Testing & optimization**: 4 weeks
+- **Publishing**: 2 weeks
 
-## Estimated Development Time for 1:1 Parity
-
-Based on the gaps identified:
-
-- **Phase 2** (Real Data Integration): 3-4 weeks
-  - MangaDex API integration
-  - Image loading system
-  - 2-3 additional sources
-  
-- **Phase 3** (Core Reader Features): 2-3 weeks
-  - Reading modes
-  - Zoom/pan
-  - Downloads
-  
-- **Phase 4** (Library & Organization): 2-3 weeks
-  - Categories
-  - Advanced filters
-  - Bulk operations
-  
-- **Phase 5** (Tracking & Statistics): 2-3 weeks
-  - MAL/AniList integration
-  - Statistics page
-  - Updates system
-  
-- **Phase 6** (Polish & Optimization): 2-3 weeks
-  - Settings page
-  - Performance optimization
-  - Error handling
-
-**Total Estimated Time:** 11-16 weeks for complete 1:1 feature parity with Kotatsu
+**Total Web Platform**: ~32 weeks (8 months) for 80-90% Kotatsu parity  
+**Total with Android**: ~70 weeks (18 months) for 95-100% Kotatsu parity
 
 ---
 
 ## Conclusion
 
 Chirui Reader currently has a **solid foundation** with:
-- ✅ Good UI/UX framework
-- ✅ Basic navigation and routing
+- ✅ Good UI/UX framework (Material Design 3)
+- ✅ Basic navigation and routing (SPA)
 - ✅ PWA infrastructure
-- ✅ Local data persistence
+- ✅ Local data persistence (favorites, history)
+- ✅ **1 working manga source** (MangaDex - fully functional)
 
-**However**, it's missing **critical functionality**:
-- ❌ Real manga data (currently all mock data)
-- ❌ Actual reading capability (no real images)
-- ❌ Advanced reader features
-- ❌ Multiple manga sources
+**Recent Progress**:
+- ✅ MangaDex API integration working
+- ✅ Real manga reading capability 
+- ✅ Chapter and page loading functional
+- ✅ Source abstraction layer implemented
 
-**The app is essentially a well-designed UI shell that needs its core functionality implemented to become a true manga reader.**
+**Critical Gaps Remaining**:
+- ❌ **Manhwaz source broken** (needs immediate fix/replacement)
+- ❌ **Only 1-2 sources** (need 20-30 for Phase 1, 100+ for full parity)
+- ❌ **No webtoon mode** (critical for manhwa content)
+- ❌ **Limited reader features** (no zoom, pan, multiple modes)
+- ❌ **No tracking integration** (MAL, AniList, etc.)
+- ❌ **No library categories**
+- ❌ **No download manager**
+
+**Current Feature Parity**: ~15% of Kotatsu
+- Core reading: 70% ✅
+- Library management: 30%
+- Source support: 5% (2 vs 1000+)
+- Tracking integration: 0%
+- Advanced features: 10%
+
+**The app has evolved from a UI shell to a functional manga reader**, but needs significant expansion in:
+1. **Source diversity** (immediate priority)
+2. **Reader features** (webtoon mode, zoom/pan, etc.)
+3. **Library management** (categories, organization)
+4. **Service integration** (tracking, notifications)
 
 ### Next Immediate Steps:
-1. Integrate MangaDex API for real data
+1. **Week 1-2**: Fix Manhwaz or add 2-3 replacement sources (ManhwaTop, MangaBuddy, ComicK)
+2. **Week 3-4**: Implement webtoon reading mode (vertical scroll)
+3. **Week 5-6**: Add source selection UI and basic tracking
+4. **Week 7-8**: Library categories and improved organization
+
+With focused development, Chirui Reader can achieve **80-90% Kotatsu feature parity within 8 months** for the web platform, and **95-100% parity within 18 months** including the Android native app.
 2. Implement image loading for manga pages
 3. Add webtoon/vertical scroll reading mode
 4. Implement chapter downloads

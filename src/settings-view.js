@@ -2,8 +2,13 @@
 // User settings and configuration
 
 import { corsProxy } from './utils/cors-proxy.js';
+import { SourceManager } from './sources/source-manager.js';
 
 export class SettingsView {
+  constructor() {
+    this.sourceManager = new SourceManager();
+  }
+
   render() {
     const config = corsProxy.getConfig();
     
@@ -63,10 +68,14 @@ export class SettingsView {
         </section>
 
         <section class="settings-section">
-          <h2>📚 Source Configuration</h2>
+          <h2>📚 Source Management</h2>
           <p class="settings-description">
-            Manage manga sources and their settings.
+            Manage manga sources, enable/disable them, and view their status.
           </p>
+          
+          <div id="source-list" class="source-list">
+            <!-- Source items will be dynamically loaded -->
+          </div>
           
           <div class="setting-item">
             <label class="setting-label">
@@ -108,7 +117,82 @@ export class SettingsView {
   }
 
   async afterRender() {
+    await this.renderSourceList();
     this.setupEventListeners();
+  }
+
+  /**
+   * Render the list of available sources
+   */
+  async renderSourceList() {
+    const sourceListEl = document.getElementById('source-list');
+    if (!sourceListEl) return;
+
+    const allSources = this.sourceManager.getAllSources();
+    
+    let html = '<div class="source-items">';
+    
+    for (const source of allSources) {
+      const isEnabled = this.sourceManager.isSourceEnabled(source.id);
+      const sourceInfo = source.getSourceInfo();
+      
+      html += `
+        <div class="source-item ${isEnabled ? 'enabled' : 'disabled'}">
+          <div class="source-info">
+            <div class="source-header">
+              <span class="source-name">${sourceInfo.name}</span>
+              <span class="source-status ${isEnabled ? 'status-enabled' : 'status-disabled'}">
+                ${isEnabled ? '✓ Enabled' : '○ Disabled'}
+              </span>
+            </div>
+            <div class="source-details">
+              <span class="source-badge">${sourceInfo.lang.toUpperCase()}</span>
+              <span class="source-badge source-type-${source.useCorsProxy ? 'scraper' : 'api'}">
+                ${source.useCorsProxy ? 'Scraper' : 'API'}
+              </span>
+              ${sourceInfo.supportsLatest ? '<span class="source-badge">Latest Updates</span>' : ''}
+              ${sourceInfo.isNsfw ? '<span class="source-badge badge-nsfw">NSFW</span>' : ''}
+            </div>
+            <div class="source-url">${sourceInfo.baseUrl}</div>
+          </div>
+          <div class="source-actions">
+            <label class="toggle-switch">
+              <input type="checkbox" class="source-toggle" data-source-id="${source.id}" ${isEnabled ? 'checked' : ''}>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+    
+    html += '</div>';
+    
+    // Add source count summary
+    const enabledCount = this.sourceManager.getEnabledSources().length;
+    const totalCount = allSources.length;
+    html += `
+      <div class="source-summary">
+        <strong>${enabledCount}</strong> of <strong>${totalCount}</strong> sources enabled
+      </div>
+    `;
+    
+    sourceListEl.innerHTML = html;
+    
+    // Setup source toggle listeners
+    document.querySelectorAll('.source-toggle').forEach(toggle => {
+      toggle.addEventListener('change', (e) => {
+        const sourceId = e.target.dataset.sourceId;
+        if (e.target.checked) {
+          this.sourceManager.enableSource(sourceId);
+          this.showMessage(`${sourceId} enabled`, 'success');
+        } else {
+          this.sourceManager.disableSource(sourceId);
+          this.showMessage(`${sourceId} disabled`, 'info');
+        }
+        // Refresh the source list to update UI
+        this.renderSourceList();
+      });
+    });
   }
 
   setupEventListeners() {
