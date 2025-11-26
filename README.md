@@ -6,7 +6,8 @@
 **Native Kotlin/Android manga reader** inspired by Kotatsu, with a focus on extensible sources, offline reading, and Material 3 design. _Status last updated: 2025-11-26 04:30 UTC._
 
 > ⚠️ **Looking for the APK file?** The "Beta" release currently has no APK files attached.  
-> 📥 **[See Download Instructions](DOWNLOAD_INSTRUCTIONS.md)** for all your options to get the app!
+> 🚀 **[QUICK FIX GUIDE](QUICK_FIX_FOR_APK.md)** - Get APK files in 5-10 minutes!  
+> 📥 **[Download Instructions](DOWNLOAD_INSTRUCTIONS.md)** - All options to get the app
 >
 > 🎯 **For Maintainers:** To enable downloads for users, create a proper release!  
 > 👉 **[Follow This 2-Minute Guide](CREATE_FIRST_RELEASE.md)** to publish a release with APK files.
