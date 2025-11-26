@@ -210,7 +210,7 @@
         <div class="content">
             <div class="download-section">
                 <h2 style="margin-bottom: 20px;">Download Latest Version</h2>
-                <a href="https://github.com/swolem12/Chirui-Reader/releases/latest" 
+                <a href="https://github.com/swolem12/Chirui-Reader/releases" 
                    class="download-btn" 
                    id="download-btn">
                     Download APK
@@ -304,17 +304,21 @@
     </div>
 
     <script>
-        // Fetch latest release info from GitHub API
-        fetch('https://api.github.com/repos/swolem12/Chirui-Reader/releases/latest')
+        // Fetch latest release info from GitHub API (including prereleases)
+        fetch('https://api.github.com/repos/swolem12/Chirui-Reader/releases')
             .then(response => response.json())
-            .then(data => {
-                if (data.tag_name) {
+            .then(releases => {
+                // Get the most recent release (first in the array, includes prereleases)
+                const latestRelease = releases && releases.length > 0 ? releases[0] : null;
+                
+                if (latestRelease && latestRelease.tag_name) {
                     // Update version title
+                    const releaseType = latestRelease.prerelease ? 'Pre-release' : 'Latest Release';
                     document.getElementById('version-title').textContent = 
-                        `📌 Latest Release: ${data.tag_name}`;
+                        `📌 ${releaseType}: ${latestRelease.tag_name}`;
                     
                     // Find the release APK asset
-                    const releaseAsset = data.assets.find(asset => 
+                    const releaseAsset = latestRelease.assets && latestRelease.assets.find(asset => 
                         asset.name.includes('release.apk')
                     );
                     
@@ -326,10 +330,14 @@
                         // Update version text
                         const size = (releaseAsset.size / (1024 * 1024)).toFixed(1);
                         document.getElementById('version-text').innerHTML = 
-                            `<small>${data.tag_name} • ${size} MB • Android 7.0+</small>`;
+                            `<small>${latestRelease.tag_name} • ${size} MB • Android 7.0+</small>`;
                     } else {
-                        // No release APK found, keep fallback link to releases page
+                        // No release APK found, point to the release page
                         console.log('No release APK found in latest release');
+                        const downloadBtn = document.getElementById('download-btn');
+                        downloadBtn.href = latestRelease.html_url;
+                        document.getElementById('version-text').innerHTML = 
+                            `<small>${latestRelease.tag_name} • <a href="${latestRelease.html_url}" style="color: #667eea;">View Release</a></small>`;
                     }
                 } else {
                     // No releases yet, show appropriate message
