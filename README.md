@@ -1,102 +1,162 @@
 # Chirui Reader
 
 [![Deploy to GitHub Pages](https://github.com/swolem12/Chirui-Reader/actions/workflows/deploy.yml/badge.svg)](https://github.com/swolem12/Chirui-Reader/actions/workflows/deploy.yml)
+[![Android CI](https://github.com/swolem12/Chirui-Reader/actions/workflows/android-build.yml/badge.svg)](https://github.com/swolem12/Chirui-Reader/actions/workflows/android-build.yml)
 
-Chirui Reader is transitioning from a web-based prototype to a native Kotlin Android application inspired by the Kotatsu reader. _Status last updated: 2025-11-25 18:24 UTC._
+**Native Kotlin/Android manga reader** inspired by Kotatsu, with a focus on extensible sources, offline reading, and Material 3 design. _Status last updated: 2025-11-26 04:30 UTC._
 
-## 🌐 Live Demo
+## 🚀 What is This?
 
-**[Try Chirui Reader Now →](https://swolem12.github.io/Chirui-Reader/)**
+Chirui Reader is a **native Android application** for reading manga and manhwa. It's built with Kotlin, Jetpack Compose, and Material 3, targeting feature parity with the Kotatsu reader.
 
-## What is This?
-
-Chirui Reader started as a **Progressive Web App (PWA)** for reading manga and manhwa. We are now prioritizing the **Android-native** implementation to mirror Kotatsu more closely. It's an **end-user application**, not an SDK or library.
-
-- ✅ Web application for reading manga
-- ✅ Deployed via GitHub Pages
-- ✅ Works on desktop and mobile browsers
-- ✅ Installable as PWA for offline reading
+- ✅ Native Android app with Jetpack Compose UI
+- ✅ Material Design 3 theming
+- ✅ Offline reading support
+- ✅ Extensible source system
+- ✅ Build infrastructure with Gradle wrapper and CI/CD
 - ❌ NOT an SDK or library for developers
 - ❌ NOT a converter or build tool
 
-## Tracks
+## 🌐 Legacy Web App
 
-### Native Android (primary focus)
-- Jetpack Compose scaffold in `android/` with Material 3 theme.
-- Kotlin/Gradle setup ready for Kotatsu feature parity work.
-- Catalog experience with a Discover grid (search, filters, pagination) backed by bundled Kotatsu fixtures and a Sources tab with enable/disable toggles.
-- Manga detail view with favorites/actions wired into a basic reader that supports swiping through bundled Kotatsu-inspired pages.
-- Downloads queue skeleton with fixture-backed statuses and controls for pause/resume/cancel/retry.
+The original **Progressive Web App (PWA)** has been archived to `webapp-archive/`. It remains deployed at **[swolem12.github.io/Chirui-Reader](https://swolem12.github.io/Chirui-Reader/)** for demonstration but receives no new features.
 
-### Web prototype (maintenance only)
-- HTML/JS/CSS PWA remains for reference and quick demos.
+See [webapp-archive/README.md](webapp-archive/README.md) for details on the archived web version.
 
-## Quick Start
+## 📱 Android App (Primary Focus)
 
-### Android app (primary)
-1. Clone this repository
-   ```bash
-   git clone https://github.com/swolem12/Chirui-Reader.git
-   cd Chirui-Reader/android
-   ```
-2. Open the `android/` folder in Android Studio Hedgehog or later.
-3. Let the IDE download the Android Gradle Plugin and Android 34 SDK.
-4. Run the `app` configuration on a connected device/emulator.
+The native Android app is the active development track with complete build infrastructure:
 
-### Web PWA (legacy prototype)
-1. Clone this repository and install dependencies
-   ```bash
-   git clone https://github.com/swolem12/Chirui-Reader.git
-   cd Chirui-Reader
-   npm install
-   ```
-2. Run the development server
-   ```bash
-   npm run dev
-   ```
-3. Open the served URL from the CLI output.
+### Features Implemented
+- ✅ Jetpack Compose scaffold with Material 3 theme
+- ✅ Kotlin/Gradle build system with wrapper and CI/CD
+- ✅ Catalog with Discover grid (search, filters, pagination)
+- ✅ Sources tab with enable/disable toggles
+- ✅ Manga detail view with chapter listings
+- ✅ Reader with page swiping
+- ✅ Downloads queue skeleton
+- ✅ Build infrastructure (Gradle wrapper, ktlint, CI/CD)
 
-## Documentation
+### Build Infrastructure
+- **Gradle wrapper (8.5)** for consistent builds
+- **GitHub Actions** for automated builds and tests
+- **ktlint** for code quality
+- **Helper scripts** for common tasks
+- Complete documentation in [android/BUILD_GUIDE.md](android/BUILD_GUIDE.md)
 
-- 📖 **[ARCHITECTURE.md](ARCHITECTURE.md)** - Comprehensive project architecture and technology overview
-- 📦 **[docs/DISTRIBUTION.md](docs/DISTRIBUTION.md)** - How to distribute web apps (PWA) vs native Android apps
-- 🚀 **[docs/PWA_QUICK_START.md](docs/PWA_QUICK_START.md)** - Quick guide to implement PWA features
-- 🔍 **[docs/KOTATSU_CLARIFICATION.md](docs/KOTATSU_CLARIFICATION.md)** - Clarifies Kotatsu's architecture (no PWA conversion)
-- 🖼️ **[docs/KOTATSU_ASSET_MANIFEST.md](docs/KOTATSU_ASSET_MANIFEST.md)** - Inventory of Kotatsu fork assets to ingest into the Android app
-- ✅ **[docs/NEXT_STEPS_TODO.md](docs/NEXT_STEPS_TODO.md)** - Approval-focused TODO list for the Android-native Kotatsu build
-- 📋 **[docs/FAQ.md](docs/FAQ.md)** - Frequently asked questions
+## 🏃 Quick Start
+
+### Android App (Recommended)
+
+```bash
+git clone https://github.com/swolem12/Chirui-Reader.git
+cd Chirui-Reader/android
+
+# Using the helper script
+./dev.sh build    # Build debug APK
+./dev.sh test     # Run tests
+./dev.sh help     # See all commands
+
+# Or use Gradle directly
+./gradlew assembleDebug
+```
+
+**Using Android Studio:**
+1. Open the `android/` folder in Android Studio Hedgehog or later
+2. Let the IDE download dependencies and sync
+3. Run the `app` configuration on a device/emulator
+
+See [android/README.md](android/README.md) and [android/BUILD_GUIDE.md](android/BUILD_GUIDE.md) for detailed instructions.
+
+### Legacy Web App (Archived)
+
+The web app is archived but still accessible:
+```bash
+cd webapp-archive
+python -m http.server 8000
+# Open http://localhost:8000
+```
+
+See [webapp-archive/README.md](webapp-archive/README.md) for details.
+
+## 📚 Documentation
+
+### Android App (Active Development)
+- 📱 **[android/README.md](android/README.md)** - Android project overview
+- 🔨 **[android/BUILD_GUIDE.md](android/BUILD_GUIDE.md)** - Complete build instructions and troubleshooting
+- 🤝 **[android/CONTRIBUTING.md](android/CONTRIBUTING.md)** - Contributing guidelines
+- 🏗️ **[android/BUILD_INFRASTRUCTURE.md](android/BUILD_INFRASTRUCTURE.md)** - Build system documentation
+
+### Project Documentation
+- 📖 **[ARCHITECTURE.md](ARCHITECTURE.md)** - Project architecture overview
 - 🗺️ **[CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md)** - Project roadmap and milestones
-- 💻 **[DEVELOPMENT.md](DEVELOPMENT.md)** - Development guide and deployment instructions
-- 📱 **[android/README.md](android/README.md)** - Native Android project overview and next steps
+- 💻 **[DEVELOPMENT.md](DEVELOPMENT.md)** - General development guide
+- 📋 **[FEATURE_GAP_ANALYSIS.md](FEATURE_GAP_ANALYSIS.md)** - Feature comparison
+- 🔍 **[KOTATSU_PORT_PLAN.md](KOTATSU_PORT_PLAN.md)** - Kotatsu porting plan
+- 📦 **[IMPLEMENTED_SOURCES.md](IMPLEMENTED_SOURCES.md)** - Source implementations
 
-## Technology Stack
+### Archived Web App
+- 🌐 **[webapp-archive/README.md](webapp-archive/README.md)** - Archived PWA documentation
+- 📦 **[webapp-archive/docs/](webapp-archive/docs/)** - Legacy web app docs
 
+## 🛠️ Technology Stack
+
+### Android (Active)
+- **Language**: Kotlin 1.9.24
+- **UI**: Jetpack Compose with Material 3
+- **Architecture**: MVVM with Clean Architecture
+- **DI**: Hilt
+- **Database**: Room
+- **Networking**: Retrofit + OkHttp
+- **Async**: Kotlin Coroutines
+- **Build**: Gradle 8.5, AGP 8.5.0
+
+### Web (Archived)
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **UI**: Material Design 3
-- **Storage**: localStorage for favorites and history
-- **PWA**: Service Workers for offline support
+- **Storage**: localStorage
+- **PWA**: Service Workers
 - **Hosting**: GitHub Pages
-- **Deployment**: GitHub Actions (automatic)
-- **Future**: Android native app (Phase 3)
 
-## Project Status
+## 📊 Project Status
 
-**Current Phase**: Transitioning into Phase 3 - Android Native Application (scaffolding started)
+**Current Phase**: Phase 3 - Native Android Application (Build Infrastructure Complete)
 
-### Recent progress
-- ✅ Android Jetpack Compose skeleton added under `android/`.
-- ✅ Kotlin/Gradle configuration prepared for Kotatsu parity work.
-- ✅ Catalog Discover tab with paginated grid, filters, and offline fixtures plus a Sources tab with language filters and toggles backed by an asset parser registry.
-- ✅ Manga detail screen with bundled Kotatsu-inspired chapter fixtures and in-app favorite toggles.
-- ✅ Download queue screen seeded with Kotatsu-inspired fixture states and controls for pause/resume/cancel/retry (network/worker plumbing pending).
-- ⚠️ Web PWA remains available but is in maintenance-only mode.
+### Recent Progress (2025-11-26)
+- ✅ **Build Infrastructure**: Gradle wrapper, CI/CD, ktlint, helper scripts
+- ✅ **Documentation**: Comprehensive BUILD_GUIDE.md, CONTRIBUTING.md
+- ✅ **Web App**: Archived to `webapp-archive/` (maintenance mode only)
+- ✅ Android Jetpack Compose skeleton
+- ✅ Kotlin/Gradle configuration
+- ✅ Catalog with Discover grid and Sources tab
+- ✅ Manga detail screen with chapter fixtures
+- ✅ Basic reader with page swiping
+- ✅ Downloads queue skeleton
 
-See [CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md) for complete roadmap.
+### Active Development
+All new features and improvements are focused on the **Android app** in the `android/` directory.
 
-## Contributing
+### Next Steps
+See [CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md) and [webapp-archive/docs/NEXT_STEPS_TODO.md](webapp-archive/docs/NEXT_STEPS_TODO.md) for detailed roadmap.
 
-See [CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md) for planned features and milestones. Contributions are welcome!
+## 🤝 Contributing
 
-## License
+Contributions are welcome! Please see:
+- [android/CONTRIBUTING.md](android/CONTRIBUTING.md) for Android app contributions
+- [CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md) for planned features and priorities
+
+Focus areas:
+- Android app feature development
+- Kotatsu asset integration
+- Source extension implementations
+- Documentation improvements
+
+## 📄 License
 
 Check repository license file for details.
+
+---
+
+**Primary Focus**: Native Android Application  
+**Status**: Active Development  
+**Last Updated**: 2025-11-26
