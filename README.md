@@ -116,8 +116,8 @@ See [webapp-archive/README.md](webapp-archive/README.md) for details.
 - 🔍 **[KOTATSU_PORT_PLAN.md](KOTATSU_PORT_PLAN.md)** - Kotatsu porting plan
 - 📦 **[IMPLEMENTED_SOURCES.md](IMPLEMENTED_SOURCES.md)** - Source implementations
 
-### Archived Web App
-- 🌐 **[webapp-archive/README.md](webapp-archive/README.md)** - Download page documentation
+### Download Page (GitHub Pages)
+- 🌐 **[webapp-archive/README.md](webapp-archive/README.md)** - Download page and deployment documentation
 
 ## 🛠️ Technology Stack
 
