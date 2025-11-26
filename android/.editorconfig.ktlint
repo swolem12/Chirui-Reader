@@ -1,0 +1,29 @@
+# Ktlint configuration for Chirui Reader
+# https://pinterest.github.io/ktlint/
+
+[*.{kt,kts}]
+
+# Disable rules that conflict with Android/Compose conventions
+disabled_rules = no-wildcard-imports
+
+# Enable experimental rules
+ktlint_experimental = enabled
+
+# Standard rules
+ktlint_standard = enabled
+
+# Android-specific rules
+ktlint_code_style = android_studio
+
+# Maximum line length
+max_line_length = 120
+
+# Import ordering
+ij_kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
+
+# Indentation
+indent_size = 4
+continuation_indent_size = 8
+
+# Allow long parameter lists for Compose functions
+ktlint_function_signature_body_expression_wrapping = default

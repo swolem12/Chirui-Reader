@@ -18,16 +18,31 @@ This directory contains the initial Android application scaffold for the native 
 3. Connect a device or start an emulator, then run the `app` configuration.
 
 ### Building from Command Line
-The project now includes a Gradle wrapper for consistent builds:
+The project includes a Gradle wrapper and helpful development script:
 
 ```bash
 cd android
+
+# Using the development helper script (easy shortcuts)
+./dev.sh build      # Build debug APK
+./dev.sh install    # Build and install on device
+./dev.sh test       # Run unit tests
+./dev.sh lint       # Check code style
+./dev.sh format     # Auto-format code
+./dev.sh help       # Show all commands
+
+# Or use gradlew directly
 ./gradlew assembleDebug    # Build debug APK
 ./gradlew build            # Build all variants
 ./gradlew tasks            # List available tasks
 ```
 
 **Note**: Building requires network access to download dependencies from Google's Maven repository and Maven Central.
+
+### Documentation
+- **[BUILD_GUIDE.md](BUILD_GUIDE.md)**: Comprehensive build instructions and troubleshooting
+- **[CONTRIBUTING.md](CONTRIBUTING.md)**: Guide for contributing to the Android app
+- **[../docs/NEXT_STEPS_TODO.md](../docs/NEXT_STEPS_TODO.md)**: Development roadmap and priorities
 
 ### Next steps
 - Replace the placeholder parser registry JSON with the full set of Kotatsu source assets/icons and wire icons into the UI.
