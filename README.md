@@ -27,6 +27,22 @@ See [webapp-archive/README.md](webapp-archive/README.md) for details on the arch
 
 The native Android app is the active development track with complete build infrastructure:
 
+### ⬇️ Install on Your Phone
+
+**Quick Install (Recommended):**
+1. Download the latest APK from [Releases](https://github.com/swolem12/Chirui-Reader/releases) (coming soon)
+2. Or build it yourself:
+   ```bash
+   cd android
+   ./dev.sh build        # Build APK
+   ./gradlew installDebug # Install on connected phone
+   ```
+3. See [android/INSTALL.md](android/INSTALL.md) for detailed installation instructions
+
+**Requirements:**
+- Android 7.0 (API 24) or higher
+- ~50 MB storage space
+
 ### Features Implemented
 - ✅ Jetpack Compose scaffold with Material 3 theme
 - ✅ Kotlin/Gradle build system with wrapper and CI/CD

@@ -1,6 +1,35 @@
 # Chirui Reader Android (Kotatsu-native)
 
-This directory contains the initial Android application scaffold for the native Kotlin rewrite of Chirui Reader, targeting feature parity with the Kotatsu fork. _Last updated: 2025-11-25 18:24 UTC._
+This directory contains the native Kotlin Android application for Chirui Reader, targeting feature parity with the Kotatsu manga reader. _Last updated: 2025-11-26._
+
+## ⬇️ Installing on Your Phone
+
+**Want to use the app?** See [INSTALL.md](INSTALL.md) for complete instructions on:
+- Building and installing the APK on your Android phone
+- Enabling USB debugging
+- Troubleshooting installation issues
+
+**Quick Install:**
+```bash
+# Connect your Android phone via USB
+./dev.sh build    # Build the APK
+adb install app/build/outputs/apk/debug/app-debug.apk
+```
+
+## 📱 App Features
+
+### Currently Working
+- ✅ Browse manga sources with search and filters
+- ✅ View manga details and chapter lists
+- ✅ Read chapters with swipe navigation
+- ✅ Enable/disable manga sources
+- ✅ Material 3 design with adaptive theming
+
+### In Development
+- 🔨 Download manager for offline reading
+- 🔨 Library management and favorites
+- 🔨 Reading history and progress tracking
+- 🔨 Source extension management
 
 ## Project structure
 - `app/`: UI shell with Jetpack Compose, Material 3 theme, and Hilt entry points. Includes a Catalog experience with a Discover grid (search, filters, pagination), a Sources tab for enable/disable toggles and language filters, a Manga detail screen powered by bundled fixtures, a fixture-backed reader route, and a downloads queue skeleton with pause/resume/cancel/retry controls.
