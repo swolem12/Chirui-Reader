@@ -42,7 +42,7 @@ android {
         // If keystore properties are present, create a release signing config using them
         if (keystorePropertiesFile.exists()) {
             create("release") {
-                storeFile = file(keystoreProperties.getProperty("storeFile") ?: "keystore.jks")
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
                 storePassword = keystoreProperties.getProperty("storePassword")
                 keyAlias = keystoreProperties.getProperty("keyAlias")
                 keyPassword = keystoreProperties.getProperty("keyPassword")
