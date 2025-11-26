@@ -218,28 +218,62 @@ private fun StatusScreen() {
             .fillMaxSize()
             .padding(24.dp)
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
+        // Welcome Section
         Text(
-            text = "Chirui Reader",
-            style = MaterialTheme.typography.headlineMedium,
+            text = "Welcome to Chirui Reader",
+            style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            text = "Kotatsu-native foundation is ready. Use this shell to hook up data, sources, and reader modules.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface
+            text = "Your Kotatsu-inspired manga reader for Android",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        // Quick Start
         InfoCard(
-            title = "Next step",
-            body = "Hook real download workers + parser assets to replace the fixture queue and source registry.",
+            title = "🚀 Quick Start",
+            body = "1. Visit the Catalog tab to browse manga sources\n" +
+                   "2. Enable sources you want to use\n" +
+                   "3. Search and discover manga\n" +
+                   "4. Add favorites to your Library",
             accent = MaterialTheme.colorScheme.primary
         )
+        
+        // Features
         InfoCard(
-            title = "Catalog",
-            body = "Source list is live with enable/disable toggles and language filters for Kotatsu parsers.",
+            title = "✨ Features",
+            body = "• Browse multiple manga sources\n" +
+                   "• Offline reading support\n" +
+                   "• Download chapters for later\n" +
+                   "• Customizable reader experience",
             accent = MaterialTheme.colorScheme.secondary
+        )
+        
+        // Development Status
+        InfoCard(
+            title = "⚙️ Development Status",
+            body = "This app is actively being developed. Current features:\n" +
+                   "✅ Source management\n" +
+                   "✅ Catalog browsing\n" +
+                   "✅ Manga details\n" +
+                   "✅ Basic reader\n" +
+                   "🔨 Downloads (in progress)\n" +
+                   "🔨 Library (in progress)",
+            accent = MaterialTheme.colorScheme.tertiary
+        )
+        
+        // Version Info
+        Text(
+            text = "Version 0.1.0 (Early Access)",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 8.dp)
         )
     }
 }

@@ -1,0 +1,106 @@
+name: Release APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v0.1.0)'
+        required: true
+        default: 'v0.1.0'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+      
+      - name: Grant execute permission for gradlew
+        run: chmod +x android/gradlew
+      
+      - name: Build Release APK
+        working-directory: android
+        run: ./gradlew assembleRelease --stacktrace
+      
+      - name: Build Debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug --stacktrace
+      
+      - name: Get version name
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          release_name: Chirui Reader ${{ steps.version.outputs.VERSION }}
+          body: |
+            ## Chirui Reader ${{ steps.version.outputs.VERSION }}
+            
+            ### 📥 Download & Install
+            
+            **For Android 7.0+**
+            
+            1. Download the APK file below
+            2. Open the file on your Android device
+            3. Allow installation from unknown sources if prompted
+            4. Tap "Install"
+            
+            ### 📦 Files
+            
+            - **chirui-reader-release.apk** - Recommended for daily use
+            - **chirui-reader-debug.apk** - For testing and development
+            
+            ### ✨ Features
+            
+            - Browse manga sources
+            - Search and filter catalog
+            - Read chapters with swipe navigation
+            - Material 3 UI
+            
+            See [RELEASE_NOTES.md](https://github.com/swolem12/Chirui-Reader/blob/main/RELEASE_NOTES.md) for details.
+          draft: false
+          prerelease: false
+      
+      - name: Upload Release APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: android/app/build/outputs/apk/release/app-release.apk
+          asset_name: chirui-reader-${{ steps.version.outputs.VERSION }}-release.apk
+          asset_content_type: application/vnd.android.package-archive
+      
+      - name: Upload Debug APK
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: android/app/build/outputs/apk/debug/app-debug.apk
+          asset_name: chirui-reader-${{ steps.version.outputs.VERSION }}-debug.apk
+          asset_content_type: application/vnd.android.package-archive
