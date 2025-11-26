@@ -123,6 +123,18 @@ After creating a release:
 
 ## Troubleshooting
 
+### Release Has No APK Files
+**Problem**: A release exists but has no APK files attached.
+
+**Cause**: The release tag doesn't match the `v*` pattern (e.g., "Beta" instead of "v0.1.0"), so the automated build workflow didn't run.
+
+**Solution**: 
+1. **Create a new release** with a proper `v*` tag (e.g., `v0.1.0`) - the workflow will automatically build and attach APK files
+2. **OR manually trigger** the "Release APK" workflow from the Actions tab
+3. **Optional**: Delete the old release without APK files to avoid confusion
+
+**Prevention**: Always use tags starting with `v` followed by semantic versioning (e.g., `v0.1.0`, `v1.0.0`, `v2.1.3`)
+
 ### Release Failed to Build
 - Check the Actions tab for error messages
 - Ensure all dependencies are available
