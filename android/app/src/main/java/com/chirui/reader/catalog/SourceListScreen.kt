@@ -31,6 +31,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -65,9 +66,10 @@ fun SourceListTab(viewModel: SourceListViewModel = hiltViewModel()) {
             )
         }
 
+        val error = uiState.error
         when {
             uiState.loading -> LoadingCard()
-            uiState.error != null -> ErrorCard(uiState.error, onRetry = viewModel::onRetry)
+            error != null -> ErrorCard(error, onRetry = viewModel::onRetry)
             uiState.sources.isEmpty() -> EmptyState()
             else -> SourceList(
                 sources = uiState.sources,
@@ -77,6 +79,7 @@ fun SourceListTab(viewModel: SourceListViewModel = hiltViewModel()) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchBar(value: String, onValueChange: (String) -> Unit, placeholder: String) {
     OutlinedTextField(
