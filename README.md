@@ -5,8 +5,11 @@
 
 **Native Kotlin/Android manga reader** inspired by Kotatsu, with a focus on extensible sources, offline reading, and Material 3 design. _Status last updated: 2025-11-26 04:30 UTC._
 
-> 🎯 **First Time Here?** To enable downloads for users, you need to create your first release!  
-> 👉 **[Follow This 2-Minute Guide](CREATE_FIRST_RELEASE.md)** to publish your first release and make the app downloadable.
+> ⚠️ **Looking for the APK file?** The "Beta" release currently has no APK files attached.  
+> 📥 **[See Download Instructions](DOWNLOAD_INSTRUCTIONS.md)** for all your options to get the app!
+>
+> 🎯 **For Maintainers:** To enable downloads for users, create a proper release!  
+> 👉 **[Follow This 2-Minute Guide](CREATE_FIRST_RELEASE.md)** to publish a release with APK files.
 
 ## 🚀 What is This?
 
@@ -32,15 +35,25 @@ The native Android app is the active development track with complete build infra
 
 ### ⬇️ Install on Your Phone
 
+> ⚠️ **Important**: The current "Beta" release doesn't have APK files yet. See [DOWNLOAD_INSTRUCTIONS.md](DOWNLOAD_INSTRUCTIONS.md) for all available options!
+
+**When APK is available:**
+
 **🚀 One-Click Install:**
 
 **[📥 Download APK](https://swolem12.github.io/Chirui-Reader/)** ← Just like kotatsu.app!
 
 Or get it from [GitHub Releases](https://github.com/swolem12/Chirui-Reader/releases)
 
+**Alternative: Build it yourself** (see instructions below)
+
 ### 📦 Android Releases / Downloads
 
-**Download the latest release (ready to install on your phone):**
+> ⚠️ **Note**: The "Beta" release exists but has no APK files. To get the app right now, you have two options:
+> 1. **Wait** for a maintainer to create a proper release (recommended for users)
+> 2. **Build it yourself** from source (see instructions in this README or [DOWNLOAD_INSTRUCTIONS.md](DOWNLOAD_INSTRUCTIONS.md))
+
+**When APK releases are available:**
 - **[📥 Download from Releases Page](https://github.com/swolem12/Chirui-Reader/releases)** - Get the latest APK or AAB
 - **Direct link to APK**: Once a stable release is published, you can use the direct download link
 

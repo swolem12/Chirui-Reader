@@ -1,10 +1,13 @@
 # 🚀 Create Your First Release - Quick Start Guide
 
 ## Problem
-Users are seeing "There aren't any releases here" because no release has been created yet.
+The "Beta" release exists but has **no APK files attached**. This is because:
+- The "Beta" tag doesn't match the required `v*` pattern (e.g., `v0.1.0`)
+- The automated build workflow only runs for tags starting with `v`
+- The release was created manually without building APK files
 
 ## Solution
-Create your first release using one of these simple methods:
+Create a proper release using one of these methods. The build system will automatically build and attach APK files!
 
 ---
 
@@ -149,6 +152,14 @@ See [RELEASE_GUIDE.md](https://github.com/swolem12/Chirui-Reader/blob/main/RELEA
 ---
 
 ## ❓ Troubleshooting
+
+**Q: What about the existing "Beta" release?**
+- The "Beta" release was created manually without APK files
+- It uses tag "Beta" which doesn't match the `v*` pattern required by the workflow
+- You can either:
+  - Create a new release with a proper `v*` tag (recommended - e.g., `v0.1.0`)
+  - Optionally delete the "Beta" release to avoid confusion
+  - Leave it as-is; users will download from the new release instead
 
 **Q: The workflow failed!**
 - Check the Actions tab for error details
