@@ -17,11 +17,11 @@ Chirui Reader is a **native Android application** for reading manga and manhwa. 
 - ❌ NOT an SDK or library for developers
 - ❌ NOT a converter or build tool
 
-## 🌐 Legacy Web App
+## 🌐 Download Page
 
-The original **Progressive Web App (PWA)** has been archived to `webapp-archive/`. It remains deployed at **[swolem12.github.io/Chirui-Reader](https://swolem12.github.io/Chirui-Reader/)** for demonstration but receives no new features.
+**Live Download Page**: **[swolem12.github.io/Chirui-Reader](https://swolem12.github.io/Chirui-Reader/)** - One-click APK download
 
-See [webapp-archive/README.md](webapp-archive/README.md) for details on the archived web version.
+The GitHub Pages site now serves as the download page for the Android app (similar to kotatsu.app/download).
 
 ## 📱 Android App (Primary Focus)
 
