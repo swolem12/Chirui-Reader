@@ -49,14 +49,17 @@ jobs:
             echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           fi
       
+      - name: Rename APK files
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          cp android/app/build/outputs/apk/release/app-release.apk chirui-reader-${VERSION}-release.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk chirui-reader-${VERSION}-debug.apk
+      
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.VERSION }}
-          release_name: Chirui Reader ${{ steps.version.outputs.VERSION }}
+          name: Chirui Reader ${{ steps.version.outputs.VERSION }}
           body: |
             ## Chirui Reader ${{ steps.version.outputs.VERSION }}
             
@@ -84,23 +87,6 @@ jobs:
             See [RELEASE_NOTES.md](https://github.com/swolem12/Chirui-Reader/blob/main/RELEASE_NOTES.md) for details.
           draft: false
           prerelease: false
-      
-      - name: Upload Release APK
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: android/app/build/outputs/apk/release/app-release.apk
-          asset_name: chirui-reader-${{ steps.version.outputs.VERSION }}-release.apk
-          asset_content_type: application/vnd.android.package-archive
-      
-      - name: Upload Debug APK
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: android/app/build/outputs/apk/debug/app-debug.apk
-          asset_name: chirui-reader-${{ steps.version.outputs.VERSION }}-debug.apk
-          asset_content_type: application/vnd.android.package-archive
+          files: |
+            chirui-reader-${{ steps.version.outputs.VERSION }}-release.apk
+            chirui-reader-${{ steps.version.outputs.VERSION }}-debug.apk
