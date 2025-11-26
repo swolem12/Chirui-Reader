@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.chirui.domain.catalog.CatalogRepository
 import com.chirui.domain.model.MangaStatus
 import com.chirui.domain.model.MangaSummary
+import com.chirui.domain.model.SourceDescriptor
 import com.chirui.parsers.ParserRegistry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -33,14 +34,25 @@ class CatalogGridViewModel @Inject constructor(
     private val page = MutableStateFlow(0)
 
     val uiState: StateFlow<CatalogUiState> = combine(
-        catalogRepository.catalogEntries(),
-        parserRegistry.availableSources(),
-        query,
-        selectedLanguages,
-        selectedSources,
-        page,
-        onlyEnabledSources,
-    ) { catalogEntries, sourceDescriptors, queryValue, languageSelection, sourceSelection, pageIndex, enforceEnabledSources ->
+        combine(
+            catalogRepository.catalogEntries(),
+            parserRegistry.availableSources(),
+            query,
+            selectedLanguages,
+        ) { catalogEntries, sourceDescriptors, queryValue, languageSelection ->
+            CatalogInputs(catalogEntries, sourceDescriptors, queryValue, languageSelection)
+        },
+        combine(
+            selectedSources,
+            page,
+            onlyEnabledSources,
+        ) { sourceSelection, pageIndex, enforceEnabledSources ->
+            CatalogFilters(sourceSelection, pageIndex, enforceEnabledSources)
+        }
+    ) { inputs, filters ->
+        val (catalogEntries, sourceDescriptors, queryValue, languageSelection) = inputs
+        val (sourceSelection, pageIndex, enforceEnabledSources) = filters
+
         val enabledSourceIds = sourceDescriptors.filter { it.enabled }.map { it.id }.toSet()
         val availableSourceIds = sourceDescriptors.map { it.id }.toSet()
         val sourceFilter = if (sourceSelection.isEmpty()) {
@@ -52,7 +64,7 @@ class CatalogGridViewModel @Inject constructor(
         val filtered = catalogEntries.filter { entry ->
             val matchesQuery = queryValue.isBlank() ||
                 entry.title.contains(queryValue, ignoreCase = true) ||
-                entry.tags.any { it.contains(queryValue, ignoreCase = true) }
+                entry.tags.any { tag -> tag.contains(queryValue, ignoreCase = true) }
             val matchesLanguage = languageSelection.isEmpty() || languageSelection.contains(entry.language)
             val matchesSource = sourceFilter.isEmpty() || sourceFilter.contains(entry.sourceId)
             val respectsEnabled = !enforceEnabledSources ||
@@ -68,7 +80,7 @@ class CatalogGridViewModel @Inject constructor(
             .drop(currentPage * PAGE_SIZE)
             .take(PAGE_SIZE)
             .map { entry ->
-                val sourceName = sourceDescriptors.firstOrNull { it.id == entry.sourceId }?.name
+                val sourceName = sourceDescriptors.firstOrNull { descriptor -> descriptor.id == entry.sourceId }?.name
                     ?: entry.sourceName
                 entry.toUiModel(sourceName)
             }
@@ -199,4 +211,17 @@ data class SourceFilterUiModel(
     val name: String,
     val enabled: Boolean,
     val language: String,
+)
+
+private data class CatalogInputs(
+    val catalogEntries: List<MangaSummary>,
+    val sourceDescriptors: List<SourceDescriptor>,
+    val queryValue: String,
+    val languageSelection: Set<String>,
+)
+
+private data class CatalogFilters(
+    val sourceSelection: Set<String>,
+    val pageIndex: Int,
+    val enforceEnabledSources: Boolean,
 )

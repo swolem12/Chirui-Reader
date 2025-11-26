@@ -52,12 +52,13 @@ fun MangaDetailScreen(
     viewModel: MangaDetailViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val detail = state.detail
 
     when {
         state.loading -> LoadingState()
         state.error != null -> ErrorState(message = state.error ?: "", onRetry = viewModel::refresh)
-        state.detail != null -> MangaDetailContent(
-            detail = state.detail,
+        detail != null -> MangaDetailContent(
+            detail = detail,
             onToggleFavorite = viewModel::onToggleFavorite,
             onShare = onShare,
             onOpenChapter = onOpenChapter,
@@ -129,10 +130,11 @@ private fun MangaDetailContent(
             }
         }
 
-        if (!detail.description.isNullOrBlank()) {
+        val description = detail.description
+        if (!description.isNullOrBlank()) {
             Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                 Text(
-                    text = detail.description,
+                    text = description,
                     modifier = Modifier.padding(12.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
