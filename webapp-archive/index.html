@@ -318,7 +318,7 @@
                         `📌 ${releaseType}: ${latestRelease.tag_name}`;
                     
                     // Find the release APK asset
-                    const releaseAsset = latestRelease.assets && latestRelease.assets.find(asset => 
+                    const releaseAsset = latestRelease.assets?.find(asset => 
                         asset.name.includes('release.apk')
                     );
                     
@@ -327,17 +327,27 @@
                         const downloadBtn = document.getElementById('download-btn');
                         downloadBtn.href = releaseAsset.browser_download_url;
                         
-                        // Update version text
+                        // Update version text - use textContent to prevent XSS
                         const size = (releaseAsset.size / (1024 * 1024)).toFixed(1);
-                        document.getElementById('version-text').innerHTML = 
-                            `<small>${latestRelease.tag_name} • ${size} MB • Android 7.0+</small>`;
+                        const versionText = document.getElementById('version-text');
+                        versionText.textContent = `${latestRelease.tag_name} • ${size} MB • Android 7.0+`;
                     } else {
                         // No release APK found, point to the release page
                         console.log('No release APK found in latest release');
                         const downloadBtn = document.getElementById('download-btn');
                         downloadBtn.href = latestRelease.html_url;
-                        document.getElementById('version-text').innerHTML = 
-                            `<small>${latestRelease.tag_name} • <a href="${latestRelease.html_url}" style="color: #667eea;">View Release</a></small>`;
+                        
+                        // Create link element programmatically to prevent XSS
+                        const versionText = document.getElementById('version-text');
+                        versionText.innerHTML = '';
+                        const small = document.createElement('small');
+                        small.textContent = `${latestRelease.tag_name} • `;
+                        const link = document.createElement('a');
+                        link.href = latestRelease.html_url;
+                        link.style.color = '#667eea';
+                        link.textContent = 'View Release';
+                        small.appendChild(link);
+                        versionText.appendChild(small);
                     }
                 } else {
                     // No releases yet, show appropriate message
