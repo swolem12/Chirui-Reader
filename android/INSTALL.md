@@ -1,15 +1,31 @@
 # Installing Chirui Reader on Your Phone
 
-This guide explains how to build and install the Chirui Reader Android app on your phone.
+This guide explains how to install the Chirui Reader Android app on your phone.
 
-## Quick Install (For Users)
+## 🚀 Quick Install (Recommended)
 
-### Option 1: Download Pre-built APK (Coming Soon)
-Once available, APK releases will be published at:
-- GitHub Releases: https://github.com/swolem12/Chirui-Reader/releases
-- Latest build artifacts from CI/CD
+### One-Click Download
 
-### Option 2: Build and Install Yourself
+**📥 [Download Latest APK](https://swolem12.github.io/Chirui-Reader/download.html)**
+
+Visit our download page for the easiest installation experience - just like the Kotatsu app!
+
+**Or download directly:**
+- [Latest Release APK](https://github.com/swolem12/Chirui-Reader/releases/latest) - Click on the `.apk` file to download
+
+### Installation Steps
+
+1. **Download** - Click the link above or visit the download page
+2. **Open** - Tap the downloaded APK file on your phone
+3. **Allow** - Enable "Install from unknown sources" if prompted
+4. **Install** - Tap "Install" and wait for completion
+5. **Done!** - Open the app and start reading
+
+---
+
+## 📦 Alternative: Build From Source
+
+If you prefer to build the app yourself:
 
 **Prerequisites:**
 - Android phone with USB debugging enabled

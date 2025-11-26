@@ -29,15 +29,20 @@ The native Android app is the active development track with complete build infra
 
 ### ⬇️ Install on Your Phone
 
-**Quick Install (Recommended):**
-1. Download the latest APK from [Releases](https://github.com/swolem12/Chirui-Reader/releases) (coming soon)
-2. Or build it yourself:
-   ```bash
-   cd android
-   ./dev.sh build        # Build APK
-   ./gradlew installDebug # Install on connected phone
-   ```
-3. See [android/INSTALL.md](android/INSTALL.md) for detailed installation instructions
+**🚀 One-Click Install:**
+
+**[📥 Download APK](https://swolem12.github.io/Chirui-Reader/download.html)** ← Just like kotatsu.app!
+
+Or get it from [GitHub Releases](https://github.com/swolem12/Chirui-Reader/releases/latest)
+
+**Build it yourself:**
+```bash
+cd android
+./dev.sh build        # Build APK
+./gradlew installDebug # Install on connected phone
+```
+
+See [android/INSTALL.md](android/INSTALL.md) for detailed instructions.
 
 **Requirements:**
 - Android 7.0 (API 24) or higher
