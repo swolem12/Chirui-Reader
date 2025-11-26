@@ -5,6 +5,9 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+import java.util.Properties
+import java.io.FileInputStream
+
 android {
     namespace = "com.chirui.reader"
     compileSdk = 34
@@ -17,20 +20,33 @@ android {
         versionName = "0.1.0"
 
         vectorDrawables { useSupportLibrary = true }
-        
-        // Set app name
         resValue("string", "app_name", "Chirui Reader")
+    }
+
+    // Load optional keystore properties for release signing (android/app/keystore.properties)
+    val keystorePropertiesFile = rootProject.file("android/app/keystore.properties")
+    val keystoreProperties = Properties()
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
     }
 
     signingConfigs {
         // Debug signing config (used for testing)
-        // WARNING: This debug keystore is publicly available in the repository.
-        // For production releases, replace this with a secure, private keystore.
         getByName("debug") {
             storeFile = file("debug.keystore")
             storePassword = "android"
             keyAlias = "androiddebugkey"
             keyPassword = "android"
+        }
+
+        // If keystore properties are present, create a release signing config using them
+        if (keystorePropertiesFile.exists()) {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
         }
     }
 
@@ -41,9 +57,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // TEMPORARY: Using debug signing for easy testing
-            // TODO: Replace with proper release keystore for production
-            signingConfig = signingConfigs.getByName("debug")
+            // Use release signing config if available; otherwise fallback to debug for local testing
+            signingConfig = if (keystorePropertiesFile.exists()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
         debug {
             applicationIdSuffix = ".debug"
