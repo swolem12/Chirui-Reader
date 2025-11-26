@@ -5,6 +5,9 @@
 
 **Native Kotlin/Android manga reader** inspired by Kotatsu, with a focus on extensible sources, offline reading, and Material 3 design. _Status last updated: 2025-11-26 04:30 UTC._
 
+> 🎯 **First Time Here?** To enable downloads for users, you need to create your first release!  
+> 👉 **[Follow This 2-Minute Guide](CREATE_FIRST_RELEASE.md)** to publish your first release and make the app downloadable.
+
 ## 🚀 What is This?
 
 Chirui Reader is a **native Android application** for reading manga and manhwa. It's built with Kotlin, Jetpack Compose, and Material 3, targeting feature parity with the Kotatsu reader.

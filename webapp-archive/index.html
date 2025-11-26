@@ -336,14 +336,21 @@
                     document.getElementById('version-title').textContent = 
                         '📌 No releases yet';
                     document.getElementById('version-text').innerHTML = 
-                        '<small>Check back soon for the first release!</small>';
+                        '<small>The first release is being prepared. Check the <a href="https://github.com/swolem12/Chirui-Reader/releases" style="color: #667eea;">releases page</a> soon!</small>';
+                    
+                    // Update download button to point to GitHub releases
+                    const downloadBtn = document.getElementById('download-btn');
+                    downloadBtn.textContent = '📋 View Releases';
+                    downloadBtn.href = 'https://github.com/swolem12/Chirui-Reader/releases';
                 }
             })
             .catch(error => {
                 console.log('Could not fetch latest release info:', error);
                 // Fallback link to releases page is already set in the HTML
+                document.getElementById('version-title').textContent = 
+                    '📌 Check Releases Page';
                 document.getElementById('version-text').innerHTML = 
-                    '<small>Visit releases page for download • Android 7.0+</small>';
+                    '<small>Visit the <a href="https://github.com/swolem12/Chirui-Reader/releases" style="color: #667eea;">releases page</a> for downloads • Android 7.0+</small>';
             });
     </script>
 </body>
