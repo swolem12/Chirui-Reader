@@ -4,8 +4,23 @@ This directory contains the download page for the Chirui Reader Android app, dep
 
 ## What's Here
 
-- **index.html** / **download.html** - One-click download page for the Android app
-- **Legacy files** - Old web app files (archived, not in use)
+This directory now contains **only** the download page files:
+
+- **index.html** - One-click download page for the Android app
+- **404.html** - Error page for invalid URLs
+- **icons/** - App logo and branding assets
+- **robots.txt** - Search engine directives
+- **README.md** - This file
+
+## What Was Removed
+
+The old webapp files have been removed to keep the GitHub Pages site focused on just the download page:
+
+- ❌ Old webapp source code (`src/` directory)
+- ❌ PWA service worker (`service-worker.js`)
+- ❌ PWA manifest (`manifest.json`)
+- ❌ Legacy documentation (`docs/` directory)
+- ❌ Duplicate download page (`download.html`)
 
 ## Live Site
 
@@ -22,7 +37,3 @@ The page provides:
 The download page automatically fetches the latest release from GitHub API and updates the download link accordingly.
 
 When you create a new release (via git tag), the download page will automatically show the latest version.
-
----
-
-**Note**: The legacy web app files are kept in this directory but are no longer served or maintained. The site now serves only the Android app download page.

@@ -6,7 +6,7 @@ This guide explains how to install the Chirui Reader Android app on your phone.
 
 ### One-Click Download
 
-**📥 [Download Latest APK](https://swolem12.github.io/Chirui-Reader/download.html)**
+**📥 [Download Latest APK](https://swolem12.github.io/Chirui-Reader/)**
 
 Visit our download page for the easiest installation experience - just like the Kotatsu app!
 
