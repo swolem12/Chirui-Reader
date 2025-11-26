@@ -330,7 +330,9 @@
                         // Update version text - use textContent to prevent XSS
                         const size = (releaseAsset.size / (1024 * 1024)).toFixed(1);
                         const versionText = document.getElementById('version-text');
-                        versionText.textContent = `${latestRelease.tag_name} • ${size} MB • Android 7.0+`;
+                        const small = document.createElement('small');
+                        small.textContent = `${latestRelease.tag_name} • ${size} MB • Android 7.0+`;
+                        versionText.replaceChildren(small);
                     } else {
                         // No release APK found, point to the release page
                         console.log('No release APK found in latest release');
@@ -339,7 +341,6 @@
                         
                         // Create link element programmatically to prevent XSS
                         const versionText = document.getElementById('version-text');
-                        versionText.innerHTML = '';
                         const small = document.createElement('small');
                         small.textContent = `${latestRelease.tag_name} • `;
                         const link = document.createElement('a');
@@ -347,7 +348,7 @@
                         link.style.color = '#667eea';
                         link.textContent = 'View Release';
                         small.appendChild(link);
-                        versionText.appendChild(small);
+                        versionText.replaceChildren(small);
                     }
                 } else {
                     // No releases yet, show appropriate message
