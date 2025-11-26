@@ -144,7 +144,7 @@ For subsequent releases, just follow the same process but use the next version n
 - `v0.2.0` - For new features
 - `v1.0.0` - For the first stable release
 
-See [RELEASE_GUIDE.md](RELEASE_GUIDE.md) for detailed release management guidelines.
+See [RELEASE_GUIDE.md](https://github.com/swolem12/Chirui-Reader/blob/main/RELEASE_GUIDE.md) for detailed release management guidelines.
 
 ---
 
@@ -171,7 +171,7 @@ See [RELEASE_GUIDE.md](RELEASE_GUIDE.md) for detailed release management guideli
 
 If you encounter issues:
 1. Check the GitHub Actions logs in the "Actions" tab
-2. Review [RELEASE_GUIDE.md](RELEASE_GUIDE.md) for detailed documentation
+2. Review [RELEASE_GUIDE.md](https://github.com/swolem12/Chirui-Reader/blob/main/RELEASE_GUIDE.md) for detailed documentation
 3. Open an issue at https://github.com/swolem12/Chirui-Reader/issues
 
 ---
