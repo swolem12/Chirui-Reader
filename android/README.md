@@ -11,9 +11,23 @@ This directory contains the initial Android application scaffold for the native 
 - `ui/theme`: lightweight theme wrapper that will be expanded as screens are built.
 
 ## Getting started
+
+### Building with Android Studio (Recommended)
 1. Open the `android/` directory in Android Studio Hedgehog or later.
 2. Let Android Studio download the Android Gradle Plugin and SDK platform 34.
 3. Connect a device or start an emulator, then run the `app` configuration.
+
+### Building from Command Line
+The project now includes a Gradle wrapper for consistent builds:
+
+```bash
+cd android
+./gradlew assembleDebug    # Build debug APK
+./gradlew build            # Build all variants
+./gradlew tasks            # List available tasks
+```
+
+**Note**: Building requires network access to download dependencies from Google's Maven repository and Maven Central.
 
 ### Next steps
 - Replace the placeholder parser registry JSON with the full set of Kotatsu source assets/icons and wire icons into the UI.
