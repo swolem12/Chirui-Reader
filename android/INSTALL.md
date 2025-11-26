@@ -14,7 +14,11 @@ Once available, APK releases will be published at:
 **Prerequisites:**
 - Android phone with USB debugging enabled
 - USB cable to connect phone to computer
-- JDK 17 installed on your computer
+- Computer with:
+  - JDK 17 installed
+  - Git installed
+  - (Optional) Android SDK/ADB tools for command-line installation
+  - (Optional) Android Studio for easier development
 
 **Steps:**
 
@@ -26,6 +30,7 @@ Once available, APK releases will be published at:
 
 2. **Build the APK**
    ```bash
+   # Make sure you're in the android/ directory
    # Build debug APK (recommended for testing)
    ./gradlew assembleDebug
    
@@ -39,16 +44,20 @@ Once available, APK releases will be published at:
 
 4. **Install on your phone**
    
-   **Method A: Using ADB (Recommended)**
+   **Method A: Using ADB (Recommended - requires Android SDK/ADB tools)**
    ```bash
    # Make sure phone is connected and USB debugging is enabled
+   # Make sure you're in the android/ directory
    ./gradlew installDebug
+   
+   # Or manually with adb (if gradlew doesn't work)
+   adb install app/build/outputs/apk/debug/app-debug.apk
    ```
    
-   **Method B: Manual Installation**
-   1. Copy the APK file to your phone
+   **Method B: Manual Installation (No ADB needed)**
+   1. Copy the APK file from `app/build/outputs/apk/debug/app-debug.apk` to your phone
    2. On your phone, open the file manager
-   3. Tap on the APK file
+   3. Navigate to the APK file and tap on it
    4. Allow installation from unknown sources if prompted
    5. Tap "Install"
 

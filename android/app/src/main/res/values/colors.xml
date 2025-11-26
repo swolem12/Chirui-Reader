@@ -9,4 +9,7 @@
     <color name="color_sky">#60A5FA</color>
     <color name="color_warning">#FFB74D</color>
     <color name="color_danger">#EF5350</color>
+    
+    <!-- App launcher icon color -->
+    <color name="ic_launcher_background">#FF6B35</color>
 </resources>

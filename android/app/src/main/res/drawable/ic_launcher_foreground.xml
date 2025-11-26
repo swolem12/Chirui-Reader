@@ -7,7 +7,7 @@
     
     <!-- Background -->
     <path
-        android:fillColor="#FF6B35"
+        android:fillColor="@color/ic_launcher_background"
         android:pathData="M0,0h108v108h-108z"/>
     
     <!-- Book/Reader Icon -->

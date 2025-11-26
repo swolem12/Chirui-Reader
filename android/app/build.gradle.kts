@@ -24,6 +24,8 @@ android {
 
     signingConfigs {
         // Debug signing config (used for testing)
+        // WARNING: This debug keystore is publicly available in the repository.
+        // For production releases, replace this with a secure, private keystore.
         getByName("debug") {
             storeFile = file("debug.keystore")
             storePassword = "android"
@@ -39,7 +41,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Use debug signing for now (users should replace with their own keystore)
+            // TEMPORARY: Using debug signing for easy testing
+            // TODO: Replace with proper release keystore for production
             signingConfig = signingConfigs.getByName("debug")
         }
         debug {
