@@ -210,18 +210,18 @@
         <div class="content">
             <div class="download-section">
                 <h2 style="margin-bottom: 20px;">Download Latest Version</h2>
-                <a href="https://github.com/swolem12/Chirui-Reader/releases/latest/download/chirui-reader-v0.1.0-release.apk" 
+                <a href="https://github.com/swolem12/Chirui-Reader/releases/latest" 
                    class="download-btn" 
                    id="download-btn">
                     Download APK
                 </a>
                 <p style="margin-top: 15px; color: #666;">
-                    <small>Version 0.1.0 • Android 7.0+</small>
+                    <small id="version-text">Latest Release • Android 7.0+</small>
                 </p>
             </div>
 
             <div class="version-info">
-                <h3>📌 Latest Release: v0.1.0</h3>
+                <h3 id="version-title">📌 Latest Release</h3>
                 <p>Early access release with core manga reading features</p>
             </div>
 
@@ -309,8 +309,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.tag_name) {
-                    // Update version info
-                    document.querySelectorAll('.version-info h3')[0].textContent = 
+                    // Update version title
+                    document.getElementById('version-title').textContent = 
                         `📌 Latest Release: ${data.tag_name}`;
                     
                     // Find the release APK asset
@@ -324,15 +324,26 @@
                         downloadBtn.href = releaseAsset.browser_download_url;
                         
                         // Update version text
-                        const versionText = downloadBtn.nextElementSibling;
                         const size = (releaseAsset.size / (1024 * 1024)).toFixed(1);
-                        versionText.innerHTML = `<small>${data.tag_name} • ${size} MB • Android 7.0+</small>`;
+                        document.getElementById('version-text').innerHTML = 
+                            `<small>${data.tag_name} • ${size} MB • Android 7.0+</small>`;
+                    } else {
+                        // No release APK found, keep fallback link to releases page
+                        console.log('No release APK found in latest release');
                     }
+                } else {
+                    // No releases yet, show appropriate message
+                    document.getElementById('version-title').textContent = 
+                        '📌 No releases yet';
+                    document.getElementById('version-text').innerHTML = 
+                        '<small>Check back soon for the first release!</small>';
                 }
             })
             .catch(error => {
                 console.log('Could not fetch latest release info:', error);
-                // Fallback to manual link is already in the HTML
+                // Fallback link to releases page is already set in the HTML
+                document.getElementById('version-text').innerHTML = 
+                    '<small>Visit releases page for download • Android 7.0+</small>';
             });
     </script>
 </body>
