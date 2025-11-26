@@ -66,14 +66,10 @@ fun SourceListTab(viewModel: SourceListViewModel = hiltViewModel()) {
             )
         }
 
+        val error = uiState.error
         when {
             uiState.loading -> LoadingCard()
-            uiState.error != null -> {
-                val errorMessage = uiState.error
-                if (errorMessage != null) {
-                    ErrorCard(errorMessage, onRetry = viewModel::onRetry)
-                }
-            }
+            error != null -> ErrorCard(error, onRetry = viewModel::onRetry)
             uiState.sources.isEmpty() -> EmptyState()
             else -> SourceList(
                 sources = uiState.sources,
