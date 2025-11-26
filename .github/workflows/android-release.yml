@@ -48,11 +48,11 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-      - name: Build release bundle
+      - name: Build release bundle and APK
         run: |
           chmod +x ./gradlew
           cd android
-          ./gradlew clean :app:bundleRelease -Pandroid.injected.signing.store.file=app/keystore.jks \
+          ./gradlew clean :app:bundleRelease :app:assembleRelease -Pandroid.injected.signing.store.file=app/keystore.jks \
             -Pandroid.injected.signing.store.password="${{ secrets.KEYSTORE_PASSWORD }}" \
             -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
             -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}"
@@ -68,3 +68,13 @@ jobs:
           asset_path: android/app/build/outputs/bundle/release/app-release.aab
           asset_name: app-release.aab
           asset_content_type: application/octet-stream
+
+      - name: Upload APK to GitHub Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: android/app/build/outputs/apk/release/app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/vnd.android.package-archive
