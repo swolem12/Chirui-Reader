@@ -117,8 +117,7 @@ See [webapp-archive/README.md](webapp-archive/README.md) for details.
 - 📦 **[IMPLEMENTED_SOURCES.md](IMPLEMENTED_SOURCES.md)** - Source implementations
 
 ### Archived Web App
-- 🌐 **[webapp-archive/README.md](webapp-archive/README.md)** - Archived PWA documentation
-- 📦 **[webapp-archive/docs/](webapp-archive/docs/)** - Legacy web app docs
+- 🌐 **[webapp-archive/README.md](webapp-archive/README.md)** - Download page documentation
 
 ## 🛠️ Technology Stack
 
@@ -132,11 +131,9 @@ See [webapp-archive/README.md](webapp-archive/README.md) for details.
 - **Async**: Kotlin Coroutines
 - **Build**: Gradle 8.5, AGP 8.5.0
 
-### Web (Archived)
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **UI**: Material Design 3
-- **Storage**: localStorage
-- **PWA**: Service Workers
+### Download Page (GitHub Pages)
+- **Purpose**: APK download page for Android app
+- **Content**: HTML download page with automatic release detection
 - **Hosting**: GitHub Pages
 
 ## 📊 Project Status
@@ -146,7 +143,7 @@ See [webapp-archive/README.md](webapp-archive/README.md) for details.
 ### Recent Progress (2025-11-26)
 - ✅ **Build Infrastructure**: Gradle wrapper, CI/CD, ktlint, helper scripts
 - ✅ **Documentation**: Comprehensive BUILD_GUIDE.md, CONTRIBUTING.md
-- ✅ **Web App**: Archived to `webapp-archive/` (maintenance mode only)
+- ✅ **Download Page**: GitHub Pages redesigned to serve only the APK download page
 - ✅ Android Jetpack Compose skeleton
 - ✅ Kotlin/Gradle configuration
 - ✅ Catalog with Discover grid and Sources tab
@@ -158,7 +155,7 @@ See [webapp-archive/README.md](webapp-archive/README.md) for details.
 All new features and improvements are focused on the **Android app** in the `android/` directory.
 
 ### Next Steps
-See [CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md) and [webapp-archive/docs/NEXT_STEPS_TODO.md](webapp-archive/docs/NEXT_STEPS_TODO.md) for detailed roadmap.
+See [CHIRUI_ROADMAP.md](CHIRUI_ROADMAP.md) for detailed roadmap.
 
 ## 🤝 Contributing
 
