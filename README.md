@@ -36,13 +36,13 @@ The native Android app is the active development track with complete build infra
 
 **[📥 Download APK](https://swolem12.github.io/Chirui-Reader/)** ← Just like kotatsu.app!
 
-Or get it from [GitHub Releases](https://github.com/swolem12/Chirui-Reader/releases/latest)
+Or get it from [GitHub Releases](https://github.com/swolem12/Chirui-Reader/releases)
 
 ### 📦 Android Releases / Downloads
 
 **Download the latest release (ready to install on your phone):**
-- [📥 Latest APK (app-release.apk)](https://github.com/swolem12/Chirui-Reader/releases/latest/download/app-release.apk) - **Install directly on your phone**
-- [Latest AAB (app-release.aab)](https://github.com/swolem12/Chirui-Reader/releases/latest/download/app-release.aab) - For Google Play Store upload
+- **[📥 Download from Releases Page](https://github.com/swolem12/Chirui-Reader/releases)** - Get the latest APK or AAB
+- **Direct link to APK**: Once a stable release is published, you can use the direct download link
 
 **For maintainers:** To enable automated release builds with proper signing, configure the following GitHub repository secrets:
 - `KEYSTORE_BASE64` - Base64-encoded release keystore file
