@@ -30,7 +30,7 @@ The project uses GitHub Actions to automatically build and publish APK files whe
      - Make them available for download
 
 5. **Done!**
-   - The download page at https://swolem12.github.io/Chirui-Reader/download.html will automatically show the latest release
+   - The download page at https://swolem12.github.io/Chirui-Reader/ will automatically show the latest release
 
 ### Method 2: Trigger Manual Build
 
@@ -88,7 +88,7 @@ Follow [Semantic Versioning](https://semver.org/):
    - Uploads `chirui-reader-vX.X.X-release.apk`
    - Uploads `chirui-reader-vX.X.X-debug.apk`
 5. **Download Page Updates**
-   - The download.html page automatically fetches the latest release
+   - The index.html page automatically fetches the latest release
    - Users can immediately download the new version
 
 ## Pre-Release Checklist
@@ -107,7 +107,7 @@ Before creating a release:
 After creating a release:
 
 1. **Test the Download**
-   - Visit https://swolem12.github.io/Chirui-Reader/download.html
+   - Visit https://swolem12.github.io/Chirui-Reader/
    - Verify the download link works
    - Test installation on a device
 

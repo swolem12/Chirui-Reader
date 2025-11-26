@@ -31,7 +31,7 @@ The native Android app is the active development track with complete build infra
 
 **🚀 One-Click Install:**
 
-**[📥 Download APK](https://swolem12.github.io/Chirui-Reader/download.html)** ← Just like kotatsu.app!
+**[📥 Download APK](https://swolem12.github.io/Chirui-Reader/)** ← Just like kotatsu.app!
 
 Or get it from [GitHub Releases](https://github.com/swolem12/Chirui-Reader/releases/latest)
 
