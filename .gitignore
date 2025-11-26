@@ -45,3 +45,4 @@ android/**/*.keystore
 !android/app/debug.keystore
 android/**/*.jks
 android/**/*.p12
+android/**/keystore.properties

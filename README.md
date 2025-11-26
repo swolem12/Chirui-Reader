@@ -38,6 +38,19 @@ The native Android app is the active development track with complete build infra
 
 Or get it from [GitHub Releases](https://github.com/swolem12/Chirui-Reader/releases/latest)
 
+### 📦 Android Releases / Downloads
+
+**Download the latest Android App Bundle (AAB):**
+- [Latest AAB (app-release.aab)](https://github.com/swolem12/Chirui-Reader/releases/latest/download/app-release.aab)
+
+**For maintainers:** To enable automated release builds with proper signing, configure the following GitHub repository secrets:
+- `KEYSTORE_BASE64` - Base64-encoded release keystore file
+- `KEYSTORE_PASSWORD` - Keystore password
+- `KEY_ALIAS` - Key alias name
+- `KEY_PASSWORD` - Key password
+
+When a GitHub Release is created, the workflow will automatically build a signed AAB and upload it to the release.
+
 **Build it yourself:**
 ```bash
 cd android
