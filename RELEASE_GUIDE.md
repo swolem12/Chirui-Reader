@@ -1,5 +1,12 @@
 # How to Create a Release
 
+## ⚡ Quick Links
+
+**🔗 Direct Link to Generate Release:**
+**[Click here to run the Release APK workflow](https://github.com/swolem12/Chirui-Reader/actions/workflows/release-apk.yml)**
+
+---
+
 This guide explains how to create and publish a new release of Chirui Reader.
 
 ## Automated Release Process
@@ -34,12 +41,15 @@ The project uses GitHub Actions to automatically build and publish APK files whe
 
 ### Method 2: Trigger Manual Build
 
+**🔗 Direct Link to Trigger Release Workflow:**
+**[Click here to run the Release APK workflow](https://github.com/swolem12/Chirui-Reader/actions/workflows/release-apk.yml)**
+
 1. **Go to Actions**
-   - Navigate to https://github.com/swolem12/Chirui-Reader/actions
-   - Click "Release APK" workflow
+   - Navigate to https://github.com/swolem12/Chirui-Reader/actions/workflows/release-apk.yml
+   - Or click the link above
 
 2. **Run Workflow**
-   - Click "Run workflow"
+   - Click the **"Run workflow"** dropdown button (top right, green button)
    - Enter the version (e.g., `v0.1.0`)
    - Click "Run workflow"
 
