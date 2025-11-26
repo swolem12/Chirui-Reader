@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ChiruiReaderTheme {
-                ChiruiReaderApp()
+                ChiruiReaderAppContent()
             }
         }
     }
@@ -108,7 +108,7 @@ private val destinations = listOf(
 )
 
 @Composable
-fun ChiruiReaderApp() {
+fun ChiruiReaderAppContent() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
