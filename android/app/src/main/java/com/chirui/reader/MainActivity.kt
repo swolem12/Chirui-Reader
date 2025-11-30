@@ -75,7 +75,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.chirui.reader.catalog.CatalogScreen
 import com.chirui.reader.catalog.MangaDetailScreen
-import com.chirui.reader.downloads.DownloadsScreen
 import com.chirui.reader.reader.ReaderScreen
 import com.chirui.reader.ui.theme.ChiruiReaderTheme
 import dagger.hilt.android.AndroidEntryPoint
