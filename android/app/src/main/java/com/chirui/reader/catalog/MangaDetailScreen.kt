@@ -19,13 +19,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
@@ -34,6 +37,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -58,11 +63,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chirui.domain.model.ChapterSummary
 import com.chirui.domain.model.MangaDetail
 import com.chirui.domain.model.MangaStatus
+import com.chirui.reader.ui.theme.CoverShapeLarge
+import com.chirui.reader.ui.theme.KotatsuDimensions
 import kotlin.math.absoluteValue
 
 /**
  * Kotatsu-style manga detail screen
- * Layout: Cover on left, details on right, chapters below
+ * Layout matches activity_details.xml:
+ * - Cover: 30% width, aspect ratio 13:18, corner radius 12dp
+ * - Title and subtitle on right side
+ * - Favorite chip with dropdown style
+ * - Chapter list with bookmark/download icons
  */
 @Composable
 fun MangaDetailScreen(
@@ -98,192 +109,203 @@ private fun MangaDetailContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        // Header section with cover and basic info
+        // Header section with cover and basic info (Kotatsu layout)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(KotatsuDimensions.MarginNormal),
+            horizontalArrangement = Arrangement.spacedBy(KotatsuDimensions.MarginNormal)
         ) {
-            // Cover image (Kotatsu style - rounded corners, prominent)
+            // Cover image (Kotatsu style - 30% width, 13:18 aspect ratio)
             CoverPreview(
                 id = detail.summary.id, 
                 modifier = Modifier
-                    .width(120.dp)
-                    .height(180.dp)
+                    .fillMaxWidth(0.3f) // 30% width like Kotatsu
+                    .height(166.dp) // Calculated: width * 18/13
             )
             
-            // Title and info column
+            // Title and info column (like activity_details.xml)
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
+                // Title (headlineSmall like Kotatsu)
                 Text(
                     text = detail.summary.title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    maxLines = 3,
+                    maxLines = 3, // details_title_lines
                     overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 
-                // Author/Artist
+                // Subtitle/Author (bodyMedium)
                 detail.author?.let { author ->
                     Text(
                         text = author,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        maxLines = 1,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
                 
-                // Status and source info
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    StatusChip(status = detail.status, nsfw = detail.summary.nsfw)
-                }
+                Spacer(modifier = Modifier.height(KotatsuDimensions.MarginSmall))
                 
-                // Source name
-                Text(
-                    text = "${detail.summary.sourceName} · ${detail.summary.language.uppercase()}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                // Favorite chip (Kotatsu dropdown style with arrow)
+                FilterChip(
+                    selected = detail.favorite,
+                    onClick = onToggleFavorite,
+                    label = { 
+                        Text(
+                            text = if (detail.favorite) "In Favorites" else "Add to Favorites",
+                            style = MaterialTheme.typography.labelLarge
+                        ) 
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = if (detail.favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(
+                            Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                        selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
                 )
             }
         }
         
-        // Action buttons row (Kotatsu style)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            // Favorite button
-            FilledTonalButton(
-                onClick = onToggleFavorite,
-                modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.filledTonalButtonColors(
-                    containerColor = if (detail.favorite) {
-                        MaterialTheme.colorScheme.primaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    }
-                )
-            ) {
-                Icon(
-                    imageVector = if (detail.favorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    contentDescription = null,
-                    tint = if (detail.favorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = if (detail.favorite) "In Library" else "Add to Library",
-                    style = MaterialTheme.typography.labelLarge
-                )
-            }
-            
-            // Share button
-            OutlinedButton(
-                onClick = { onShare(detail) }
-            ) {
-                Icon(
-                    Icons.Default.Share, 
-                    contentDescription = "Share",
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-            
-            // Download button
-            OutlinedButton(
-                onClick = { /* download */ }
-            ) {
-                Icon(
-                    Icons.Default.Download, 
-                    contentDescription = "Download",
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-        }
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        // Description section
-        val description = detail.description
-        if (!description.isNullOrBlank()) {
-            Column(
+        // NSFW badges (like activity_details.xml)
+        if (detail.summary.nsfw) {
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = KotatsuDimensions.MarginNormal),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Surface(
+                    color = Color(0xFFFF8A65), // nsfw_18 color from Kotatsu
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        text = "18+",
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(KotatsuDimensions.MarginSmall))
+        }
+        
+        // Info table (status, source, chapters count)
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = KotatsuDimensions.MarginNormal),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+            ),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(KotatsuDimensions.MarginNormal),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                InfoColumn(label = "Status", value = detail.status.name.lowercase().replaceFirstChar { it.uppercase() })
+                InfoColumn(label = "Source", value = detail.summary.sourceName)
+                InfoColumn(label = "Chapters", value = "${detail.chapters.size}")
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(KotatsuDimensions.MarginNormal))
+        
+        // Description section (with More button like Kotatsu)
+        val description = detail.description
+        if (!description.isNullOrBlank()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = KotatsuDimensions.MarginSmall),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = "Description",
                     style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(KotatsuDimensions.GridSpacing),
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = "More",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .clickable { /* expand description */ }
+                        .padding(KotatsuDimensions.GridSpacing)
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 4, // details_description_lines
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(horizontal = KotatsuDimensions.MarginNormal),
+                lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * 1.2f // lineSpacingMultiplier
+            )
+            Spacer(modifier = Modifier.height(KotatsuDimensions.MarginNormal))
         }
         
-        // Tags/Genres section (Kotatsu style - flow layout)
+        // Tags/Genres section (Kotatsu style ChipsView)
         if (detail.tags.isNotEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+            FlowRow(
+                modifier = Modifier.padding(horizontal = KotatsuDimensions.ScreenPadding),
+                horizontalArrangement = Arrangement.spacedBy(6.dp), // chipSpacingHorizontal
+                verticalArrangement = Arrangement.spacedBy(6.dp) // chipSpacingVertical
             ) {
-                Text(
-                    text = "Genres",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    detail.tags.forEach { tag ->
-                        AssistChip(
-                            onClick = { /* filter by tag */ },
-                            label = { 
-                                Text(
-                                    text = tag,
-                                    style = MaterialTheme.typography.labelMedium
-                                ) 
-                            },
-                            colors = AssistChipDefaults.assistChipColors(
-                                containerColor = MaterialTheme.colorScheme.surfaceVariant
-                            )
+                detail.tags.forEach { tag ->
+                    AssistChip(
+                        onClick = { /* filter by tag */ },
+                        label = { 
+                            Text(
+                                text = tag,
+                                style = MaterialTheme.typography.labelMedium
+                            ) 
+                        },
+                        colors = AssistChipDefaults.assistChipColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
                         )
-                    }
+                    )
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(KotatsuDimensions.MarginNormal))
         }
         
-        // Divider
+        // Divider before chapters
         HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier.padding(horizontal = KotatsuDimensions.MarginNormal),
             color = MaterialTheme.colorScheme.outlineVariant
         )
         
-        // Chapters section header
+        // Chapters section header (Kotatsu bottom sheet peek header style)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(KotatsuDimensions.MarginNormal),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -294,10 +316,11 @@ private fun MangaDetailContent(
                 color = MaterialTheme.colorScheme.onSurface
             )
             
-            // Read/Continue button
+            // Read button (min width 92dp like Kotatsu)
             if (detail.chapters.isNotEmpty()) {
                 Button(
                     onClick = { onOpenChapter(detail.chapters.first()) },
+                    modifier = Modifier.width(KotatsuDimensions.ReadButtonMinWidth),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )
@@ -313,7 +336,7 @@ private fun MangaDetailContent(
             }
         }
         
-        // Chapter list
+        // Chapter list (matching item_chapter.xml layout)
         if (detail.chapters.isEmpty()) {
             Box(
                 modifier = Modifier
@@ -337,10 +360,34 @@ private fun MangaDetailContent(
             }
         }
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(KotatsuDimensions.MarginNormal))
     }
 }
 
+@Composable
+private fun InfoColumn(label: String, value: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+/**
+ * Chapter row matching Kotatsu's item_chapter.xml:
+ * - Min height 48dp (chapter_list_item_height)
+ * - Title with bodyLarge
+ * - Description with bodySmall
+ * - Bookmark and download icons on right
+ */
 @Composable
 private fun ChapterRow(
     chapter: ChapterSummary, 
@@ -351,14 +398,16 @@ private fun ChapterRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(KotatsuDimensions.ChapterListItemHeight)
                 .clickable { onOpenChapter(chapter) }
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = KotatsuDimensions.MarginNormal),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Title and description column
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+                verticalArrangement = Arrangement.Center
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -375,6 +424,7 @@ private fun ChapterRow(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
+                    // Read check icon
                     if (chapter.readProgress >= 1f) {
                         Icon(
                             imageVector = Icons.Default.CheckCircle, 
@@ -393,14 +443,22 @@ private fun ChapterRow(
                 }
             }
             
-            // Download icon button
-            IconButton(
-                onClick = { /* download chapter */ }
+            // Icons row (bookmark and download like item_chapter.xml)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
+                // Bookmark icon
                 Icon(
-                    Icons.Default.Download,
-                    contentDescription = "Download",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    Icons.Default.Bookmark,
+                    contentDescription = "Bookmarks",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    modifier = Modifier.size(20.dp)
+                )
+                // Downloaded icon
+                Icon(
+                    Icons.Default.Storage,
+                    contentDescription = "Downloaded",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -408,7 +466,7 @@ private fun ChapterRow(
         
         if (showDivider) {
             HorizontalDivider(
-                modifier = Modifier.padding(start = 16.dp),
+                modifier = Modifier.padding(start = KotatsuDimensions.MarginNormal),
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
             )
         }
@@ -439,6 +497,11 @@ private fun StatusChip(status: MangaStatus, nsfw: Boolean) {
     }
 }
 
+/**
+ * Cover preview with Kotatsu styling:
+ * - 12dp corner radius (ShapeAppearanceOverlay.Kotatsu.Cover)
+ * - Gradient placeholder with theme colors
+ */
 @Composable
 private fun CoverPreview(id: String, modifier: Modifier = Modifier) {
     val colors = remember(id) {
@@ -454,7 +517,7 @@ private fun CoverPreview(id: String, modifier: Modifier = Modifier) {
     
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(CoverShapeLarge) // 12dp corner radius
             .background(Brush.verticalGradient(colors)),
         contentAlignment = Alignment.Center
     ) {
