@@ -322,29 +322,17 @@ private fun CatalogCard(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(4.dp),
-                    color = Color(0xFFFF8A65),
+                    color = MaterialTheme.colorScheme.error,
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
                         text = "18+",
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onError,
                         fontWeight = FontWeight.Bold
                     )
                 }
-            }
-            
-            // Reading progress indicator (bottom-right like Kotatsu)
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(4.dp)
-                    .size(20.dp),
-                color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(4.dp)
-            ) {
-                // Progress circle placeholder
             }
         }
         
@@ -388,15 +376,15 @@ private fun CoverPlaceholder(id: String) {
 }
 
 /**
- * Kotatsu-style cover color palette matching the primary blue
+ * Kotatsu-style cover color palette using theme colors
  */
 @Composable
 private fun rememberCoverColors(seed: String): List<Color> {
     val hash = seed.hashCode().absoluteValue
-    val primary = Color(0xFF0059C8).copy(alpha = 0.85f) // Kotatsu blue
-    val alt = Color(0xFF725573).copy(alpha = 0.85f) // Kotatsu tertiary
-    val accent = Color(0xFF575E71).copy(alpha = 0.85f) // Kotatsu secondary
-    val palette = listOf(primary, alt, accent)
+    val primary = MaterialTheme.colorScheme.primary.copy(alpha = 0.85f)
+    val tertiary = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.85f)
+    val secondary = MaterialTheme.colorScheme.secondary.copy(alpha = 0.85f)
+    val palette = listOf(primary, tertiary, secondary)
     val first = palette[hash % palette.size]
     val second = palette[(hash / 3) % palette.size]
     return listOf(first, second)
