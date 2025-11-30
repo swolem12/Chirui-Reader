@@ -55,6 +55,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chirui.domain.model.MangaStatus
 import kotlin.math.absoluteValue
 
+/**
+ * Kotatsu-style Discover tab with manga grid
+ * Clean layout without visible filters (matches Kotatsu Explore screen)
+ */
 @Composable
 fun CatalogDiscoverTab(
     onOpenManga: (String) -> Unit,
@@ -65,24 +69,8 @@ fun CatalogDiscoverTab(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
-        CatalogSearchBar(
-            value = uiState.query,
-            onValueChange = viewModel::onQueryChange,
-            placeholder = "Search manga across enabled sources",
-            onClear = viewModel::onClearFilters,
-            onRefresh = viewModel::onRefresh,
-        )
-
-        FilterSection(
-            uiState = uiState,
-            onToggleLanguage = viewModel::onToggleLanguage,
-            onToggleSource = viewModel::onToggleSource,
-            onToggleEnabled = viewModel::onToggleEnabledFilter,
-        )
-
         when {
             uiState.loading -> CatalogLoadingCard()
             uiState.items.isEmpty() -> CatalogEmptyState()
@@ -274,6 +262,9 @@ private fun SourceLeadingIcon(language: String, enabled: Boolean) {
     }
 }
 
+/**
+ * Kotatsu-style grid with compact manga cards
+ */
 @Composable
 private fun CatalogGrid(
     items: List<CatalogItemUiModel>,
@@ -283,11 +274,11 @@ private fun CatalogGrid(
     onNext: () -> Unit,
     onOpenManga: (String) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 156.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            columns = GridCells.Adaptive(minSize = 110.dp), // Tighter grid like Kotatsu
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxHeight(0.9f)
         ) {
             items(items, key = { it.id }) { item ->
@@ -304,81 +295,107 @@ private fun CatalogGrid(
     }
 }
 
+/**
+ * Kotatsu-style manga card with cover image and title below
+ * Matches the item_manga_grid.xml layout pattern
+ */
 @Composable
 private fun CatalogCard(
     item: CatalogItemUiModel,
     onOpenManga: (String) -> Unit,
 ) {
-    OutlinedCard(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onOpenManga(item.id) },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface)
+            .clip(RoundedCornerShape(8.dp))
+            .clickable { onOpenManga(item.id) }
+            .padding(6.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        // Cover image with badges overlay (Kotatsu style)
+        Box(modifier = Modifier.fillMaxWidth()) {
             CoverPlaceholder(id = item.id)
-            Text(
-                text = item.title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = "${item.sourceName} · ${item.language.uppercase()}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                StatusBadge(status = item.status, nsfw = item.nsfw)
-            }
-            if (item.tags.isNotEmpty()) {
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    item.tags.take(3).forEach { tag ->
-                        AssistChip(
-                            onClick = {},
-                            label = { Text(tag) },
-                            colors = AssistChipDefaults.assistChipColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer
-                            )
-                        )
-                    }
+            
+            // NSFW badge (top-left like Kotatsu)
+            if (item.nsfw) {
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(4.dp),
+                    color = Color(0xFFFF8A65),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        text = "18+",
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
+            
+            // Reading progress indicator (bottom-right like Kotatsu)
+            Surface(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(4.dp)
+                    .size(20.dp),
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(4.dp)
+            ) {
+                // Progress circle placeholder
+            }
         }
+        
+        // Title (2 lines max, like Kotatsu)
+        Text(
+            text = item.title,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
     }
 }
 
+/**
+ * Kotatsu-style cover placeholder with aspect ratio 13:18
+ */
 @Composable
 private fun CoverPlaceholder(id: String) {
     val colors = rememberCoverColors(id)
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(8.dp))
             .background(
                 Brush.verticalGradient(
                     colors = colors
                 )
             )
             .fillMaxWidth()
-            .height(160.dp),
+            .height(180.dp), // Aspect ratio similar to Kotatsu (13:18)
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = id.take(2).uppercase(),
             style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = Color.White,
+            fontWeight = FontWeight.Bold
         )
     }
 }
 
+/**
+ * Kotatsu-style cover color palette matching the primary blue
+ */
 @Composable
 private fun rememberCoverColors(seed: String): List<Color> {
     val hash = seed.hashCode().absoluteValue
-    val primary = Color(0xFF6C63FF).copy(alpha = 0.85f)
-    val alt = Color(0xFF00BCD4).copy(alpha = 0.85f)
-    val accent = Color(0xFFFF8A65).copy(alpha = 0.85f)
+    val primary = Color(0xFF0059C8).copy(alpha = 0.85f) // Kotatsu blue
+    val alt = Color(0xFF725573).copy(alpha = 0.85f) // Kotatsu tertiary
+    val accent = Color(0xFF575E71).copy(alpha = 0.85f) // Kotatsu secondary
     val palette = listOf(primary, alt, accent)
     val first = palette[hash % palette.size]
     val second = palette[(hash / 3) % palette.size]
