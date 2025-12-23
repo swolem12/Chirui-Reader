@@ -1,5 +1,12 @@
 # 🚀 Create Your First Release - Quick Start Guide
 
+## ⚡ Quick Links
+
+**🔗 Direct Link to Generate Release:**
+**[Click here to run the Release APK workflow](https://github.com/swolem12/Chirui-Reader/actions/workflows/release-apk.yml)**
+
+---
+
 ## Problem
 The "Beta" release exists but has **no APK files attached**. This is because:
 - The "Beta" tag doesn't match the required `v*` pattern (e.g., `v0.1.0`)
@@ -76,14 +83,17 @@ See [RELEASE_NOTES.md](https://github.com/swolem12/Chirui-Reader/blob/main/RELEA
 
 If you prefer to trigger the automated workflow directly:
 
+**🔗 Direct Link to Trigger Release Workflow:**
+**[Click here to run the Release APK workflow](https://github.com/swolem12/Chirui-Reader/actions/workflows/release-apk.yml)**
+
 1. **Go to Actions Tab**
-   - Visit: https://github.com/swolem12/Chirui-Reader/actions
-   - Click on **"Release APK"** workflow in the left sidebar
+   - Visit: https://github.com/swolem12/Chirui-Reader/actions/workflows/release-apk.yml
+   - Or click the link above
 
 2. **Run Workflow**
-   - Click the **"Run workflow"** dropdown button
+   - Click the **"Run workflow"** dropdown button (top right)
    - Keep the default branch (main)
-   - Version will default to `v0.1.0`
+   - Version will default to `v0.1.0` (or enter your desired version)
    - Click green **"Run workflow"** button
 
 3. **Wait for Completion**

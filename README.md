@@ -10,6 +10,7 @@
 > 📥 **[Download Instructions](DOWNLOAD_INSTRUCTIONS.md)** - All options to get the app
 >
 > 🎯 **For Maintainers:** To enable downloads for users, create a proper release!  
+> 🔗 **[DIRECT LINK to Generate Release](RELEASE_WORKFLOW_LINK.md)** - One-click workflow trigger!  
 > 👉 **[Follow This 2-Minute Guide](CREATE_FIRST_RELEASE.md)** to publish a release with APK files.
 
 ## 🚀 What is This?
